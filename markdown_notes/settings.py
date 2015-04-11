@@ -66,7 +66,7 @@ API_LIMIT_PER_PAGE = 200
 # General config
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'secret')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-ALLOWED_HOSTS = ['markdownnotes.com', '*.markdownnotes.com']
+ALLOWED_HOSTS = ['markdownnotes.com', '*.markdownnotes.com', 'www.markdownnotes.com']
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 TASTYPIE_DATETIME_FORMATTING = 'iso-8601-strict'  # Javascript-parsable date format
 CSRF_COOKIE_NAME = "XSRF-TOKEN"  # For AngularJS compatibility
