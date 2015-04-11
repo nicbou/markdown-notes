@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Notes{% endblock %}
+{% block extra_scripts %}
+    <script src="{% static "js/app-config.js" %}"></script>
+{% endblock extra_scripts %}
+{% block account_buttons %}{% endblock %}
+{% block page %}
+    {% include "notes/editor.html" with class='app' %}
+{% endblock page %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% block title %}Log in{% endblock %}
+{% block description %}Log in to edit your notes{% endblock %}
+{% block page %}
+    <div class="section light login">
+        <h1 class="page-header">{% trans "Your account" %}</h1>
+        {% include "form.html" with submit_text="Save changes" %}
+    </div>
+{% endblock %}

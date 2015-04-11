@@ -1,0 +1,40 @@
+[
+{
+    "pk": 1, 
+    "model": "notes.note", 
+    "fields": {
+        "title": "Getting started", 
+        "deleted": false, 
+        "content": "#Quick start guide\n\nIn this short guide, we demonstrate a few Markdown Notes features. Even if you know Markdown, Markdown Notes has quite a few neat hidden features.\n\nThis note is editable, so feel free play around and break things.\n\n##1. Quick markdown primer\n\nMarkdown is a simple document formatting language used by Stack Overflow, Github and a bunch of other sites. Markdown Notes uses [Github-flavored markdown](https://help.github.com/articles/github-flavored-markdown). You can safely open your notes in another editor and they will display just fine.\n\n###1.1. Basic formatting\n\n* **Bold**, *italics* and ~~strikethrough~~ text is really simple\n* [Links](http://markdownnotes.com) are also easily created\n* Titles are created by adding `#`'s at the beginning of the line.\n* A single line break creates a second line. Two line breaks create a paragraph.\n\n> Use angled brackets to cite your favorite authors\n\n###1.2. Lists\n\nYou create lists by adding a `*` at the begining of the line. You can indent your lists by adding spaces before the `*`.\n\n* List item 1\n* List item 2\n\t* Sublist 1\n    \t* Sublist item 1\n        * Sublist item 2\n    * Sublist 2\n* List item 3\n\nNumbered lists are pretty easy to create too:\n\n1. Item one\n\t1. Subitem one\n    2. Subitem two\n    \nYou can also mix lists if you feel like it:\n\n1. List item 1\n\t* Subitem 1\n2. List item 2\n\t1. Subitem 1\n    \nYou can also create nestedto-do lists:\n\n* [x] This one is done\n* [ ] This one is not\n    * [ ] This is a subtask\n    * [ ] test\n    \t* [ ] Do this first\n    \t* [x] Do this next\n* [ ] Neither is this one\n\n###1.3. Code blocks\n\nYou can create syntax-highlighted code blocks by using three backticks. The code will be highlighted automatically:\n\n```\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World\");\n    }\n}\n```\n\nFor `inline code`, use a single backtick.\n\n###1.4. LaTeX\n\nWrap your LaTeX equations with two `$`'s for inline equations and three `$`'s for equation blocks.\n\nYou can create an inline equation for $$3n+\\sum_2^n{\\pi}$$ or put it in a block:\n\n$$$\n3n+\\sum_2^n{\\pi}\n$$$\n\n###1.5. Images\n\nImages can be dragged and dropped over the editor. Alternatively, you can use the standard markdown syntax:\n\n![my image](http://markdownnotes.com/static/img/cloud.png)\n\n##2. Editor features\n\nMarkdown Notes provides convenient features that make note-taking easier.\n\n###2.1. Preview and editor modes\n\nUse the *Editor*, *Preview* and *Editor + Preview* modes at the top of the window to toggle the editor and the preview.\n\n###2.2. Printing notes\n\nAll your notes are printable. Print them like any other webpage, and the output will be formatted like a professional document. The markdown code will not show on the printed page.\n\n###2.3. Automatic save\n\nYour notes are saved automatically when you stop typing. \n\n###2.4. Exporting notes\n\nClick the *Export* button at the top of the page to export your notes to `.md` files. These files can be opened by any markdown editor, although you might not get full support for unique features such as LaTeX equations.\n\n###2.5. Code folding\n\nClick the small `\u25be` icons at the left of the editor to collapse the section under them. Click it again to reveal the hidden sections.\n\n###2.6. Keyboard shortcuts\n\nThe following standard shortcuts are supported:\n\n* **Bold text:** `Ctrl+B`\n* **Italics:** `Ctrl+I`\n* **Link:** `Ctrl+K`\n* **Print:** `Ctrl+P`", 
+        "date_updated": "2014-05-30T14:11:13.507Z", 
+        "user": [
+            "dummy"
+        ], 
+        "date_created": "2014-05-23T19:31:06Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "notes.note", 
+    "fields": {
+        "title": "Hello there!", 
+        "deleted": false, 
+        "content": "#Hello there!\n\nThis is a fully functional editor, so feel free to play around for a bit before you sign up.\n\nNew to markdown? Open the **menu** above and select the note titled \"**Getting started**\" to see what Markdown Notes can do.", 
+        "date_updated": "2014-05-30T14:16:15.095Z", 
+        "user": [
+            "dummy"
+        ], 
+        "date_created": "2014-05-30T14:06:21.664Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "notes.dummynote", 
+    "fields": {}
+},
+{
+    "pk": 2, 
+    "model": "notes.dummynote", 
+    "fields": {}
+}
+]

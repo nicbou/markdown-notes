@@ -1,0 +1,32 @@
+<form class="form-horizontal" action="" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+    {% csrf_token %}
+    {{ form.media }}
+    {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            {{ form.non_field_errors|join:"<br/>" }}
+        </div>
+    {% endif %}
+    {% for field in form.visible_fields %}
+        <div class="control-group {{ field.html_name }} {% if field.errors %}error{% endif %}">
+            <label class="control-label">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
+            <div class="controls">
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+    {% for field in form.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+
+    {% block formsets %}
+        {% for formset in inlines %}
+            {% include "inline_formset.html" with formset=formset %}
+        {% endfor %}        
+    {% endblock formsets %}
+
+    <div class="form-actions">
+        <input class="btn btn-primary btn-large" type="submit" value="{{ submit_text|default:"Submit" }}"/>
+        {% block extra_buttons %}   
+        {% endblock extra_buttons %}
+    </div>
+</form>

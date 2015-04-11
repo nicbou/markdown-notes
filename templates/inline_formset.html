@@ -1,0 +1,35 @@
+{% load i18n %}
+<fieldset>
+	<legend>{{ formset.label }}</legend>
+	<div>
+		{% for form in formset.forms %}
+			<div class="{{ formset.prefix }} span4 formset">
+				{% if field.errors %}<span class="help-inline">{{ field.errors.as_text }}</span>{% endif %}
+				{% for field in form.visible_fields %}
+					{% if not field.name = form.DELETE.name %}
+						{{ field.errors }}
+						<label>{{ field.label }}</label>
+						{{ field }}
+					{% endif %}
+				{% endfor %}
+				{% if form.instance.pk and formset.can_delete %}
+					{{ form.DELETE }}
+				{% endif %}
+				{% for field in form.hidden_fields %}
+					{{ field }}
+				{% endfor %}
+				<input type="hidden" name="{{form.DELETE.html_name}}" id="{{form.DELETE.auto_id}}"/>
+			</div>
+		{% endfor %}
+		{{ formset.management_form }}
+		<script type="text/javascript">
+			$(function() {
+				$('.{{ formset.prefix }}').formset({
+					prefix: '{{ formset.prefix }}',
+					deleteText: '<i class="icon-remove"></i>',
+					deleteCssClass: 'remove-formset'
+				});
+			})
+		</script>
+	</div>
+</fieldset>

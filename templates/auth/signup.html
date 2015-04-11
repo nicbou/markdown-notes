@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}Sign up{% endblock %}
+{% block description %}Create an account on Markdown Notes. No email validation required.{% endblock %}
+{% block page %}
+    {% if not user.is_authenticated %}
+        <div class="section light signup">
+            <h1>Create your account</h1>
+            {% trans "Create my account" as signup_text %}
+            {% include "form.html" with form=form submit_text=signup_text %}
+        </div>
+    {% else %}
+        <p>You are already logged in.</p>
+        <a href="{% url 'index' %}">Return to your notes</a>
+    {% endif %}
+{% endblock %}

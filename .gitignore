@@ -1,0 +1,7 @@
+*.pyc
+*.DS_Store
+CACHE/
+dev.db
+files/
+markdown_notes/staticfiles/
+markdown_notes/local_settings.py

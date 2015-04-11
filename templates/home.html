@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_scripts %}
+    <script src="{% static "js/demo-config.js" %}"></script>
+{% endblock extra_scripts %}
+{% block page %}
+    <div class="section light header">
+        <h1>Students, take note.</h1>
+        <p>Markdown Notes lets you write rich notes with images, latex equations and syntax-highlighted code from your browser.</p>
+        <img id="screen" src="{% static "img/screen.png" %}" alt="Markdown notes screenshot">
+        <div id="demo">
+            {% include "notes/editor.html" %}
+        </div>
+    </div>
+    <div class="section dark">
+        <h1>Light as a feather</h1>
+        <p>Use <strong>Markdown</strong> to create well-formatted notes without lifting your hands from the keyboard. Your notes are instantly saved, easily printable and accessible from anywhere.</p>
+        <img src="{% static "img/markdown.png" %}" alt="Markdown in action">
+    </div>
+    <div class="section light">
+        <h1>Simple equations</h1>
+        <p>Use <strong>LaTeX</strong> to create complex math equations in a jiffy. It’s finally easy to take math and chemistry notes on a computer. How cool is that?</p>
+        <img src="{% static "img/equation.png" %}" alt="Equations in a few keystrokes">
+    </div>
+    <div class="section dark">
+        <h1>Just drop images</h1>
+        <p>Drop images in your notes to insert them. This is the first markdown editor that lets you upload images this easily.</p>
+        <img src="{% static "img/cloud.png" %}" alt="Upload images in a jiffy">
+    </div>
+    <div class="section light">
+        <h1>Not yet convinced?</h1>
+        <p>We forgot to mention there is code highlighting, section folding, a distraction-free mode and a few other neat features. We don’t even require email validation, so why not give it a test drive?</p>
+    </div>
+    <div class="section dark">
+        <h1>Let's do this!</h1>
+        {% if not user.is_authenticated %}
+            <p>It only takes a few seconds to create an account.<br>No email confirmation required.</p>
+            <a class="btn" href="{% url 'signup' %}">Sign up</a>
+            <a class="btn" href="{% url 'login' %}">Log in</a>
+        {% else %}
+            <a class="btn" href="{% url 'index' %}">Go to my notes</a>
+        {% endif %}
+    </div>
+{% endblock %}
