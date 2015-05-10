@@ -97,12 +97,10 @@
 #editor .cm-quote {color: #666;}
 #editor .cm-hr {color: #999;}
 #editor .cm-linktext {}
-#editor .cm-link{font-weight:bold}
-#editor .cm-linkhref, span.cm-href{color: #00c; text-decoration: underline;}
 #editor .cm-task-open, #editor .cm-task-closed{font-weight:bold}
     #editor .cm-task-open{color:#ccc;}
     #editor .cm-task-closed{color:#0c0;}
-#editor .cm-linkhref, span.cm-href{color: #00c; text-decoration: underline;}
+#editor .cm-linkhref, span.cm-href, #editor .cm-link{color:#00c; text-decoration:underline;}
 #editor .cm-strong, #editor .cm-emstrong{font-weight: bold;}
 #editor .cm-em, #editor .cm-emstrong{font-style: italic}
 
