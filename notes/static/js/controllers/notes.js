@@ -138,10 +138,9 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         }
 
         if(!$scope.currentNote){
-            //TODO: Note not found!
+            $location.search('note', null);
         }
 
-        //Close the menu
         if(hideMenu){
             $("#notes-menu, #btn-menu").removeClass("open");
         }
