@@ -146,6 +146,13 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
             $("#notes-menu, #btn-menu").removeClass("open");
         }
     };
+    //Preserves ctrl+clicking to open notes in a new tab
+    $scope.loadFromMenu = function($event, noteId, hideMenu){
+        if($event.ctrlKey != 1 && $event.metaKey != 1){
+            $event.preventDefault();
+            $scope.load(noteId);
+        }
+    };
 
     //Saves a note, updates the ID in the querystring. This function is a promise, so you can call .save().then()
     $scope.save = function(note){
