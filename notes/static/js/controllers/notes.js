@@ -178,8 +178,9 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
     //Saves a note then exports it to .md
     $scope.export = function(note){
         var blob = new Blob([note.content], {type:'text/x-markdown'});
-        var filename = note.title.toSlug(100);
-        saveAs(blob, filename + '.md'); //Uses filesaver.js
+        var fileName = note.title.toSlug(100);
+        fileName = fileName.length == 0 ? "untitled note" : fileName;
+        saveAs(blob, fileName + '.md'); //Uses filesaver.js
     };
 
     //Ctrl + S shortcut to export files
