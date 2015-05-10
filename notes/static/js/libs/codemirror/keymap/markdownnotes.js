@@ -6,10 +6,12 @@
     var ctrl = CodeMirror.keyMap["default"] === CodeMirror.keyMap.pcDefault ? "Ctrl-" : "Cmd-";
 
     function toggleWrap(cm, before, after) {
-        var selectedStrings = cm.getSelections();
+        var selectedStrings = cm.getSelections(),
+            selections,
+            wrap;
 
         //"bob" will be wrapped, "**bob**" will be unwrapped
-        var wrap = !(
+        wrap = !(
             selectedStrings[0].indexOf(before)===0 &&
             selectedStrings[0].substring(selectedStrings[0].length-after.length)===after
         );
@@ -26,13 +28,30 @@
         }
         cm.replaceSelections(selectedStrings, "around");
 
-        //Then remove the wrapping characters from the selection
         if(wrap){
-            var selections = cm.listSelections();
-            for(var i in selections){
-                selections[i].head.ch -= before.length;
-                selections[i].anchor.ch += after.length;
-            }
+            //Then move the cursor inside the parentheses
+            selections = cm.listSelections();
+            selections.forEach(function(selection){
+                //Anchor before head
+                if(
+                    selection.head.line > selection.anchor.line ||
+                    (selection.head.line == selection.anchor.line && selection.head.ch > selection.anchor.ch)
+                ){
+                    selection.anchor.ch += before.length;
+                    selection.head.ch -= after.length;
+                }
+                //Anchor after head
+                else if(
+                    selection.anchor.line > selection.head.line ||
+                    (selection.head.line == selection.anchor.line && selection.head.ch <= selection.anchor.ch)
+                ){
+                    selection.head.ch += before.length;
+                    selection.anchor.ch -= after.length;
+                }
+
+                selection.head = selection.anchor = cursor;
+                return selection;
+            });
             cm.setSelections(selections);
         }
     }
@@ -41,21 +60,44 @@
     CodeMirror.commands.toggleItalics = function(cm){toggleWrap(cm, '*', '*');};
 
     CodeMirror.commands.toggleLink = function(cm, type){
-        var prefix = (type==="image") ? '![' : '[';
+        var prefix = (type==="image") ? '![' : '[',
+            cursor = {},
+            selectedStrings = cm.getSelections(),
+            selections;
 
         //First replace text with [text]()
-        var selectedStrings = cm.getSelections();
         for(var i in selectedStrings){
             selectedStrings[i] = prefix + selectedStrings[i] + ']()';
         }
         cm.replaceSelections(selectedStrings, "around");
 
         //Then move the cursor inside the parentheses
-        var selections = cm.listSelections();
-        for(var i in selections){
-            selections[i].head.ch -= 1;
-            selections[i].anchor = selections[i].head;
-        }
+        selections = cm.listSelections();
+        selections.forEach(function(selection){
+            //Anchor after tail
+            if(selection.head.line > selection.anchor.line){
+                cursor = {
+                    line: selection.head.line,
+                    ch: selection.head.ch-1,
+                };
+            }
+            //Anchor after head
+            else if(selection.anchor.line > selection.head.line){
+                cursor = {
+                    line: selection.anchor.line,
+                    ch: selection.anchor.ch-1,
+                };
+            }
+            //Anchor and head on same line
+            else{
+                cursor = {
+                    line: selection.head.line,
+                    ch: Math.max(selection.head.ch, selection.anchor.ch)-1,
+                };
+            }
+            selection.head = selection.anchor = cursor;
+            return selection;
+        });
         cm.setSelections(selections);
     };
 
