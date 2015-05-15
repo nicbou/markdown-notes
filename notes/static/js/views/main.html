@@ -1,5 +1,5 @@
 <div id="markdownnotes-wrapper">
-    <div id="file-drop" imagedrop on-image-drop="imageDropped()">
+    <div id="file-drop" imagedrop on-image-drop="uploadImage()">
         <h1>Drop images anywhere to insert them</h1>
     </div>
     <div id="messages" ng-show="messages" ng-repeat="message in messages">
@@ -17,7 +17,7 @@
         </nav>
         <a href="" id="btn-menu" ng-click="toggleMenu()">Menu</a>
         <div id="note-title-wrapper">
-            <input type="text" id="note-title" placeholder="Untitled note" tabindex="1" ng-model="currentNote.title">
+            <input type="text" id="note-title" placeholder="Untitled note" tabindex="1" ng-model="noteProvider.notes[currentNoteIndex].title">
         </div>
     </header>
     <div id="main">
@@ -25,7 +25,7 @@
             <ul>
                 <li class="new"><a ng-click="create()"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
                 <li class="separator"></li>
-                <li ng-repeat="note in notes">
+                <li ng-repeat="note in noteProvider.notes">
                     <a class='link' ng-click="loadFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
                         <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
                         <time class='subtitle' relative datetime="{{ note.date_updated|date:'yyyy-MM-dd HH:mm:ss' }}"></time>
@@ -45,7 +45,7 @@
         <div id="input">
             <div id="editor" ng-click="focusEditor()">
                 <form action="">
-                    <textarea id="textarea" placeholder="Start typing here..." name="input" ui-codemirror="codemirrorOptions" ng-model="currentNote.content"></textarea>
+                    <textarea id="textarea" placeholder="Start typing here..." name="input" ui-codemirror="codemirrorOptions" ng-model="noteProvider.notes[currentNoteIndex].content"></textarea>
                 </form>
             </div>
         </div>
