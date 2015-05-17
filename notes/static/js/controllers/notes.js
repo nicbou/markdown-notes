@@ -77,20 +77,26 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
             $scope.load($scope.noteProvider.notes[0].id);
         }
 
-        //Watch notes for changes
-        $scope.$watch(
-            function(){
-                if($scope.currentNoteIndex >= 0 && $scope.noteProvider.notes.length > 0){
-                    return $scope.noteProvider.notes[$scope.currentNoteIndex];
-                }
-            },
+        $scope.$watchGroup(
+            [     
+                function(){
+                    if($scope.currentNoteIndex >= 0 && $scope.noteProvider.notes.length > 0){
+                        return $scope.noteProvider.notes[$scope.currentNoteIndex].title;
+                    }
+                },   
+                function(){
+                    if($scope.currentNoteIndex >= 0 && $scope.noteProvider.notes.length > 0){
+                        return $scope.noteProvider.notes[$scope.currentNoteIndex].content;
+                    }
+                },
+            ],
             function(newValue, oldValue){
                 //Save 1s after keyup
                 if(saveTimeout){
                     $timeout.cancel(saveTimeout);
                 }
                 saveTimeout = $timeout(function(){
-                    if(newValue !== undefined) $noteProvider.save(newValue).then(function(){
+                    if(newValue !== undefined) $scope.noteProvider.save($scope.noteProvider.notes[$scope.currentNoteIndex]).then(function(){
                         $location.search('note', newValue.id);
                     });
                 }, 1000);
@@ -102,8 +108,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
                 previewTimeout = $timeout(function(){
                     $scope.updatePreview();
                 }, 200);
-            },
-            true
+            }
         );
     }
 
@@ -112,12 +117,12 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         //Close the menu
         $("#notes-menu, #btn-menu").removeClass("open");
 
-        $noteProvider.save({
+        $scope.noteProvider.save({
             title: '',
             content: '',
             date_created: (new Date()).toISOString(),
         }).then(function(note){
-            if(loadCreatedNote) $scope.load($noteProvider.notes[0].id);
+            if(loadCreatedNote) $scope.load($scope.noteProvider.notes[0].id);
         });
     };
 
@@ -173,7 +178,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
             $scope.load($scope.noteProvider.notes[0].id, false);
         }
 
-        $noteProvider.remove(note).then(function(){
+        $scope.noteProvider.remove(note).then(function(){
             if($scope.noteProvider.notes.length === 0){
                 $scope.create(true);
             }

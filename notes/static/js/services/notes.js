@@ -3,13 +3,18 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
     .factory('$noteProvider', ['$rootScope', '$http', 'DUMMY_API','$q', function($rootScope, $http, DUMMY_API, $q){
         var api_url = DUMMY_API ? '/api/v1/note-dummy/' : '/api/v1/note/';
 
+        function fakePromise(){
+            var deferred = $q.defer();
+            deferred.resolve();
+            return deferred.promise;
+        }
+
         var $notesProvider = {
             notes: [],
             save: function(note) {
                 note.title = note.title || "";
 
                 if(DUMMY_API){
-                    //Fake save operation. Assign the note a random ID, return a promise
                     note.id = note.id || Math.ceil(Math.random()*10000);
                     return fakePromise();
                 }
