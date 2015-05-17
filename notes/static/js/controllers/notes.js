@@ -12,8 +12,7 @@ app.config(function($locationProvider, $routeProvider) {
 });
 
 app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, $routeParams, $timeout, $location, $q, $document){
-    //Used to keep track of the preview refresh and autosave delay
-    var saveTimeout, previewTimeout;
+    var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.codemirrorOptions = {
         dragDrop: false, //Disabled so the window receives the event
@@ -45,10 +44,10 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
     $scope.messages = [];
     $scope.currentNoteIndex = -1;
 
-    $scope.$on('noteProvider:notesReceived', function(evt) {
-        init();
-    }, true);
     $scope.noteProvider = $noteProvider;
+    $scope.noteProvider.fetchFromServer().then(function(){
+        init();
+    });
 
     //Controller setup
     function init(){
