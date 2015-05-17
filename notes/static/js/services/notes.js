@@ -20,8 +20,6 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                         noteProvider.notes.push(note);
                     }
                     note.id = returnedNote.id;
-
-                    $rootScope.$broadcast('noteProvider:noteUpdated', note);
                 });
             },
             remove: function(note) {
@@ -35,16 +33,14 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                         noteProvider.notes.splice(index, 1);
                     });
                 }
-
-                $rootScope.$broadcast('noteProvider:noteUpdated', note);
             },
+            fetchFromServer: function(){
+                var noteProvider = this;
+                return $http.get(api_url).then(function(response) {
+                    noteProvider.notes = response.data.objects;
+                });
+            }
         };
-
-        //Load from the server
-        $http.get(api_url).then(function(response) {
-            $notesProvider.notes = response.data.objects;
-            $rootScope.$broadcast('noteProvider:notesReceived');
-        });
 
         return $notesProvider;
     }]);
