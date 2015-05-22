@@ -157,3 +157,9 @@
     .output-only #btn-mode-output{color:#fff!important;}
     .output-only #btn-mode-input{color:inherit!important;}
 }
+
+/* Scrollbars */
+::-webkit-scrollbar{width:7px;height:7px;}
+::-webkit-scrollbar-track{background: rgba(0,0,0,0.1);}
+::-webkit-scrollbar-thumb{background: rgba(0,0,0,0.3);}
+::-webkit-scrollbar-thumb:hover{background: rgba(0,0,0,0.4);}
