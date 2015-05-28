@@ -85,7 +85,7 @@
                     #preview th, #preview td{border:1px solid #ddd;padding:3px 5px;}
                     #preview th:empty, #preview td:empty{border:none;padding:0;}
                 #MathJax_Message{display:none!important;}
-                #preview .MathJax, #preview code{padding:0;border-radius:3px;margin:2px 0;display:inline-block;}
+                #preview .MathJax, #preview code{padding:0;border-radius:3px;display:inline-block;}
                 #preview .MathJax_Display{text-align: left!important;margin:0.5em 0;}
                     #preview .MathJax_Display>.MathJax{border-left: 3px solid #ddd; margin: 0; padding: 5px 10px;box-sizing:border-box;background:none;border-radius:0;}
                     #preview .MathJax_Display~br{display:none;}
