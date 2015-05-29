@@ -9,7 +9,7 @@ class UserForm(forms.ModelForm):
     """
     class Meta:
         model = User
-        fields = ['first_name','last_name','email']
+        fields = ['email']
 
 class SignupForm(forms.Form):
     """
@@ -18,8 +18,6 @@ class SignupForm(forms.Form):
     Validates that the requested username is not already in use, and
     requires the password to be entered twice to catch typos.
     """
-    first_name = forms.CharField(max_length=30, label=_(u'First name'))
-    last_name = forms.CharField(max_length=30, label=_(u'Last name'))
     username = forms.CharField(max_length=15, label=_(u'Username'))
     email = forms.EmailField(label=_(u'Email address'))
     password1 = forms.CharField(widget=forms.PasswordInput(render_value=False), label=_(u'Password'))
@@ -47,8 +45,6 @@ class SignupForm(forms.Form):
         this would be the place to add it.
         """
         new_user = User.objects.create_user(
-            first_name=self.cleaned_data['first_name'],
-            last_name=self.cleaned_data['last_name'],
             username=self.cleaned_data['username'],
             password=self.cleaned_data['password1'],
             email=self.cleaned_data['email']

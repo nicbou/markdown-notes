@@ -8,6 +8,7 @@
             <h1>Create your account</h1>
             {% trans "Create my account" as signup_text %}
             {% include "form.html" with form=form submit_text=signup_text %}
+            <small>{% trans "We don't require email confirmation." %}</small>
         </div>
     {% else %}
         <p>You are already logged in.</p>
