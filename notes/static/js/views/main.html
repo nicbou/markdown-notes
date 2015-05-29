@@ -23,7 +23,7 @@
     <div id="main">
         <nav id="notes-menu">
             <ul>
-                <li class="new"><a ng-click="create()"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
+                <li class="new"><a ng-click="create(false, true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
                 <li class="separator"></li>
                 <li ng-repeat="note in noteProvider.notes">
                     <a class='link' ng-click="loadFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
@@ -31,7 +31,7 @@
                         <time class='subtitle' relative datetime="{{ note.date_updated|date:'yyyy-MM-dd HH:mm:ss' }}"></time>
                     </a>
                     <div class="actions">
-                        <a ng-click="export(note)" class="icon ion-ios-cloud-download-outline export"></a>
+                        <a ng-click="export(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
                         <a ng-click="remove(note)" class='icon ion-ios-close-outline delete'></a>
                     </div>
                 </li>

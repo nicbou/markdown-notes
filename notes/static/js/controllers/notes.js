@@ -113,7 +113,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
     }
 
     //Create a note
-    $scope.create = function(loadCreatedNote){
+    $scope.create = function(loadCreatedNote, track){
         //Close the menu
         $("#notes-menu, #btn-menu").removeClass("open");
 
@@ -124,6 +124,11 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         }).then(function(note){
             if(loadCreatedNote) $scope.load($scope.noteProvider.notes[0].id);
         });
+
+        if(track){
+            //Google analytics tracking
+            ga('send', 'event', 'Notes', 'Create', 'Note created');
+        }
     };
 
     //Loads a note from the server
@@ -156,17 +161,22 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
     };
 
     //Saves a note then exports it to .md
-    $scope.export = function(note){
+    $scope.export = function(note, track){
         var blob = new Blob([note.content], {type:'text/x-markdown'});
         var fileName = note.title.toSlug(100);
         fileName = fileName.length === 0 ? "untitled note" : fileName;
         saveAs(blob, fileName + '.md'); //Uses filesaver.js
+
+        if(track){
+            //Google analytics tracking
+            ga('send', 'event', 'Notes', 'Export', '.md');
+        }
     };
 
     //Ctrl + S shortcut to export files
     $document.bind('keydown', function(event) {
         if((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase()==='s') {
-            $scope.export($scope.noteProvider.notes[$scope.currentNoteIndex]);
+            $scope.export($scope.noteProvider.notes[$scope.currentNoteIndex], true);
             return false;
         }
     });
@@ -229,7 +239,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         });
     };
 
-    function uploadImage(){
+    $scope.uploadImage = function(){
 
         var message = {
             'message':'Uploading image...',
@@ -267,7 +277,10 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
 
         //Clear the uploaded file
         $scope.uploadedFile = null;
-    }
+
+        //Google analytics tracking
+        ga('send', 'event', 'Notes', 'Upload', 'Image upload');
+    };
 
     //Sets the focus on the editor
     $scope.focusEditor = function(){

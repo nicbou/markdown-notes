@@ -48,8 +48,6 @@
                     selection.head.ch += before.length;
                     selection.anchor.ch -= after.length;
                 }
-
-                selection.head = selection.anchor = cursor;
                 return selection;
             });
             cm.setSelections(selections);
