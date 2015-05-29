@@ -96,8 +96,9 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
                     $timeout.cancel(saveTimeout);
                 }
                 saveTimeout = $timeout(function(){
+                    console.log(newValue);
                     if(newValue !== undefined) $scope.noteProvider.save($scope.noteProvider.notes[$scope.currentNoteIndex]).then(function(){
-                        $location.search('note', newValue.id);
+                        $location.search('note', $scope.noteProvider.notes[$scope.currentNoteIndex].id);
                     });
                 }, 1000);
 
@@ -140,6 +141,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         for(var i=0; i<$scope.noteProvider.notes.length; i++){
             if($scope.noteProvider.notes[i].id === noteId){
                 $scope.currentNoteIndex = i;
+                $location.search('note', noteId);
                 noteFound = true;
             }
         }

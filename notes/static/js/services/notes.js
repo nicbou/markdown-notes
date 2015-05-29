@@ -25,6 +25,7 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                         noteProvider.notes.push(note);
                     }
                     note.id = returnedNote.id;
+                    note.date_updated = returnedNote.date_updated;
                 });
             },
             remove: function(note) {

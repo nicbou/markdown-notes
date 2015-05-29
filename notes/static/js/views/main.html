@@ -23,7 +23,7 @@
     <div id="main">
         <nav id="notes-menu">
             <ul>
-                <li class="new"><a ng-click="create(false, true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
+                <li class="new"><a ng-click="create(true, true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
                 <li class="separator"></li>
                 <li ng-repeat="note in noteProvider.notes">
                     <a class='link' ng-click="loadFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
