@@ -10,7 +10,7 @@
     #btn-menu{float:left;text-transform: uppercase;color:#fff;text-decoration:none;margin:0;background:#00b4f9 url('../img/icon-menu.gif') no-repeat 10px 9px;background-size:11px 11px;display:inline-block;line-height:30px;padding:0 15px 0 30px;width:45px;position:relative;left:-15px;}
         #btn-menu.open{width:305px;left:0;margin:0 15px 0 0;}
     #note-title-wrapper{overflow:hidden}
-        #note-title{width:100%;font-size:2em;background:transparent;border:none;outline:none;font-weight:300;color:#fff;padding:0;margin:3px 0 0;font:14px/16px Roboto, sans-serif;font-weight:300;}
+        #note-title{width:calc(100% - 15px);font-size:2em;background:transparent;border:none;outline:none;font-weight:300;color:#fff;padding:0;margin:3px 0 0;font:14px/16px Roboto, sans-serif;font-weight:300;}
             #note-title::-webkit-input-placeholder{font:14px/20px Roboto, sans-serif;}
             #note-title:hover, #note-title:focus{border-bottom: 1px solid rgba(255,255,255,0.5);}
     #menu-bar{float:right;height:30px;color:#fff}
