@@ -1,4 +1,4 @@
-var app = angular.module('notes',['notes.service', 'uploads.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'timeRelative']);
+var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'timeRelative']);
 
 app.config(function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode(false);
@@ -11,7 +11,7 @@ app.config(function($locationProvider, $routeProvider) {
         .otherwise({ redirectTo: '/' });
 });
 
-app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, $routeParams, $timeout, $interval, $location, $q, $document){
+app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.codemirrorOptions = {
@@ -41,11 +41,11 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
     };
 
     $scope.cachedFormulas = {};
-    $scope.messages = [];
     $scope.currentNoteIndex = -1;
 
-    $scope.noteProvider = $noteProvider;
-    $scope.noteProvider.fetchFromServer().then(function(){
+    $scope.messageService = $messageService;
+    $scope.notesService = $notesService;
+    $scope.notesService.fetchFromServer().then(function(){
         init();
     });
 
@@ -70,23 +70,23 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         if(currentNote){
             $scope.load(currentNote);
         }
-        else if($scope.noteProvider.notes.length === 0){
+        else if($scope.notesService.notes.length === 0){
             $scope.create(true);
         }
         else{
-            $scope.load($scope.noteProvider.notes[0].id);
+            $scope.load($scope.notesService.notes[0].id);
         }
 
         $scope.$watchGroup(
             [     
                 function(){
-                    if($scope.currentNoteIndex >= 0 && $scope.noteProvider.notes.length > 0){
-                        return $scope.noteProvider.notes[$scope.currentNoteIndex].title;
+                    if($scope.currentNoteIndex >= 0 && $scope.notesService.notes.length > 0){
+                        return $scope.notesService.notes[$scope.currentNoteIndex].title;
                     }
                 },   
                 function(){
-                    if($scope.currentNoteIndex >= 0 && $scope.noteProvider.notes.length > 0){
-                        return $scope.noteProvider.notes[$scope.currentNoteIndex].content;
+                    if($scope.currentNoteIndex >= 0 && $scope.notesService.notes.length > 0){
+                        return $scope.notesService.notes[$scope.currentNoteIndex].content;
                     }
                 },
             ],
@@ -96,7 +96,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
                     $timeout.cancel(saveTimeout);
                 }
                 saveTimeout = $timeout(function(){
-                    if(newValue !== undefined) $scope.noteProvider.save($scope.noteProvider.notes[$scope.currentNoteIndex]);
+                    if(newValue !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
                 }, 1000);
 
                 //Refresh the preview 200ms after keyup
@@ -111,7 +111,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
 
         $interval(
             function(){
-                $location.search('note', $scope.noteProvider.notes[$scope.currentNoteIndex].id);
+                $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
             },
             500
         );
@@ -122,7 +122,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         //Close the menu
         $("#notes-menu, #btn-menu").removeClass("open");
 
-        $scope.noteProvider.save({
+        $scope.notesService.save({
             title: '',
             content: '',
             date_created: (new Date()).toISOString(),
@@ -137,8 +137,8 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         hideMenu = hideMenu === undefined ? true : false;
 
         //Load an existing note
-        for(var i=0; i<$scope.noteProvider.notes.length; i++){
-            if($scope.noteProvider.notes[i].id === noteId){
+        for(var i=0; i<$scope.notesService.notes.length; i++){
+            if($scope.notesService.notes[i].id === noteId){
                 $scope.currentNoteIndex = i;
                 noteFound = true;
             }
@@ -171,7 +171,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
     //Ctrl + S shortcut to export files
     $document.bind('keydown', function(event) {
         if((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase()==='s') {
-            $scope.export($scope.noteProvider.notes[$scope.currentNoteIndex]);
+            $scope.export($scope.notesService.notes[$scope.currentNoteIndex]);
             return false;
         }
     });
@@ -179,23 +179,23 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
     //Deletes a note from the list
     $scope.remove = function(note){
         var index,
-            isCurrentNote = note.id === $scope.noteProvider.notes[$scope.currentNoteIndex].id;
+            isCurrentNote = note.id === $scope.notesService.notes[$scope.currentNoteIndex].id;
 
-        $scope.noteProvider.remove(note).then(function(){
-            if($scope.noteProvider.notes.length === 0){
+        $scope.notesService.remove(note).then(function(){
+            if($scope.notesService.notes.length === 0){
                 $scope.create(true);
             }
             else if(isCurrentNote){
                 // Don't leave the user on a deleted note. Load the next note.
-                index = Math.min($scope.currentNoteIndex, $scope.noteProvider.notes.length-1);
-                $scope.load($scope.noteProvider.notes[index].id, false);
+                index = Math.min($scope.currentNoteIndex, $scope.notesService.notes.length-1);
+                $scope.load($scope.notesService.notes[index].id, false);
             }
         });
     };
 
     //Updates the preview window
     $scope.updatePreview = function(){
-        if($scope.noteProvider.notes[$scope.currentNoteIndex] === undefined) return;
+        if($scope.notesService.notes[$scope.currentNoteIndex] === undefined) return;
 
         var outputWindow = $('#output');
 
@@ -203,7 +203,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         var scrollTop = outputWindow.scrollTop();
 
         //Convert the markup to HTML and update the preview
-        var content = $scope.noteProvider.notes[$scope.currentNoteIndex].content;
+        var content = $scope.notesService.notes[$scope.currentNoteIndex].content;
 
         $('#preview').html(marked(
             content,
@@ -238,15 +238,16 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
     };
 
     $scope.uploadImage = function(){
-
-        var message = {
-            'message':'Uploading image...',
-            'class':'info'
-        };
-        $scope.messages.push(message);
+        var error,
+            message = {
+                message: 'Uploading image...',
+                class: $scope.messageService.classes.INFO,
+                timeout: 8000,
+            };
+        $scope.messageService.add(message);
 
         //Upload the image
-        Uploader.uploadImage($scope.uploadedFile, $scope.noteProvider.notes[$scope.currentNoteIndex]).then(
+        Uploader.uploadImage($scope.uploadedFile, $scope.notesService.notes[$scope.currentNoteIndex]).then(
             function(imageUrl){
                 var markdownImage = '![](' + imageUrl + ')';
 
@@ -254,28 +255,20 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
                 $('.CodeMirror')[0].CodeMirror.replaceSelection(markdownImage);
                 
                 //Delete the "uploading" message
-                $scope.messages.splice($scope.messages.indexOf(message), 1);
+                $scope.messageService.remove(message);
             },
             function(imageUrl){
-                //Replace the message by an error
-                $scope.messages.splice($scope.messages.indexOf(message), 1);
                 error = {
-                    'message':'An error occured while uploading the images.',
-                    'class':'error'
+                    message: 'An error occured while uploading the images.',
+                    class: $scope.messageService.classes.ERROR
                 };
-                $scope.messages.push(error);
-                $timeout(
-                    function(){
-                        $scope.messages.splice($scope.messages.indexOf(error), 1);
-                    },
-                    4000
-                );
+                $scope.messageService.replace(message, error);
             }
         );
 
         //Clear the uploaded file
         $scope.uploadedFile = null;
-    }
+    };
 
     //Sets the focus on the editor
     $scope.focusEditor = function(){

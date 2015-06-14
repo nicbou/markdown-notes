@@ -1,6 +1,6 @@
 //Syncs notes with the API
 angular.module('notes.service', ['ngResource', 'notes.config'])
-    .factory('$noteProvider', ['$rootScope', '$http', 'DUMMY_API','$q', function($rootScope, $http, DUMMY_API, $q){
+    .factory('$notesService', ['$rootScope', '$http', 'DUMMY_API','$q', function($rootScope, $http, DUMMY_API, $q){
         var api_url = DUMMY_API ? '/api/v1/note-dummy/' : '/api/v1/note/';
 
         function fakePromise(){
@@ -9,7 +9,7 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
             return deferred.promise;
         }
 
-        var $notesProvider = {
+        var $notesService = {
             notes: [],
             save: function(note) {
                 note.title = note.title || "";
@@ -19,10 +19,10 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                     return fakePromise();
                 }
 
-                var noteProvider = this;
+                var notesService = this;
                 return $http.post(api_url, note).success(function(returnedNote) {
                     if(!note.id){
-                        noteProvider.notes.push(note);
+                        notesService.notes.push(note);
                     }
                     note.id = returnedNote.id;
                 });
@@ -33,19 +33,19 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                 if(index >= 0){
                     if(DUMMY_API) return fakePromise();
 
-                    var noteProvider = this;
+                    var notesService = this;
                     return $http.delete(api_url + note.id + '/').success(function(){
-                        noteProvider.notes.splice(index, 1);
+                        notesService.notes.splice(index, 1);
                     });
                 }
             },
             fetchFromServer: function(){
-                var noteProvider = this;
+                var notesService = this;
                 return $http.get(api_url).then(function(response) {
-                    noteProvider.notes = response.data.objects;
+                    notesService.notes = response.data.objects;
                 });
             }
         };
 
-        return $notesProvider;
+        return $notesService;
     }]);
