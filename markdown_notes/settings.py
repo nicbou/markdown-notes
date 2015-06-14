@@ -89,7 +89,9 @@ INSTALLED_APPS = (
     'authentication',
 )
 
-STATICFILES_DIRS = ()
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(__file__), "../frontend"),
+)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
