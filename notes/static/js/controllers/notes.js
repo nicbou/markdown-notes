@@ -237,7 +237,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         });
     };
 
-    function uploadImage(){
+    $scope.uploadImage = function(){
 
         var message = {
             'message':'Uploading image...',
@@ -246,7 +246,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
         $scope.messages.push(message);
 
         //Upload the image
-        Uploader.uploadImage($scope.uploadedFile, $scope.currentNoteIndex).then(
+        Uploader.uploadImage($scope.uploadedFile, $scope.noteProvider.notes[$scope.currentNoteIndex]).then(
             function(imageUrl){
                 var markdownImage = '![](' + imageUrl + ')';
 
