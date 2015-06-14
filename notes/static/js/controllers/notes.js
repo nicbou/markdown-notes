@@ -11,7 +11,7 @@ app.config(function($locationProvider, $routeProvider) {
         .otherwise({ redirectTo: '/' });
 });
 
-app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, $routeParams, $timeout, $location, $q, $document){
+app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, $routeParams, $timeout, $interval, $location, $q, $document){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.codemirrorOptions = {
@@ -96,9 +96,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
                     $timeout.cancel(saveTimeout);
                 }
                 saveTimeout = $timeout(function(){
-                    if(newValue !== undefined) $scope.noteProvider.save($scope.noteProvider.notes[$scope.currentNoteIndex]).then(function(){
-                        $location.search('note', newValue.id);
-                    });
+                    if(newValue !== undefined) $scope.noteProvider.save($scope.noteProvider.notes[$scope.currentNoteIndex]);
                 }, 1000);
 
                 //Refresh the preview 200ms after keyup
@@ -109,6 +107,13 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
                     $scope.updatePreview();
                 }, 200);
             }
+        );
+
+        $interval(
+            function(){
+                $location.search('note', $scope.noteProvider.notes[$scope.currentNoteIndex].id);
+            },
+            500
         );
     }
 
@@ -121,8 +126,8 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
             title: '',
             content: '',
             date_created: (new Date()).toISOString(),
-        }).then(function(note){
-            if(loadCreatedNote) $scope.load($scope.noteProvider.notes[0].id);
+        }).then(function(response){
+            if(loadCreatedNote) $scope.load(response.data.id);
         });
     };
 
@@ -173,14 +178,17 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $noteProvider, Uploader, 
 
     //Deletes a note from the list
     $scope.remove = function(note){
-        //Don't leave the user on a deleted note
-        if(note.id === $scope.noteProvider.notes[$scope.currentNoteIndex].id){
-            $scope.load($scope.noteProvider.notes[0].id, false);
-        }
+        var index,
+            isCurrentNote = note.id === $scope.noteProvider.notes[$scope.currentNoteIndex].id;
 
         $scope.noteProvider.remove(note).then(function(){
             if($scope.noteProvider.notes.length === 0){
                 $scope.create(true);
+            }
+            else if(isCurrentNote){
+                // Don't leave the user on a deleted note. Load the next note.
+                index = Math.min($scope.currentNoteIndex, $scope.noteProvider.notes.length-1);
+                $scope.load($scope.noteProvider.notes[index].id, false);
             }
         });
     };
