@@ -125,7 +125,6 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         $scope.notesService.save({
             title: '',
             content: '',
-            date_created: (new Date()).toISOString(),
         }).then(function(response){
             if(loadCreatedNote) $scope.load(response.data.id);
         });

@@ -28,7 +28,7 @@
                 <li ng-repeat="note in notesService.notes">
                     <a class='link' ng-click="loadFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
                         <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
-                        <time class='subtitle' relative datetime="{{ note.date_updated|date:'yyyy-MM-dd HH:mm:ss' }}"></time>
+                        <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                     </a>
                     <div class="actions">
                         <a ng-click="export(note)" class="icon ion-ios-cloud-download-outline export"></a>

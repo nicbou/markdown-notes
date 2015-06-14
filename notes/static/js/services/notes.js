@@ -9,10 +9,13 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
             return deferred.promise;
         }
 
+        var timeZone = jstz.determine().name();
+
         var $notesService = {
             notes: [],
             save: function(note) {
                 note.title = note.title || "";
+                note.date_updated = moment.utc().tz(timeZone).toJSON();
 
                 if(DUMMY_API){
                     note.id = note.id || Math.ceil(Math.random()*10000);
@@ -22,6 +25,8 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                 var notesService = this;
                 return $http.post(api_url, note).success(function(returnedNote) {
                     if(!note.id){
+                        note.date_created = moment.utc(returnedNote.date_created).tz(timeZone).toJSON();
+
                         notesService.notes.push(note);
                     }
                     note.id = returnedNote.id;
@@ -43,6 +48,10 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                 var notesService = this;
                 return $http.get(api_url).then(function(response) {
                     notesService.notes = response.data.objects;
+                    notesService.notes.forEach(function(note){
+                        note.date_created = moment.utc(note.date_created).tz(timeZone).toJSON();
+                        note.date_updated = moment.utc(note.date_updated).tz(timeZone).toJSON();
+                    });
                 });
             }
         };
