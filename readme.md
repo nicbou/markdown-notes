@@ -17,9 +17,10 @@ Markdown Notes is a Django application with an AngularJS front-end.
 ##Setting up the project
 
 1. Install all requirements with pip: `pip install -r requirements.txt`.
-2. Rename `markdown_notes/local_settings.py.template` and update it with your own settings. Some values in `settings.py` need to be set in environment variables.
-3. Sync the database with `python manage.py syncdb`.
-4. Run the server with `python manage.py runserver`.
+2. Install the external libraries with `bower install`
+3. Rename `markdown_notes/local_settings.py.template` and update it with your own settings. Some values in `settings.py` need to be set in environment variables.
+4. Sync the database with `python manage.py syncdb`.
+5. Run the server with `python manage.py runserver`.
 
 ##Get involved
 
