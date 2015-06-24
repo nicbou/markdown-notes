@@ -6,8 +6,8 @@
     background: transparent;
 }
 .CodeMirror-scroll {
-    overflow-y: hidden;
-    overflow-x: auto;
+    overflow-y: hidden!important;
+    overflow-x: auto!important;
     height:auto;
     margin-bottom: 0!important;
 }
