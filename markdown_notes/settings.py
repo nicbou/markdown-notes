@@ -1,31 +1,23 @@
 # Django settings for markdown_notes project.
 from django.core.urlresolvers import reverse_lazy
 from datetime import date, timedelta
-import dj_database_url
 import os
 
-# Make sure you set IS_PRODUCTION=1 in your production environment
-DEVELOPMENT = not bool(os.environ.get('IS_PRODUCTION', False))
-DEBUG = DEVELOPMENT
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # Emails
-ADMINS = (
-    ('Nicolas Bouliane', 'nicolasbouliane+markdownnotes@gmail.com'),
-)
+ADMINS = ()
 MANAGERS = ADMINS
 
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = 'postmaster@markdownnotes.com'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_PASSWORD = 'password'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # Databases
 DATABASES = {}
-
-if not DEVELOPMENT:
-    DATABASES['default'] = dj_database_url.config()
 
 # Locales
 TIME_ZONE = 'UTC'
@@ -47,8 +39,8 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # Amazon S3
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'ABCDEFGHIJ1234567890')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '1234567890abcdefghij1234567890abcdefghij')
+AWS_ACCESS_KEY_ID = 'ABCDEFGHIJ1234567890'
+AWS_SECRET_ACCESS_KEY = '1234567890abcdefghij1234567890abcdefghij'
 AWS_STORAGE_BUCKET_NAME = 'i.markdownnotes.com'
 AWS_QUERYSTRING_AUTH = False  # Removes the signature from the querystring
 AWS_S3_FILE_OVERWRITE = False
@@ -65,7 +57,7 @@ API_LIMIT_PER_PAGE = 200
 TASTYPIE_DATETIME_FORMATTING = 'iso-8601-strict'  # Javascript-parsable date format
 
 # General config
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'secret')
+SECRET_KEY = 'secret'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['markdownnotes.com', '*.markdownnotes.com', 'www.markdownnotes.com']
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -135,5 +127,7 @@ LOGGING = {
     }
 }
 
-if DEVELOPMENT:
+try:
     from local_settings import *
+except ImportError:
+    pass

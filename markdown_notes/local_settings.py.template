@@ -1,4 +1,10 @@
 # Local settings template
+
+DEBUG = False
+TEMPLATE_DEBUG = DEBUG
+
+ALLOWED_HOSTS = ['*']
+
 ADMINS = (
     ('Bob Bobson', 'b+bobson@gmail.com'),
 )
@@ -11,11 +17,13 @@ EMAIL_HOST_PASSWORD = 'password'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-SECRET_KEY = '212419af43263e2130bac0b5041d89e217bb6cbd'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'dev.db',
     }
 }
+
+SECRET_KEY = 'secret'
+AWS_ACCESS_KEY_ID = 'ABCDEFGHIJ1234567890'
+AWS_SECRET_ACCESS_KEY = '1234567890abcdefghij1234567890abcdefghij'

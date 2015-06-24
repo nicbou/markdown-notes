@@ -1,8 +1,6 @@
 Django==1.7
 Pillow==2.5.1
 boto==2.36.0
-dj-database-url==0.2.2
-dj-static==0.0.6
 django-appconf==1.0.1
 django-compressor==1.4
 django-realtime==1.1
