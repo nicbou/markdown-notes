@@ -4,7 +4,7 @@ This is the official repository for [Markdown Notes](http://markdownnotes.com).
 
 ##Application overview
 
-Markdown Notes is a note-taking application that uses Markdown and LaTeX. You can see the application on the [Markdown Notes](http://markdownnotes.com) website. The project is hosted on Heroku.
+Markdown Notes is a note-taking application that uses Markdown and LaTeX. You can see the application on the [Markdown Notes](http://markdownnotes.com) website.
 
 ##Architecture overview
 
