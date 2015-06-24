@@ -1,1 +1,0 @@
-web: gunicorn markdown_notes.wsgi --log-file -
