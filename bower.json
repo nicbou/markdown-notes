@@ -2,7 +2,7 @@
   "name": "awesomeProject",
   "version": "0.1.0",
   "dependencies": {
-    "FileSaver": "git@github.com:Teleborder/FileSaver.js.git",
+    "FileSaver": "https://github.com/Teleborder/FileSaver.js.git",
     "stringops": ">=1.0.0",
     "highlightjs": ">=8.5.0",
     "moment": ">=2.6.0",
