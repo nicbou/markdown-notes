@@ -5,3 +5,4 @@ dev.db
 files/
 markdown_notes/staticfiles/
 markdown_notes/local_settings.py
+frontend/bower_components

@@ -1,4 +1,4 @@
-angular.module('uploads.service', ['ngResource'])
+angular.module('notes.service')
     .factory('Uploader', ['$http', function($http){
         var Uploader = function(data) {
             angular.extend(this, data);

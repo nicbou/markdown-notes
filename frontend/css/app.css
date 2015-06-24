@@ -163,3 +163,7 @@
 ::-webkit-scrollbar-track{background: rgba(0,0,0,0.1);}
 ::-webkit-scrollbar-thumb{background: rgba(0,0,0,0.3);}
 ::-webkit-scrollbar-thumb:hover{background: rgba(0,0,0,0.4);}
+
+#notes-menu::-webkit-scrollbar-track{background: rgba(0,0,0,0.1);}
+#notes-menu::-webkit-scrollbar-thumb{background: rgba(255,255,255,0.2);}
+#notes-menu::-webkit-scrollbar-thumb:hover{background: rgba(255,255,255,0.4);}

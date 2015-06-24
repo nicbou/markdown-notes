@@ -1,6 +1,6 @@
 //Syncs notes with the API
 angular.module('notes.service', ['ngResource', 'notes.config'])
-    .factory('$noteProvider', ['$http', 'DUMMY_API','$q', function($http, DUMMY_API, $q){
+    .factory('$notesService', ['$rootScope', '$http', 'DUMMY_API','$q', function($rootScope, $http, DUMMY_API, $q){
         var api_url = DUMMY_API ? '/api/v1/note-dummy/' : '/api/v1/note/';
 
         function fakePromise(){
@@ -9,23 +9,27 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
             return deferred.promise;
         }
 
-        var $notesProvider = {
+        var timeZone = jstz.determine().name();
+
+        var $notesService = {
             notes: [],
             save: function(note) {
                 note.title = note.title || "";
+                note.date_updated = moment.utc().tz(timeZone).toJSON();
 
                 if(DUMMY_API){
                     note.id = note.id || Math.ceil(Math.random()*10000);
                     return fakePromise();
                 }
 
-                var noteProvider = this;
+                var notesService = this;
                 return $http.post(api_url, note).success(function(returnedNote) {
                     if(!note.id){
-                        noteProvider.notes.push(note);
+                        note.date_created = moment.utc(returnedNote.date_created).tz(timeZone).toJSON();
+
+                        notesService.notes.push(note);
                     }
                     note.id = returnedNote.id;
-                    note.date_updated = returnedNote.date_updated;
                 });
             },
             remove: function(note) {
@@ -34,19 +38,23 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                 if(index >= 0){
                     if(DUMMY_API) return fakePromise();
 
-                    var noteProvider = this;
+                    var notesService = this;
                     return $http.delete(api_url + note.id + '/').success(function(){
-                        noteProvider.notes.splice(index, 1);
+                        notesService.notes.splice(index, 1);
                     });
                 }
             },
             fetchFromServer: function(){
-                var noteProvider = this;
+                var notesService = this;
                 return $http.get(api_url).then(function(response) {
-                    noteProvider.notes = response.data.objects;
+                    notesService.notes = response.data.objects;
+                    notesService.notes.forEach(function(note){
+                        note.date_created = moment.utc(note.date_created).tz(timeZone).toJSON();
+                        note.date_updated = moment.utc(note.date_updated).tz(timeZone).toJSON();
+                    });
                 });
             }
         };
 
-        return $notesProvider;
+        return $notesService;
     }]);

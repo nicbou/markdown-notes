@@ -2,7 +2,7 @@
     <div id="file-drop" imagedrop on-image-drop="uploadImage()">
         <h1>Drop images anywhere to insert them</h1>
     </div>
-    <div id="messages" ng-show="messages" ng-repeat="message in messages">
+    <div id="messages" ng-repeat="message in messageService.messages">
         <div class="message {{message.class}}">{{message.message}}</div>
     </div>
     <header>
@@ -17,18 +17,18 @@
         </nav>
         <a href="" id="btn-menu" ng-click="toggleMenu()">Menu</a>
         <div id="note-title-wrapper">
-            <input type="text" id="note-title" placeholder="Untitled note" tabindex="1" ng-model="noteProvider.notes[currentNoteIndex].title">
+            <input type="text" id="note-title" placeholder="Untitled note" tabindex="1" ng-model="notesService.notes[currentNoteIndex].title">
         </div>
     </header>
     <div id="main">
         <nav id="notes-menu">
             <ul>
-                <li class="new"><a ng-click="create(true, true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
+                <li class="new"><a ng-click="create(true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
                 <li class="separator"></li>
-                <li ng-repeat="note in noteProvider.notes">
+                <li ng-repeat="note in notesService.notes">
                     <a class='link' ng-click="loadFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
                         <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
-                        <time class='subtitle' relative datetime="{{ note.date_updated|date:'yyyy-MM-dd HH:mm:ss' }}"></time>
+                        <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                     </a>
                     <div class="actions">
                         <a ng-click="export(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
@@ -45,7 +45,7 @@
         <div id="input">
             <div id="editor" ng-click="focusEditor()">
                 <form action="">
-                    <textarea id="textarea" placeholder="Start typing here..." name="input" ui-codemirror="codemirrorOptions" ng-model="noteProvider.notes[currentNoteIndex].content"></textarea>
+                    <textarea id="textarea" placeholder="Start typing here..." name="input" ui-codemirror="codemirrorOptions" ng-model="notesService.notes[currentNoteIndex].content"></textarea>
                 </form>
             </div>
         </div>

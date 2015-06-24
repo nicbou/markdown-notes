@@ -10,16 +10,17 @@ Markdown Notes is a note-taking application that uses Markdown and LaTeX. You ca
 
 Markdown Notes is a Django application with an AngularJS front-end.
 
-**The back-end** consists of a simple Tastypie API to serve the notes and a bunch of simple Django views to handle the front page and user management.
+**The back-end** consists of a simple Tastypie API to serve the notes and a bunch of simple Django views to handle the front page and user management. File uploads are stored on Amazon S3.
 
-**The front-end** consists of an AngularJS app that binds various libraries together. The front-end code can be found in `/notes/static`.
+**The front-end** consists of an AngularJS app that binds various libraries together. The front-end code can be found in `/frontend`.
 
 ##Setting up the project
 
 1. Install all requirements with pip: `pip install -r requirements.txt`.
-2. Rename `markdown_notes/local_settings.py.template` and update it with your own settings.
-3. Sync the database with `python manage.py syncdb`.
-4. Run the server with `python manage.py runserver`.
+2. Install the external libraries with `bower install`
+3. Rename `markdown_notes/local_settings.py.template` and update it with your own settings. Some values in `settings.py` need to be set in environment variables.
+4. Sync the database with `python manage.py syncdb`.
+5. Run the server with `python manage.py runserver`.
 
 ##Get involved
 

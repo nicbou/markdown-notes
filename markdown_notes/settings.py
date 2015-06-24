@@ -28,7 +28,7 @@ if not DEVELOPMENT:
     DATABASES['default'] = dj_database_url.config()
 
 # Locales
-TIME_ZONE = 'America/Montreal'
+TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 USE_I18N = True
@@ -62,13 +62,13 @@ AWS_HEADERS = {
 
 # Tastypie
 API_LIMIT_PER_PAGE = 200
+TASTYPIE_DATETIME_FORMATTING = 'iso-8601-strict'  # Javascript-parsable date format
 
 # General config
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'secret')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['markdownnotes.com', '*.markdownnotes.com', 'www.markdownnotes.com']
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
-TASTYPIE_DATETIME_FORMATTING = 'iso-8601-strict'  # Javascript-parsable date format
 CSRF_COOKIE_NAME = "XSRF-TOKEN"  # For AngularJS compatibility
 WSGI_APPLICATION = 'markdown_notes.wsgi.application'
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
@@ -89,7 +89,9 @@ INSTALLED_APPS = (
     'authentication',
 )
 
-STATICFILES_DIRS = ()
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(__file__), "../frontend"),
+)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
