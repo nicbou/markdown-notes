@@ -3,7 +3,7 @@
 #preview img{max-width: 100%}
 
 /* Partial reset */
-#markdownnotes-wrapper{text-align:left;line-height:normal;font:14px/19px Roboto, sans-serif; font-weight:300}
+#markdownnotes-wrapper{text-align:left;line-height:normal;font:14px/20px Roboto, sans-serif; font-weight:300}
 
 /* Header */
 #markdownnotes-wrapper header{height:30px;width:100%;position:absolute;z-index:100;box-sizing:border-box;-moz-box-sizing:border-box;background:#353c4f;font:14px/30px Roboto, sans-serif;font-weight: 300;}
