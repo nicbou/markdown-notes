@@ -52,19 +52,20 @@
         #input>span, #output>span{color:#999;padding:5px;line-height: 25px}
 
         /* Mode switching */
-        .input-only #input{width:100%;}
+        .input-only #input{width:100%;background:#fff;}
         .input-only #output{left:100%;}
         .input-only #btn-mode-input{background:#49506a}
         .input-only #btn-mode-hybrid{background:transparent!important;}
-        .output-only #input{left:-50%;}
+        .output-only #input{left:-50%;background:#fff;}
         .output-only #output{width:100%;left:0;}
         .output-only #btn-mode-output{background:#49506a}
         .output-only #btn-mode-hybrid{background:transparent!important;}
 
         #input{padding-bottom: 30px;background:#f6f6f6;}
+            #input>#editor{max-width: 650px;margin:0 auto;}
             #input>#editor, #input>#editor>form{height:100%;}
         #output{left:50%;padding:10px 20px;background:#fff;z-index:10;}
-            #preview{max-width: 900px;/* Overflow fix */padding-bottom: 30px;}
+            #preview{max-width: 650px;margin:0 auto;/* Overflow fix */padding-bottom: 30px;}
                 /* Style the output */
                 #preview h1{font-weight:400; font:3em 'Roboto Condensed', Roboto, serif;margin:15px 0;color:#000;line-height: 1.25em}
                 #preview h2,#preview h3,#preview h4,#preview h5{font-weight:400;color:#333;font-family:'Roboto Condensed', Roboto, sans-serif;}

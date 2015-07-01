@@ -28,7 +28,7 @@
 .CodeMirror-gutter-wrapper{text-align:center;line-height:15px;}
 
 /* Syntax highlighting */
-#editor pre{color:#444;font-size:12px;line-height:20px}
+#editor pre{color:#333;font-size:12px;line-height:20px}
 #editor .cm-variable-1, #editor .cm-variable-2, #editor .cm-variable-3, #editor .cm-keyword{color:inherit;}
 #editor .cm-list {}
 #editor .cm-number {color: #164;}
