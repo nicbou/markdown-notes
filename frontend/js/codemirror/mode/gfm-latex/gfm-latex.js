@@ -77,7 +77,8 @@ CodeMirror.defineMode("gfm-custom", function(config) {
     name: "markdown",
     underscoresBreakWords: false,
     taskLists: true,
-    fencedCodeBlocks: true
+    highlightFormatting: true,
+    strikethrough: true,
   });
   return CodeMirror.overlayMode(CodeMirror.getMode(config, "gfm-custom"), gfmOverlay);
 }, "markdown");

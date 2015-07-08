@@ -78,21 +78,21 @@
                 #preview hr{border:0;border-top:1px solid #ccc;}
                 #preview code{border:1px solid #eee;font-size:13px}
                 #preview pre{margin:0.5em 0;}
-                    #preview pre>code{padding:0 10px 0;border:0;border-left: 3px solid #ddd;overflow:auto;background:#fff;font-size: 13px;border-radius:0;}
-                #preview blockquote{border-left: 3px solid #ddd;margin:1em 0;padding:0.25em 1em;}
+                    #preview pre>code{padding:5px 10px;border:0;background:#eee!important;overflow:auto;background:#fff;font-size: 13px;border-radius:0;width:100%;box-sizing:border-box;}
+                #preview blockquote{background:#eee;margin:1em 0;padding:0.25em 1em;}
                 #preview ul,#preview ol{margin:0.5em 0;padding-left:30px;}
                 #preview li>ul,#preview li>ol{margin:0;}
                 #preview table{border-collapse:collapse;}
-                    #preview th, #preview td{border:1px solid #ddd;padding:3px 5px;}
+                    #preview th, #preview td{border:1px solid #ccc;padding:3px 5px;}
                     #preview th:empty, #preview td:empty{border:none;padding:0;}
                 #MathJax_Message{display:none!important;}
                 #preview .MathJax, #preview code{padding:0;border-radius:3px;display:inline-block;}
                 #preview .MathJax_Display{text-align: left!important;margin:0.5em 0;}
-                    #preview .MathJax_Display>.MathJax{border-left: 3px solid #ddd; margin: 0; padding: 5px 10px;box-sizing:border-box;background:none;border-radius:0;}
+                    #preview .MathJax_Display>.MathJax{border-left: 3px solid #ccc; margin: 0; padding: 5px 10px;box-sizing:border-box;background:none;border-radius:0;}
                     #preview .MathJax_Display~br{display:none;}
                 #preview .MathJax .noError{ /* Formulas with errors */border:0;color:inherit;font-size:100%;font-family:inherit;font-weight:300;border-bottom: 1px dashed #f00;}
                 #preview .task{list-style:none;position:relative;}
-                #preview .task>.checkbox{margin-left:-22px;text-align:center;display:inline-block;font-size:12px;width:12px;height:12px;line-height:12px;border-radius:20px;color:transparent;border:2px solid #ccc;}
+                #preview .task>.checkbox{margin-left:-22px;text-align:center;display:inline-block;font-size:12px;width:12px;height:12px;line-height:12px;color:transparent;border:2px solid #ccc;}
                 #preview .task-open>.checkbox{}
                 #preview .task-closed>.checkbox{border-color:#0c0;color:#0c0;}
                 #preview br+.latex.block{margin-top:-22px;}

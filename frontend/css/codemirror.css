@@ -35,7 +35,7 @@
 #editor .cm-def {color: #00f;}
 #editor .cm-property {color: black;}
 #editor .cm-operator {color: black;}
-#editor .cm-comment, #editor .cm-code, #editor .cm-quote{color:#999;}
+#editor .cm-comment, #editor .cm-code, #editor .cm-quote{color:#666;}
 #editor .cm-listitem {}
 #editor .cm-meta {color: #555;}
 #editor .cm-error {color: #f00;}
@@ -45,6 +45,9 @@
 #editor .cm-tag {}
 #editor .cm-attribute {color: #00c;}
 #editor .cm-header {color: #000; font-size: 120%;font-weight:bold}
+    #editor .cm-formatting-header{font-weight:300;}
+#editor .cm-formatting-list {color: #000;font-weight:bold}
+    #editor .cm-formatting-list ul{}
 #editor .cm-hr {color: #999;}
 #editor .cm-linktext {}
 #editor .cm-task-open, #editor .cm-task-closed{font-weight:bold}
@@ -54,12 +57,17 @@
 #editor .cm-strong, #editor .cm-emstrong{font-weight: bold;}
 #editor .cm-em, #editor .cm-emstrong{font-style: italic}
 
+#editor .cm-formatting-task{font-weight: bold}
+#editor .cm-formatting-task.cm-meta{color:#ccc;}
+#editor .cm-formatting-task.cm-property{color:#0c0;}
+
 /* LaTeX and code blocks */
 #editor .cm-delimit-latex, #editor .cm-code-bracket-start, #editor .cm-code-bracket-end{display:inline-block;height:100%;color:#353c4f;background:rgba(0,0,0,0.1);padding-right:3px;padding-left:3px;}
         #editor .cm-latex.cm-bracket{color:#777}
-#editor .cm-latex, #editor .cm-code{color:#999;background:rgba(0,0,0,0.05);display:inline-block;height:100%;}
+#editor .cm-latex, #editor .cm-code, #editor .cm-quote, #editor .cm-formatting-code + .cm-comment, #editor .cm-formatting-code{color:#666;background:#eee;display:inline-block;height:100%}
         #editor .cm-latex.cm-tag{color:#11a;}
         #editor .cm-latex:last-child, #editor .cm-code:last-child{padding-right:3px;}
+        #editor .cm-code:first-child:last-child{width:100%;box-sizing:border-box;}
 
 span.cm-invalidchar {color: #f00;}
 
