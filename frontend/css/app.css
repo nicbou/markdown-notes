@@ -76,7 +76,7 @@
                 #preview p{margin:0.5em 0;font-size:inherit;}
                 #preview b, #preview strong{font-weight:700;color:#000}
                 #preview hr{border:0;border-top:1px solid #ccc;}
-                #preview code{border:1px solid #eee;font-size:13px}
+                #preview code{background:#eee;padding:0 3px;font-size:13px}
                 #preview pre{margin:0.5em 0;}
                     #preview pre>code{padding:5px 10px;border:0;background:#eee!important;overflow:auto;background:#fff;font-size: 13px;border-radius:0;width:100%;box-sizing:border-box;}
                 #preview blockquote{background:#eee;margin:1em 0;padding:0.25em 1em;}
@@ -86,9 +86,10 @@
                     #preview th, #preview td{border:1px solid #ccc;padding:3px 5px;}
                     #preview th:empty, #preview td:empty{border:none;padding:0;}
                 #MathJax_Message{display:none!important;}
-                #preview .MathJax, #preview code{padding:0;border-radius:3px;display:inline-block;}
+                #preview .latex.block{background:#eee;}
+                #preview .MathJax, #preview code{display:inline-block;}
                 #preview .MathJax_Display{text-align: left!important;margin:0.5em 0;}
-                    #preview .MathJax_Display>.MathJax{border-left: 3px solid #ccc; margin: 0; padding: 5px 10px;box-sizing:border-box;background:none;border-radius:0;}
+                    #preview .MathJax_Display>.MathJax{background:none;margin:0; padding: 5px 10px;box-sizing:border-box;border-radius:0;}
                     #preview .MathJax_Display~br{display:none;}
                 #preview .MathJax .noError{ /* Formulas with errors */border:0;color:inherit;font-size:100%;font-family:inherit;font-weight:300;border-bottom: 1px dashed #f00;}
                 #preview .task{list-style:none;position:relative;}
