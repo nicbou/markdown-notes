@@ -75,7 +75,7 @@
                 #preview h5{margin:0.75em 0 0; font-size:1em;}
                 #preview p{margin:0.5em 0;font-size:inherit;}
                 #preview b, #preview strong{font-weight:700;color:#000}
-                #preview hr{border:0;border-top:1px solid #ccc;}
+                #preview hr{border:0;border-top:1px solid #ccc;margin:20px 0;}
                 #preview code{background:#eee;padding:0 3px;font-size:13px}
                 #preview pre{margin:0.5em 0;}
                     #preview pre>code{padding:5px 10px;border:0;background:#eee!important;overflow:auto;background:#fff;font-size: 13px;border-radius:0;width:100%;box-sizing:border-box;}
