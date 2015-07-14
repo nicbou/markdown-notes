@@ -79,6 +79,7 @@ INSTALLED_APPS = (
     'uploads',
     'compressor',
     'authentication',
+    'django_libsass',
 )
 
 STATICFILES_DIRS = (
@@ -88,6 +89,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
+)
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
 )
 
 TEMPLATE_DIRS = (

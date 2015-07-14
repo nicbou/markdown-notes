@@ -41,11 +41,10 @@
     {% block extra_scripts %}{% endblock extra_scripts %}
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&amp;delayStartupUntil=configured"></script>
     {% compress css %}
-        <link rel="stylesheet" href="{% static "css/site.css" %}">
-        <link rel="stylesheet" href="{% static "bower_components/codemirror/lib/codemirror.css" %}">
-        <link rel="stylesheet" href="{% static "css/codemirror.css" %}">
-        <link rel="stylesheet" href="{% static "bower_components/highlightjs/styles/github.css" %}">
-        <link rel="stylesheet" href="{% static "css/app.css" %}">
+        <link rel="stylesheet" type="text/x-scss" href="{% static "css/site.css" %}">
+        <link rel="stylesheet" type="text/x-scss" href="{% static "bower_components/codemirror/lib/codemirror.css" %}">
+        <link rel="stylesheet" type="text/x-scss" href="{% static "bower_components/highlightjs/styles/github.css" %}">
+        <link rel="stylesheet" type="text/x-scss" href="{% static "css/app.scss" %}">
     {% endcompress %}
     <link href='http://fonts.googleapis.com/css?family=Roboto:100,300,700,400|Roboto+Mono:300,300italic,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">

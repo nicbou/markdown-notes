@@ -120,7 +120,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
     //Create a note
     $scope.create = function(loadCreatedNote){
         //Close the menu
-        $("#notes-menu, #btn-menu").removeClass("open");
+        $("#side-menu, #btn-menu").removeClass("open");
 
         $scope.notesService.save({
             title: '',
@@ -148,7 +148,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         }
 
         if(hideMenu){
-            $("#notes-menu, #btn-menu").removeClass("open");
+            $("#side-menu, #btn-menu").removeClass("open");
         }
     };
     //Preserves ctrl+clicking to open notes in a new tab
@@ -284,7 +284,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
 
     //Opens the notes menu
     $scope.toggleMenu = function(){
-        $("#notes-menu, #btn-menu").toggleClass("open");
+        $("#side-menu, #btn-menu").toggleClass("open");
     };
 
     //Toggle full screen mode in supported browsers

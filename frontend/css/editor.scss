@@ -1,0 +1,76 @@
+@import 'attributes';
+
+.CodeMirror {
+    font-family: 'Roboto Mono', monospace;
+    height: auto;
+    background: transparent;
+}
+.CodeMirror-scroll {
+    overflow-y: hidden!important;
+    overflow-x: auto!important;
+    height:auto;
+    margin-bottom: 0!important;
+}
+
+/* THE CUSTOM THEME */
+
+/* Gutters and code folding */
+.CodeMirror-gutters {white-space: nowrap; background:transparent; border:none;}
+.CodeMirror-lines {padding: 4px 0;}
+.CodeMirror pre {padding: 0 4px 0 0;}
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {background-color: $colorBodyBackground;}
+
+.CodeMirror-foldmarker {display: none}
+.CodeMirror-foldgutter {width: $marginNormal;}
+.CodeMirror-foldgutter-open,.CodeMirror-foldgutter-folded {color:#666;cursor: pointer;}
+.CodeMirror-foldgutter-open:after {content: "\25BE";}
+.CodeMirror-foldgutter-folded:after {content: "\25B8";}
+.CodeMirror-gutter-wrapper{text-align:center;line-height:15px;}
+
+/* Syntax highlighting */
+#editor{
+    pre{color:#333;font-size:12px;line-height:20px}
+    .cm-variable-1, .cm-variable-2, .cm-variable-3, .cm-keyword{color:inherit;}
+    .cm-list {}
+    .cm-number {color: #164;}
+    .cm-def {color: #00f;}
+    .cm-property {color: #000;}
+    .cm-operator {color: #000;}
+    .cm-comment, .cm-code, .cm-quote{color:#666;}
+    .cm-listitem {}
+    .cm-meta {color: #555;}
+    .cm-error {color: #f00;}
+    .cm-qualifier {color: #555;}
+    .cm-builtin {color: #30a;}
+    .cm-bracket {color: #997;}
+    .cm-tag {}
+    .cm-attribute {color: #00c;}
+    .cm-header {color: #000; font-size: 120%;font-weight:bold}
+    .cm-formatting-header{font-weight:300;}
+    .cm-formatting-list {color: #000;font-weight:bold}
+        .cm-formatting-list ul{}
+    .cm-hr {color: #999;}
+    .cm-linktext {}
+    .cm-linkhref, span.cm-href, .cm-link{color:#00c; text-decoration:underline;}
+    .cm-strong, .cm-emstrong{font-weight: bold;}
+    .cm-em, .cm-emstrong{font-style: italic}
+
+    .cm-formatting-task{
+        font-weight: bold;
+
+        &.cm-meta{color: $colorBorderLight;} //Checkbox unchecked
+        &.cm-property{color: $colorSuccess;} //Checkbox checked
+    }
+
+    /* LaTeX and code blocks */
+    .cm-delimit-latex, .cm-code-bracket-start, .cm-code-bracket-end{display:inline-block;height:100%;color:#353c4f;background:rgba(0,0,0,0.1);padding-right:3px;padding-left:3px;}
+            .cm-latex.cm-bracket{color:#777}
+    .cm-latex, .cm-code, .cm-quote, .cm-formatting-code + .cm-comment, .cm-formatting-code{color:#666;background: $colorSectionBlockBackground;display:inline-block;height:100%}
+            .cm-latex.cm-tag{color:#11a;}
+            .cm-latex:last-child, .cm-code:last-child{padding-right:3px;}
+            .cm-code:first-child:last-child{width:100%;box-sizing:border-box;}
+
+    span.cm-invalidchar {color: #f00;}
+
+    div.CodeMirror span.CodeMirror-matchingbracket, div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #000; font-weight:bold}
+}
