@@ -128,6 +128,8 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         }).then(function(response){
             if(loadCreatedNote) $scope.load(response.data.id);
         });
+
+        ga('send', 'event', 'Notes', 'Create');
     };
 
     //Loads a note from the server
@@ -297,6 +299,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
             } else if (document.documentElement.webkitRequestFullscreen) {
                 document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
             }
+            ga('send', 'event', 'Notes', 'Full screen');
         } else {
             if (document.cancelFullScreen) {
                 document.cancelFullScreen();
@@ -314,14 +317,17 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         if(mode === 'input'){
             main.removeClass('output-only');
             main.addClass('input-only');
+            ga('send', 'event', 'Notes', 'Toggle view', 'Input only');
         }
         else if(mode === 'output'){
             main.removeClass('input-only');
             main.addClass('output-only');
+            ga('send', 'event', 'Notes', 'Toggle view', 'Output only');
         }
         else if(mode === 'hybrid'){
             main.removeClass('output-only');
             main.removeClass('input-only');
+            ga('send', 'event', 'Notes', 'Toggle view', 'Hybrid');
         }
     };
 });
