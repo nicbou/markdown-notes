@@ -437,10 +437,14 @@ body.dragOver #file-drop{display:block;}
 
             #note-title{
                 color:#000!important;
-                padding:0 $marginExtraSmall;
+                padding:0 $marginNormal!important;
                 margin:0;
-                width:100%;
+                width:100%!important;
                 box-sizing:border-box;
+
+                &::-webkit-input-placeholder{
+                    color: $colorTextMuted!important;
+                }
             }
         }
         
