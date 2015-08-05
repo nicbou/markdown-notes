@@ -66,7 +66,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         });
 
         //Load a first note (or create one if needed)
-        currentNote = parseInt($location.search('note'), 10);
+        currentNote = parseInt($location.search()['note'], 10);
         if(currentNote){
             $scope.load(currentNote);
         }
@@ -96,7 +96,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
                     $timeout.cancel(saveTimeout);
                 }
                 saveTimeout = $timeout(function(){
-                    if(newValue !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
+                    if(newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
                 }, 1000);
 
                 //Refresh the preview 200ms after keyup
@@ -109,12 +109,18 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
             }
         );
 
-        $interval(
-            function(){
+        // Load the right note based on the note ID in the URL if it's updated elsewhere
+        $scope.$on('$routeUpdate', function(){
+            var currentNoteId = $scope.notesService.notes[$scope.currentNoteIndex].id;
+            if($location.search()['note']){
+                if(currentNoteId !== +$location.search()['note']){
+                    $scope.load(+$location.search()['note']);
+                }
+            }
+            else{
                 $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
-            },
-            500
-        );
+            }
+        });
     }
 
     //Create a note
@@ -146,12 +152,15 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         }
 
         if(!noteFound){
-            //TODO
+            $scope.currentNoteIndex = 0;
         }
+        $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
 
         if(hideMenu){
             $("#side-menu, #btn-menu").removeClass("open");
         }
+        
+        return noteFound;
     };
     //Preserves ctrl+clicking to open notes in a new tab
     $scope.loadFromMenu = function($event, noteId, hideMenu){
