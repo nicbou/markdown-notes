@@ -66,7 +66,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         });
 
         //Load a first note (or create one if needed)
-        currentNote = parseInt($location.search()['note'], 10);
+        currentNote = parseInt($location.search().note, 10);
         if(currentNote){
             $scope.load(currentNote);
         }
@@ -112,9 +112,9 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         // Load the right note based on the note ID in the URL if it's updated elsewhere
         $scope.$on('$routeUpdate', function(){
             var currentNoteId = $scope.notesService.notes[$scope.currentNoteIndex].id;
-            if($location.search()['note']){
-                if(currentNoteId !== +$location.search()['note']){
-                    $scope.load(+$location.search()['note']);
+            if($location.search().note){
+                if(currentNoteId !== +$location.search().note){
+                    $scope.load(+$location.search().note);
                 }
             }
             else{

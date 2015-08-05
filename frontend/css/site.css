@@ -7,7 +7,7 @@ body{color:#000;font:24px/36px 'Roboto',sans-serif;font-weight:100}
     .section.dark{color:#fff!important;background:#303749;}
     .section.header{padding:0;overflow:hidden;}
         .section.header img{display:block;margin:0 auto;padding:0;}
-        #demo #markdownnotes-wrapper{width:960px;height:540px;margin:-540px auto 0;}
+        #demo #markdownnotes-wrapper{width:960px;height:340px;margin:-540px auto 0;}
         #demo #markdownnotes-wrapper .no-demo{display:none;}
         #demo #markdownnotes-wrapper .btn-bug-report{display:none;}
 .section>h1{font-family:'Roboto';font-weight:100;font-size:70px;line-height:70px;max-width:650px;margin:0 auto;padding:45px 0;}
