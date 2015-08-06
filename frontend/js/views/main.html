@@ -25,7 +25,7 @@
             <ul>
                 <li class="new"><a ng-click="create(true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
                 <li class="separator"></li>
-                <li ng-repeat="note in notesService.notes">
+                <li ng-repeat="note in notesService.notes | orderBy:'-date_updated'">
                     <a class='link' ng-click="loadFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
                         <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
                         <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
