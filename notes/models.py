@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.query import QuerySet
+from django.template.loader import render_to_string
+from django.db.models.signals import post_save
 
 class SoftDeletionQuerySet(QuerySet):
     def delete(self):
@@ -74,3 +76,15 @@ class DummyNote(Note):
 
     class Meta:
         ordering = ['-date_updated', 'title']
+
+# Create a 'getting started' note when a user is created
+def user_created(sender, **kwargs):
+    if kwargs["created"]:
+        note = Note(
+            user = kwargs["instance"],
+            title = "Getting started",
+            content = render_to_string('notes/getting_started.md'),
+        )
+        note.save()
+
+post_save.connect(user_created, sender=User)
