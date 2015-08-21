@@ -292,7 +292,7 @@
             pre, code{font-family: 'Roboto Mono', monospace; font-size: 12px}
             pre{margin:0.5em 0;}
                 pre>code{padding:$marginExtraSmall $marginSmall;border:0;background:#eee!important;overflow:auto;background:#fff;border-radius:0;width:100%;box-sizing:border-box;}
-            p{margin:0.5em 0;font-size:inherit;}
+            p{margin:0.5em 0 1em;font-size:inherit;}
             table{border-collapse:collapse;}
                 th, td{border:1px solid $colorBorderLight;padding:3px 5px;}
                 th:empty, td:empty{border:none;padding:0;}
