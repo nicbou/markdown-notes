@@ -2,30 +2,30 @@ html,body{width:100%;height:100%;padding:0;margin:0;background:#fff;}
 body{color:#000;font:24px/36px 'Roboto',sans-serif;font-weight:100}
 #account-buttons{position:absolute;top:10px;right:0;background:#353c4f;font:14px/30px Roboto, sans-serif}
     #account-buttons .separator{border-left:1px solid rgba(255,255,255,0.1);margin:0;height:30px;display:inline-block;margin-bottom:-10px;}
-    #account-buttons .btn{padding:0 15px;font:14px/30px Roboto, sans-serif;font-weight:300;background:#353c4f;text-transform:none}
-.section{text-align:center;padding:0 0 30px;}
+    #account-buttons .btn{padding:0 15px;font:14px/30px Roboto, sans-serif;font-weight:300;background:#353c4f;text-transform:none;border:none;}
+        #account-buttons .btn:hover{color:#fff;}
+.section{text-align:center;padding:30px 0;}
     .section.dark{color:#fff!important;background:#303749;}
     .section.header{padding:0;overflow:hidden;}
         .section.header img{display:block;margin:0 auto;padding:0;}
         #demo #markdownnotes-wrapper{width:960px;height:340px;margin:-540px auto 0;}
         #demo #markdownnotes-wrapper .no-demo{display:none;}
         #demo #markdownnotes-wrapper .btn-bug-report{display:none;}
-.section>h1{font-family:'Roboto';font-weight:100;font-size:70px;line-height:70px;max-width:650px;margin:0 auto;padding:45px 0;}
-.section>h2{font-family:'Roboto';font-weight:100;font-size:55px;line-height:55px;max-width:650px;margin:0 auto;padding:45px 0 40px;}
-.section>p{font-weight:200;font-size:24px;line-height:36px;max-width:650px;margin:0 auto 40px;padding:0;}
-.section>img{display:inline-block;padding:0 0 20px;}
-.btn{padding:0 45px;display:inline-block;background:#00b4f9;font:30px/60px 'Roboto condensed','Roboto';font-weight:400;text-transform:uppercase;color:#fff;text-decoration:none}
-    .btn:hover{background:#24BCF6;}
+.section>h1{font-family:'Roboto';font-weight:100;font-size:70px;line-height:70px;max-width:650px;margin:0 auto;padding:45px 0 20px;}
+.section>h2{font-family:'Roboto';font-weight:100;font-size:50px;line-height:55px;max-width:650px;margin:0 auto;padding:10px 0 30px;}
+.section>p{font-weight:200;font-size:24px;line-height:36px;max-width:650px;margin:0 auto 30px;padding:0;}
+.btn{padding:0 45px;display:inline-block;background:#303749;font:24px/60px Roboto, sans-serif;font-weight:100;text-transform:uppercase;color:#fff;text-decoration:none;border:1px solid #fff;border-radius:5px}
+    .btn:hover{background:#fff;color:#303749;border:1px solid #303749;cursor:pointer;}
 
 .alert{font-size:18px;max-width:650px;padding:5px 20px;margin:0 auto 20px;}
     .alert-error{background:#d9534f;color:#fff;}
 
 /* Forms */
-input[type="submit"]{border:0;margin:20px 0 0;}
-.control-group{padding:0 0 5px;}
-.control-group label{font-size:24px;width:250px;display:inline-block;height:35px;text-align:left}
+.form-actions{margin:30px 0 0;}
+.control-group{margin:0 0 10px;}
+.control-group label{font-size:24px;width:200px;display:inline-block;height:35px;text-align:left}
 .control-group .controls{display:inline-block;height:35px}
-.control-group input{width:400px;border:1px solid #ccc;padding:8px 5px;}
+.control-group input{width:400px;border:1px solid #fff;padding:10px 6px;vertical-align:bottom}
 .control-group.error input{border-color:#f00;}
 
 /* Mobile style corrections */

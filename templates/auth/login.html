@@ -4,8 +4,10 @@
 {% block description %}Log in to edit your notes{% endblock %}
 {% block page %}
     {% if not user.is_authenticated %}
-        <div class="section light login">
+        <div class="section light header login">
             <h1>Log in</h1>
+        </div>
+        <div class="section dark login">
             {% trans "Log in" as signup_text %}
             {% include "form.html" with form=form submit_text=signup_text %}
         </div>
