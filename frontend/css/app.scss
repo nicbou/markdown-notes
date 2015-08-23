@@ -8,18 +8,7 @@
     width:100%;
     height:100%;
 }
-#markdownnotes-wrapper{
-    position:relative;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    background: $colorBodyBackground;
-    color: $colorTextNormal;
-}
 
-/* Partial reset */
 #markdownnotes-wrapper{
     font: {
         family: $fontFamilyNormal;
@@ -28,6 +17,15 @@
     }
     line-height: $lineHeightNormal;
     text-align: left;
+
+    position:relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background: $colorBodyBackground;
+    color: $colorTextNormal;
 
     header{
         background: $colorTopBarBackground;
@@ -270,6 +268,10 @@
         left:50%;
         padding:$marginNormal;
         z-index:10;
+        
+        // Typographic grid test:
+        // background-size: 20px 20px;
+        // background-image: repeating-linear-gradient(0deg, #ccc, #ccc 1px, transparent 1px, transparent 40px),repeating-linear-gradient(-90deg, #fff, #fff 1px, transparent 1px, transparent 20px);
 
         #preview{
             max-width: $maxPanelWidth;
@@ -277,51 +279,101 @@
             padding-bottom: $marginExtraLarge;
             word-wrap: break-word;
 
-            h1{font-weight:$fontWeightHeavy; font-size:3em; margin:$marginNormal 0; color:$colorTextHeavy; line-height:1.25em}
+            h1{
+                font-weight: $fontWeightHeavy;
+                font-size: $fontSizeExtraLarge;
+                margin: $marginLarge 0;
+                color: $colorTextHeavy;
+                line-height: $lineHeightNormal * 2;
+            }
+            h2{
+                font-size: $fontSizeLarge;
+                line-height: $lineHeightNormal * 2;
+                margin: 25px 0 15px;
+            }
+            h3{
+                font-size: 19px;
+                line-height: $lineHeightNormal;
+                margin: $marginLarge 0;
+            }
+            ul, ol{
+                margin: 0 0 $marginLarge;
+                padding-left:$marginExtraLarge;
+                .task{
+                    list-style:none;position:relative;
+                    .checkbox{margin-left:-22px;text-align:center;display:inline-block;font-size:12px;width:12px;height:12px;line-height:12px;color:transparent;border:1px solid #999;position:relative;left:-8px;top:-2px;}
+                    &.task-open>.checkbox{}
+                    &.task-closed>.checkbox{border-color:$colorSuccess;color:$colorSuccess;}
+                }
+            }
+
+            //Content blocks
+            code, pre, blockquote, .latex.block{
+                background:$colorSectionBlockBackground;
+            }
+            p, pre, blockquote, .latex.block{
+                margin: 0 0 20px;
+            }
+            pre, blockquote{
+                padding: 20px;
+                >*:last-child{
+                    margin-bottom:0!important;
+                }
+            }
+            code, pre{
+                font-family: 'Roboto Mono', monospace;
+                font-size: 12px;
+            }
+            pre{
+                overflow: auto;
+                >code{
+                    background: transparent;
+                }
+            }
+
+            br+.latex.block{margin-top:-20px;}
+
             h2, h3, h4, h5{font-weight:$fontWeightHeavy; color:$colorTextNormal;}
-            h2{font-size:1.75em;margin:1em 0 0.75em;}
-            h3{margin:1em 0 0.75em; font-size:1.35em}
             h4{margin:1em 0 0.5em; font-size:1em; text-transform:uppercase;}
             h5{margin:0.75em 0 0; font-size:1em;}
             b, strong{font-weight:$fontWeightExtraHeavy;color:$colorTextHeavy}
-            blockquote{background:#eee;margin:1em 0;padding:0.25em 1em;}
-            code{background:$colorSectionBlockBackground; padding:0 3px; font-size:$fontSizeMonospace; display:inline-block}
+
             hr{border:0;border-top:1px solid $colorBorderLight;margin:$marginExtraLarge 0;}
             img{max-width: 100%}
             li>ul, li>ol{margin:0;}
-            pre, code{font-family: 'Roboto Mono', monospace; font-size: 12px}
-            pre{margin:0.5em 0;}
-                pre>code{padding:$marginExtraSmall $marginSmall;border:0;background:#eee!important;overflow:auto;background:#fff;border-radius:0;width:100%;box-sizing:border-box;}
-            p{margin:0.5em 0 1em;font-size:inherit;}
-            table{border-collapse:collapse;}
+
+            p{
+                font-size: inherit;
+            }
+            table{
+                border-collapse:collapse;
                 th, td{border:1px solid $colorBorderLight;padding:3px 5px;}
                 th:empty, td:empty{border:none;padding:0;}
-            ul, ol{margin:0.5em 0;padding-left:$marginExtraLarge;}
-
-            .task{
-                list-style:none;position:relative;
-                .checkbox{margin-left:-22px;text-align:center;display:inline-block;font-size:12px;width:12px;height:12px;line-height:12px;color:transparent;border:1px solid #999;position:relative;left:-8px;top:-2px;}
-                &.task-open>.checkbox{}
-                &.task-closed>.checkbox{border-color:$colorSuccess;color:$colorSuccess;}
             }
 
-            .MathJax{
+
+            .MathJax{ //Inline
                 display:inline-block;
+                .noError{ // Formulas with errors
+                    border:0;
+                    color:inherit;
+                    font-size:100%;
+                    font-family:inherit;
+                    font-weight:$fontWeightNormal;
+                    border-bottom: 1px dashed #f00;
+                }
             }
-            .MathJax_Display{
+            .MathJax_Display{ //Block
                 text-align: left!important;
-                margin:0.5em 0;
+                margin:0;
+                >.MathJax{
+                    background:none; margin:0;
+                    padding: $marginExtraSmall $marginSmall;
+                    box-sizing:border-box;
+                    border-radius:0;
+                }
+                ~br{display:none;}
             }
-            .MathJax_Display>.MathJax{
-                background:none; margin:0;
-                padding: $marginExtraSmall $marginSmall;
-                box-sizing:border-box;
-                border-radius:0;
-            }
-            .MathJax_Display~br{display:none;}
-            .MathJax .noError{ /* Formulas with errors */border:0;color:inherit;font-size:100%;font-family:inherit;font-weight:$fontWeightNormal;border-bottom: 1px dashed #f00;}
-            .latex.block{background:$colorSectionBlockBackground;}
-            br+.latex.block{margin-top:-22px;}
         }
     }
 }
@@ -359,7 +411,7 @@ body.dragOver #file-drop{display:block;}
     h1{
         text-align:center;
         margin-top:50px;
-        font-size:3em, serif;
+        font-size:$fontSizeExtraLarge;
         font-weight:$fontWeightHeavy;
     }
 }
@@ -418,6 +470,11 @@ body.dragOver #file-drop{display:block;}
         #input,#output{-webkit-transition:none;-moz-transition:none;-ms-transition:none;}
         #output{margin-top:0!important;padding:0 $marginExtraSmall 20px;font-size:$fontSizeNormal;}
             h1,h2,h3{page-break-after:avoid}
+            h1, h2, h3, h4, h5{
+                &:first-child{
+                    margin-top: 0;
+                }
+            }
 
         #preview h1:first-child, #preview h2:first-child, #preview h3:first-child{margin-top:0;padding-top:0;}
 
@@ -463,6 +520,10 @@ body.dragOver #file-drop{display:block;}
             height: calc(100% - #{$marginExtraLarge});
             padding-bottom: $marginExtraLarge;
             width: 100%!important;
+            -webkit-transition: none;
+            -moz-transition: none;
+            -ms-transition: none;
+            transition: none;
         }
 
         #input{

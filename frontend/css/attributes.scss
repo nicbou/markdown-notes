@@ -17,6 +17,8 @@ $colorTopBarTextMuted: $colorMenuTextMuted;
 $colorTextMuted: #999;
 $fontFamilyNormal: Roboto, sans-serif;
 $fontSizeMonospace: 13px;
+$fontSizeExtraLarge: 40px; // H1
+$fontSizeLarge: 25px;
 $fontSizeNormal: 14px;
 $fontSizeSmall: 10px;
 $fontWeightExtraHeavy: 700;
@@ -27,5 +29,6 @@ $marginExtraLarge: 30px;
 $marginExtraSmall: 5px;
 $marginNormal: 15px;
 $marginSmall: 10px;
+$marginLarge: $lineHeightNormal;
 $maxPanelWidth: 650px;
 $topBarHeight: 30px;
