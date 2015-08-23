@@ -279,6 +279,17 @@
             padding-bottom: $marginExtraLarge;
             word-wrap: break-word;
 
+            h1, h2, h3, h4, h5{
+                color: $colorTextHeavy;
+            }
+            h2, h3, h4, h5{
+                font-weight:$fontWeightHeavy;
+            }
+            h4, h5{
+                line-height: $lineHeightNormal;
+                font-size: $fontSizeNormal;
+                margin: $marginLarge 0 0;
+            }
             h1{
                 font-weight: $fontWeightHeavy;
                 font-size: $fontSizeExtraLarge;
@@ -295,6 +306,9 @@
                 font-size: 19px;
                 line-height: $lineHeightNormal;
                 margin: $marginLarge 0;
+            }
+            h4{
+                text-transform: uppercase;
             }
             ul, ol{
                 margin: 0 0 $marginLarge;
@@ -332,10 +346,6 @@
             }
 
             br+.latex.block{margin-top:-20px;}
-
-            h2, h3, h4, h5{font-weight:$fontWeightHeavy; color:$colorTextNormal;}
-            h4{margin:1em 0 0.5em; font-size:1em; text-transform:uppercase;}
-            h5{margin:0.75em 0 0; font-size:1em;}
             b, strong{font-weight:$fontWeightExtraHeavy;color:$colorTextHeavy}
 
             hr{border:0;border-top:1px solid $colorBorderLight;margin:$marginExtraLarge 0;}
@@ -478,8 +488,8 @@ body.dragOver #file-drop{display:block;}
 
         #preview h1:first-child, #preview h2:first-child, #preview h3:first-child{margin-top:0;padding-top:0;}
 
-    #preview .checkbox{border:1px solid #000!important;}
-        #preview .checkbox.done{color:#000!important}
+    #preview .checkbox{border:1px solid $colorTextHeavy!important;}
+        #preview .checkbox.done{color:$colorTextHeavy!important}
 }
 
 
@@ -487,13 +497,13 @@ body.dragOver #file-drop{display:block;}
 @media (max-width: 767px) {
     #markdownnotes-wrapper{
         overflow:visible;
-        color:#000;
+        color:$colorTextHeavy;
         
         #note-title-wrapper{
             width:100%;border-bottom:1px solid $colorBorderLight;
 
             #note-title{
-                color:#000!important;
+                color:$colorTextHeavy!important;
                 padding:0 $marginNormal!important;
                 margin:0;
                 width:100%!important;
