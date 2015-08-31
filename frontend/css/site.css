@@ -2,7 +2,8 @@ html,body{width:100%;height:100%;padding:0;margin:0;background:#fff;}
 body{color:#000;font:24px/36px 'Roboto',sans-serif;font-weight:100}
 #account-buttons{position:absolute;top:10px;right:0;background:#353c4f;font:14px/30px Roboto, sans-serif}
     #account-buttons .separator{border-left:1px solid rgba(255,255,255,0.1);margin:0;height:30px;display:inline-block;margin-bottom:-10px;}
-    #account-buttons .btn{padding:0 15px;font:14px/30px Roboto, sans-serif;font-weight:300;background:#353c4f;text-transform:none;border:none;}
+    #account-buttons .btn{padding:0 15px;font:14px/30px Roboto, sans-serif;font-weight:300;background:#353c4f;text-transform:none;border:none;border-radius:0}
+        #account-buttons .btn.primary{background:#00b4f9;}
         #account-buttons .btn:hover{color:#fff;}
 .section{text-align:center;padding:30px 0;}
     .section.dark{color:#fff!important;background:#303749;}

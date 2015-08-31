@@ -56,14 +56,16 @@
     {% block account_buttons %}
         <div id="account-buttons">
             {% spaceless %}
-                <a class="btn" href="{% url 'homepage' %}">Home</a>
-                <span class="separator"></span>
+                {% block home_button %}
+                    <a class="btn" href="{% url 'homepage' %}">Home</a>
+                    <span class="separator"></span>
+                {% endblock %}
                 {% if not user.is_authenticated %}
-                    <a class="btn" href="{% url 'signup' %}">Sign up</a>
+                    <a class="btn primary" href="{% url 'signup' %}">Sign up</a>
                     <span class="separator"></span>
                     <a class="btn" href="{% url 'login' %}">Log in</a>
                 {% else %}
-                    <a class="btn" href="{% url 'index' %}">My notes</a>
+                    <a class="btn primary" href="{% url 'index' %}">My notes</a>
                     <span class="separator"></span>
                     <a class="btn" href="{% url 'logout' %}">Log out</a>
                 {% endif %}
