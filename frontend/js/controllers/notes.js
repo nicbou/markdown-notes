@@ -14,21 +14,6 @@ app.config(function($locationProvider, $routeProvider) {
 app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
-    $scope.codemirrorOptions = {
-        dragDrop: false, //Disabled so the window receives the event
-        foldGutter: true, //Code folding
-        foldOptions: {'widget': '▾' },
-        gutters: ["CodeMirror-foldgutter"],
-        indentUnit: 4,
-        indentWithTabs: true,
-        lineWrapping: true,
-        matchBrackets: true,
-        mode: 'gfm-latex',
-        tabindex: 2,
-        viewportMargin: Infinity,
-        widget: '',
-    };
-
     $scope.mathjaxOptions = {
         tex2jax: {
             inlineMath: [['$$','$$'],],
@@ -122,6 +107,31 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
             }
         });
     }
+
+    $scope.bindEditor = function(editor){
+        //Prevents Ctrl+Z'ing back into the previous note
+        $scope.$watch('currentNoteIndex', function(newId, oldId){
+            console.log('cleared.')
+            editor.getDoc().clearHistory();
+        });
+    };
+
+    $scope.codemirrorOptions = {
+        dragDrop: false, //Disabled so the window receives the event
+        foldGutter: true, //Code folding
+        foldOptions: {'widget': '▾' },
+        gutters: ["CodeMirror-foldgutter"],
+        indentUnit: 4,
+        indentWithTabs: true,
+        lineWrapping: true,
+        matchBrackets: true,
+        mode: 'gfm-latex',
+        tabindex: 2,
+        viewportMargin: Infinity,
+        widget: '',
+
+        onLoad: $scope.bindEditor,
+    };
 
     //Create a note
     $scope.create = function(loadCreatedNote){
