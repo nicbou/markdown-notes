@@ -1,4 +1,4 @@
-<div id="markdownnotes-wrapper">
+<div id="markdownnotes-wrapper" ng-class="displayMode">
     <div id="file-drop" imagedrop on-image-drop="uploadImage()">
         <h1>Drop images anywhere to insert them</h1>
     </div>
@@ -7,11 +7,11 @@
     </div>
     <header>
         <nav id="menu-bar"><!--
-            --><a id="btn-mode-input" title="Show only the editor window"  ng-click="toggleMode('input')">Editor</a><!--
+            --><a id="btn-mode-input" title="Show only the editor window"  ng-click="toggleMode(MODE_INPUT_ONLY)">Editor</a><!--
             --><span class="separator"></span><!--
-            --><a id="btn-mode-hybrid" title="Show the editor and preview window"  ng-click="toggleMode('hybrid')">Editor + Preview</a><!--
+            --><a id="btn-mode-hybrid" title="Show the editor and preview window"  ng-click="toggleMode(MODE_HYBRID)">Editor + Preview</a><!--
             --><span class="separator"></span><!--
-            --><a id="btn-mode-output" title="Show only the preview window"  ng-click="toggleMode('output')">Preview</a><!--
+            --><a id="btn-mode-output" title="Show only the preview window"  ng-click="toggleMode(MODE_OUTPUT_ONLY)">Preview</a><!--
             --><span class="separator"></span><!--
             --><a id="btn-mode-fullscreen" title="Toggle full screen mode" ng-click="toggleFullScreen()"><i class="icon ion-arrow-expand"></i></a>
         </nav>

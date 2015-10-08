@@ -51,6 +51,11 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
 
     $scope.sideMenuOpen = false;
 
+    $scope.MODE_INPUT_ONLY = 'input-only';
+    $scope.MODE_OUTPUT_ONLY = 'output-only';
+    $scope.MODE_HYBRID = 'hybrid';
+    $scope.displayMode = $scope.MODE_HYBRID;
+
     //Controller setup
     function init(){
         var currentNote = 0;
@@ -319,20 +324,14 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
 
     //Hide the preview, show only the editor
     $scope.toggleMode = function(mode){
-        var main = $('#markdownnotes-wrapper');
-        if(mode === 'input'){
-            main.removeClass('output-only');
-            main.addClass('input-only');
+        $scope.displayMode = mode;
+        if(mode === $scope.MODE_INPUT_ONLY){
             ga('send', 'event', 'Notes', 'Toggle view', 'Input only');
         }
-        else if(mode === 'output'){
-            main.removeClass('input-only');
-            main.addClass('output-only');
+        else if(mode === $scope.MODE_OUTPUT_ONLY){
             ga('send', 'event', 'Notes', 'Toggle view', 'Output only');
         }
-        else if(mode === 'hybrid'){
-            main.removeClass('output-only');
-            main.removeClass('input-only');
+        else if(mode === $scope.MODE_HYBRID){
             ga('send', 'event', 'Notes', 'Toggle view', 'Hybrid');
         }
     };
