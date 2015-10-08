@@ -1,4 +1,4 @@
-var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'ui.fullscreen', 'timeRelative']);
+var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'ui.fullscreen', 'ui.preview', 'timeRelative']);
 
 app.config(function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode(false);
@@ -29,18 +29,6 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         widget: '',
     };
 
-    $scope.mathjaxOptions = {
-        tex2jax: {
-            inlineMath: [['$$','$$'],],
-            displayMath: [['$$$','$$$'],]
-        },
-        showProcessingMessages: false,
-        messageStyle: "none",
-        showMathMenu: false,
-        "HTML-CSS": { linebreaks: { automatic: true, width: "75% container" } },
-    };
-
-    $scope.cachedFormulas = {};
     $scope.currentNoteIndex = -1;
     $scope.messages = [];
     $scope.messageService = $messageService;
@@ -60,19 +48,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
     function init(){
         var currentNote = 0;
 
-        //MatJax options (latex equations)
-        MathJax.Hub.Config($scope.mathjaxOptions);
-        MathJax.Hub.Configured();
-
-        //Cache rendered formulas
-        MathJax.Hub.Register.MessageHook("End Process", function (message) {
-            span = $(message[1]);
-            formula = span.attr('data-formula');
-            output = span.html();
-            $scope.cachedFormulas[formula] = output;
-        });
-
-        //Load a first note (or create one if needed)
+        // Load a first note (or create one if needed)
         currentNote = parseInt($location.search().note, 10);
         if(currentNote){
             $scope.load(currentNote);
@@ -84,6 +60,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
             $scope.load($scope.notesService.notes[0].id);
         }
 
+        // Monitor note changes
         $scope.$watchGroup(
             [     
                 function(){
@@ -111,7 +88,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
                     $timeout.cancel(previewTimeout);
                 }
                 previewTimeout = $timeout(function(){
-                    $scope.updatePreview();
+                    $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);
                 }, 200);
             }
         );
@@ -212,50 +189,6 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
                 index = Math.min($scope.currentNoteIndex, $scope.notesService.notes.length-1);
                 $scope.load($scope.notesService.notes[index].id, false);
             }
-        });
-    };
-
-    //Updates the preview window
-    $scope.updatePreview = function(){
-        if($scope.notesService.notes[$scope.currentNoteIndex] === undefined) return;
-
-        var outputWindow = $('#output');
-
-        //Get the scroll position
-        var scrollTop = outputWindow.scrollTop();
-
-        //Convert the markup to HTML and update the preview
-        var content = $scope.notesService.notes[$scope.currentNoteIndex].content;
-
-        $('#preview').html(marked(
-            content,
-            {
-                gfm: true,
-                breaks: true,
-                smartLists: true,
-                highlight: function (code){return hljs.highlightAuto(code).value;}, //Code highlighting
-                sanitize: true,
-                renderer: customRenderer,
-            }
-        ));
-
-        //Set the scroll position, since it might have been changed by loaded elements
-        outputWindow.scrollTop(scrollTop);
-
-        //Update the preview to show LaTex equations
-        var counter = 0;
-        $('.latex').each(function(){
-            var id = 'latex-' + counter;
-            $(this).attr('id', id);
-
-            formula = $(this).attr('data-formula');
-            if($scope.cachedFormulas[formula] !== undefined){
-                $(this).html($scope.cachedFormulas[formula]);
-            }
-            else{
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, id]);
-            }
-            counter++;
         });
     };
 
