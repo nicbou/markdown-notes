@@ -1,15 +1,20 @@
-app.controller('NotesPreviewCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
+app.controller('NotesPreviewCtrl', function NotesCtrl($scope, $notesService, $routeParams, $rootScope, $document){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.notesService = $notesService;
-    $scope.notesService.fetchFromServer().then(function(){
-        init();
-    });
-
-    function init(){
-        $scope.note = $scope.notesService.notes[0];
+    $scope.notesService.fetchFromServer($routeParams.noteId).then(
+        function(){
+            $scope.note = $scope.notesService.notes[0];
+        },
+        function(){
+            $scope.note = {
+                title: 'Markdown Notes',
+                content: '#Note not found\n\nThe note you are looking for does not exist. Sorry!',
+            };
+        }
+    ).finally(function(){
         $rootScope.$broadcast('noteChanged', $scope.note);
-    }
+    });
 
     //Saves a note then exports it to .md
     $scope.export = function(note, track){

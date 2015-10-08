@@ -1,7 +1,8 @@
 //Syncs notes with the API
 angular.module('notes.service', ['ngResource', 'notes.config'])
     .factory('$notesService', ['$rootScope', '$http', 'DUMMY_API','$q', function($rootScope, $http, DUMMY_API, $q){
-        var api_url = DUMMY_API ? '/api/v1/note-dummy/' : '/api/v1/note/?format=json';
+        var notesUrl = DUMMY_API ? '/api/v1/note-dummy/' : '/api/v1/note/?format=json',
+            sharedNoteUrl = '/api/v1/shared-note/';
 
         function fakePromise(){
             var deferred = $q.defer();
@@ -23,7 +24,7 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                 }
 
                 var notesService = this;
-                return $http.post(api_url, note).success(function(returnedNote) {
+                return $http.post(notesUrl, note).success(function(returnedNote) {
                     if(!note.id){
                         note.date_created = moment.utc(returnedNote.date_created).tz(timeZone).toJSON();
 
@@ -39,19 +40,25 @@ angular.module('notes.service', ['ngResource', 'notes.config'])
                     if(DUMMY_API) return fakePromise();
 
                     var notesService = this;
-                    return $http.delete(api_url + note.id + '/').success(function(){
+                    return $http.delete(notesUrl + note.id + '/').success(function(){
                         notesService.notes.splice(index, 1);
                     });
                 }
             },
-            fetchFromServer: function(){
-                var notesService = this;
-                return $http.get(api_url).then(function(response) {
-                    notesService.notes = response.data.objects;
-                    notesService.notes.forEach(function(note){
-                        note.date_created = moment.utc(note.date_created).tz(timeZone).toJSON();
-                        note.date_updated = moment.utc(note.date_updated).tz(timeZone).toJSON();
-                    });
+            fetchFromServer: function(publicNoteId){
+                var notesService = this,
+                    apiUrl = publicNoteId ? sharedNoteUrl + publicNoteId : notesUrl;
+                return $http.get(apiUrl).then(function(response) {
+                    if(publicNoteId){
+                        notesService.notes = [response.data];
+                    }
+                    else{
+                        notesService.notes = response.data.objects;
+                        notesService.notes.forEach(function(note){
+                            note.date_created = moment.utc(note.date_created).tz(timeZone).toJSON();
+                            note.date_updated = moment.utc(note.date_updated).tz(timeZone).toJSON();
+                        });
+                    }
                 });
             }
         };

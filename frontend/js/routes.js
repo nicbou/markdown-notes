@@ -8,7 +8,7 @@ app.config(function($locationProvider, $routeProvider) {
             controller: 'NotesCtrl',
             reloadOnSearch: false,
         })
-        .when('/share', {
+        .when('/share/:noteId', {
             templateUrl: '/static/js/views/preview.html',
             controller: 'NotesPreviewCtrl',
             reloadOnSearch: false,
