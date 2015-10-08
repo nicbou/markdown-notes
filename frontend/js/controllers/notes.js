@@ -1,4 +1,4 @@
-var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'timeRelative']);
+var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'ui.fullscreen', 'timeRelative']);
 
 app.config(function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode(false);
@@ -11,7 +11,7 @@ app.config(function($locationProvider, $routeProvider) {
         .otherwise({ redirectTo: '/' });
 });
 
-app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService){
+app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.codemirrorOptions = {
@@ -300,27 +300,9 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         $('.CodeMirror')[0].CodeMirror.focus();
     };
 
-    //Toggle full screen mode in supported browsers
-    $scope.toggleFullScreen = function(){
-        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) {
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) {
-                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-            }
-            ga('send', 'event', 'Notes', 'Full screen');
-        } else {
-            if (document.cancelFullScreen) {
-                document.cancelFullScreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitCancelFullScreen) {
-                document.webkitCancelFullScreen();
-            }
-        }
-    };
+    $rootScope.$on('fullScreen', function(){
+        ga('send', 'event', 'Notes', 'Full screen');
+    });
 
     //Hide the preview, show only the editor
     $scope.toggleMode = function(mode){
