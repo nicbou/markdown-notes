@@ -451,7 +451,7 @@ body.dragOver{
     position:absolute;
     right:0;
     width:50%;
-    z-index:999;
+    z-index:1001;
 
     .message{
         border-radius:3px;
@@ -462,9 +462,9 @@ body.dragOver{
         padding:3px 5px;
         width:100%;
 
-        .error{background:#d9534f}
-        .warning{background:#f0ad4e}
-        .info{background:#00b4f9}
+        &.error{background: $colorErrorBackground}
+        &.warning{background: $colorWarningBackground}
+        &.info{background: $colorInfoBackground}
     }
 }
 
