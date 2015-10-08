@@ -1,4 +1,4 @@
-angular.module('ui.imagedrop', [])
+angular.module('notes.ui', [])
 .directive("imagedrop", function ($parse, $document) {
     return {
         restrict: "A",

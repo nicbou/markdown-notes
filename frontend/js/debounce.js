@@ -1,4 +1,4 @@
-angular.module('utils', []).factory('debounce', function($timeout) {
+angular.module('notes.utils', []).factory('debounce', function($timeout) {
     return function(callback, interval) {
         var timeout = null;
         return function() {

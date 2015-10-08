@@ -1,4 +1,4 @@
-var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'ui.fullscreen', 'ui.preview', 'timeRelative', 'utils']);
+var app = angular.module('notes', ['notes.service', 'notes.utils', 'notes.ui', 'ngRoute', 'ui.codemirror', 'timeRelative']);
 
 app.config(function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode(false);
@@ -80,7 +80,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
                     $timeout.cancel(saveTimeout);
                 }
                 saveTimeout = $timeout(function(){
-                    if(newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
+                    if(newValue && newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
                 }, 1000);
 
                 $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);

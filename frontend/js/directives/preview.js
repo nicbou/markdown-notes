@@ -1,5 +1,5 @@
 //Toggles full screen mode in supported browsers
-angular.module('ui.preview', [])
+angular.module('notes.ui', [])
 .directive("preview", function ($rootScope) {
     return {
         restrict: "A",
