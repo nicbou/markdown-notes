@@ -1,11 +1,11 @@
-Django==1.7
+Django>=1.8
 Pillow==2.5.1
 boto==2.36.0
 django-appconf==1.0.1
 django-compressor==1.4
 django-realtime==1.1
 django-storages==1.1.8
-django-tastypie==0.12.1
+git+https://github.com/django-tastypie/django-tastypie#egg=TastyPie
 django-toolbelt==0.0.1
 gunicorn==18.0
 httplib2==0.8

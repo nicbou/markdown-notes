@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from notes.api import NoteResource, DummyNoteResource
+from notes.api import NoteResource, DummyNoteResource, SharedNoteResource
 from notes.views import NotesView
 from tastypie.api import Api
 from django.conf import settings
@@ -12,6 +12,7 @@ from uploads.views import S3RedirectView
 v1_api = Api(api_name='v1')
 v1_api.register(NoteResource())
 v1_api.register(DummyNoteResource())
+v1_api.register(SharedNoteResource())
 
 urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),

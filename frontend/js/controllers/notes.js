@@ -62,14 +62,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
                 },
             ],
             debounce(function(newValue, oldValue){
-                //Save 1s after keyup
-                if(saveTimeout){
-                    $timeout.cancel(saveTimeout);
-                }
-                saveTimeout = $timeout(function(){
-                    if(newValue && newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
-                }, 1000);
-
+                if(newValue && newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
                 $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);
             }, 200)
         );

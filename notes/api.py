@@ -1,7 +1,9 @@
-from tastypie.resources import ModelResource
+from django.conf.urls import url
 from notes.models import Note, DummyNote
 from tastypie.authentication import SessionAuthentication
-from tastypie.authorization import Authorization
+from tastypie.authorization import Authorization, ReadOnlyAuthorization
+from tastypie.resources import ModelResource
+from tastypie.exceptions import Unauthorized
 import datetime
 
 class UserNotesAuthorization(Authorization):
@@ -67,6 +69,52 @@ class NoteResource(ModelResource):
         Return the user's notes
         """
         return object_list.filter(user=request.user)
+
+
+class UserNotesAuthorization(Authorization):
+    """
+    Only allows a user to modify its own notes
+    """
+    def read_list(self, object_list, bundle):
+        raise Unauthorized()
+
+    def read_detail(self, object_list, bundle):
+        return True
+
+    def create_list(self, object_list, bundle):
+        raise Unauthorized()
+
+    def create_detail(self, object_list, bundle):
+        raise Unauthorized()
+
+    def update_list(self, object_list, bundle):
+        raise Unauthorized()
+
+    def update_detail(self, object_list, bundle):
+        raise Unauthorized()
+
+    def delete_list(self, object_list, bundle):
+        raise Unauthorized()
+
+    def delete_detail(self, object_list, bundle):
+        raise Unauthorized()
+
+
+class SharedNoteResource(ModelResource):
+    """
+    Shared notes are accessible by all, but use a public hash instead of the id
+    """
+    class Meta:
+        queryset = Note.objects.all()
+        resource_name = 'shared-note'
+        list_allowed_methods = ['get']
+        authorization = UserNotesAuthorization()
+        always_return_data = True
+
+    def override_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<public_id>[a-zA-Z0-9]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
+        ]
 
 
 class DummyNoteResource(ModelResource):

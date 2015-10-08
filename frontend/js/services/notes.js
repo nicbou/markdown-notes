@@ -1,7 +1,7 @@
 //Syncs notes with the API
 angular.module('notes.service', ['ngResource', 'notes.config'])
     .factory('$notesService', ['$rootScope', '$http', 'DUMMY_API','$q', function($rootScope, $http, DUMMY_API, $q){
-        var api_url = DUMMY_API ? '/api/v1/note-dummy/' : '/api/v1/note/';
+        var api_url = DUMMY_API ? '/api/v1/note-dummy/' : '/api/v1/note/?format=json';
 
         function fakePromise(){
             var deferred = $q.defer();
