@@ -1,16 +1,3 @@
-var app = angular.module('notes', ['notes.service', 'notes.utils', 'notes.ui', 'ngRoute', 'ui.codemirror', 'timeRelative']);
-
-app.config(function($locationProvider, $routeProvider) {
-    $locationProvider.html5Mode(false);
-    $routeProvider
-        .when('/', {
-            templateUrl: '/static/js/views/main.html',
-            controller: 'NotesCtrl',
-            reloadOnSearch: false,
-        })
-        .otherwise({ redirectTo: '/' });
-});
-
 app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
