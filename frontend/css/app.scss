@@ -24,7 +24,7 @@
     padding: 0;
     margin: 0;
     overflow: hidden;
-    background: $colorBodyBackground;
+    background: #000;
     color: $colorTextNormal;
 
     header{
@@ -124,269 +124,270 @@
             background: $colorTopBarHighlight;
         }
     }
-}
 
-/* Main section */
-#main{
-    box-sizing: border-box;
-    height: calc(100% - #{$topBarHeight});
-    overflow: hidden;
-    position: absolute;
-    top: $topBarHeight;
-    width: 100%;
-
-    #side-menu{
-        background: $colorMenuBackground;
-        box-shadow: 0 0 20px rgba(0,0,0,0.2);
-        height: 100%;
-        left: -350px;
-        margin: 0;
-        max-width: 100%;
-        overflow: auto;
-        padding: 0;
+    /* Main section */
+    #main{
+        box-sizing: border-box;
+        height: calc(100% - #{$topBarHeight});
+        overflow: hidden;
         position: absolute;
-        width: 350px;
-        z-index: 900;
+        top: $topBarHeight;
+        width: 100%;
 
-        &.open{
-            left:0!important;
-        }
+        #side-menu{
+            background: $colorMenuBackground;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            height: 100%;
+            left: -350px;
+            margin: 0;
+            max-width: 100%;
+            overflow: auto;
+            padding: 0;
+            position: absolute;
+            width: 350px;
+            z-index: 900;
 
-        ul{
-            margin:0;
-            padding:0;
+            &.open{
+                left:0!important;
+            }
 
-            li{
-                list-style:none;
-                width:100%;
+            ul{
                 margin:0;
-                position:relative;
-                cursor:pointer;
+                padding:0;
 
-                a{
-                    display:block;
+                li{
+                    list-style:none;
                     width:100%;
-                    height:100%;
-                    padding:$marginSmall $marginNormal;
-                    text-decoration:none;
-                    overflow: hidden;
-                    text-overflow:ellipsis;
-                    white-space:nowrap;
-                    color: $colorMenuText;
-                    box-sizing:border-box;
-                } 
-
-                >a>.icon{
-                    font-size:26px;
-                    vertical-align:middle;
-                    margin-right:10px;
-                }
-
-                &:hover{
-                    background-color:#49506a!important;
+                    margin:0;
+                    position:relative;
+                    cursor:pointer;
 
                     a{
-                        padding-right:35px
+                        display:block;
+                        width:100%;
+                        height:100%;
+                        padding:$marginSmall $marginNormal;
+                        text-decoration:none;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space:nowrap;
+                        color: $colorMenuText;
+                        box-sizing:border-box;
+                    } 
+
+                    >a>.icon{
+                        font-size:26px;
+                        vertical-align:middle;
+                        margin-right:10px;
+                    }
+
+                    &:hover{
+                        background-color:#49506a!important;
+
+                        a{
+                            padding-right:35px
+                        }
+
+                        .actions{
+                            display:block;
+                        }
+                    }
+
+                    &.separator{
+                        border-bottom: 1px solid $colorMenuSeparator;
+                        height: 0;
+                        margin: -1px $marginNormal -1px;
+                        width: 320px;
+                    }
+                    &.separator+.separator{display: none;}
+
+                    .title .untitled{color: $colorMenuText;}
+
+                    .subtitle{display:block;
+                        font-size: $fontSizeSmall;
+                        text-transform: uppercase;
+                        color: $colorMenuTextMuted;
                     }
 
                     .actions{
-                        display:block;
-                    }
-                }
+                        position:absolute;
+                        display:none;
+                        top:11px;
+                        right:10px;
+                        text-align:right;
 
-                &.separator{
-                    border-bottom: 1px solid $colorMenuSeparator;
-                    height: 0;
-                    margin: -1px $marginNormal -1px;
-                    width: 320px;
-                }
-                &.separator+.separator{display: none;}
+                        a{
+                            padding:0!important;
+                            width:30px;
+                            font-size:26px;
+                            height:30px;
+                            display:inline-block;
+                            border-radius: 30px;
+                            line-height: 30px;
+                            text-align: center;
 
-                .title .untitled{color: $colorMenuText;}
-
-                .subtitle{display:block;
-                    font-size: $fontSizeSmall;
-                    text-transform: uppercase;
-                    color: $colorMenuTextMuted;
-                }
-
-                .actions{
-                    position:absolute;
-                    display:none;
-                    top:11px;
-                    right:10px;
-                    text-align:right;
-
-                    a{
-                        padding:0!important;
-                        width:30px;
-                        font-size:26px;
-                        height:30px;
-                        display:inline-block;
-                        border-radius: 30px;
-                        line-height: 30px;
-                        text-align: center;
-
-                        &:hover{
-                            background:#353c4f;
-                            color:#ffffff;
+                            &:hover{
+                                background:#353c4f;
+                                color:#ffffff;
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    #input,#output{
-        width:50%;height:100%;position:absolute;overflow:auto;box-sizing:border-box;
-        -webkit-transition: -webkit-transform 300ms, all 300ms;
-        -moz-transition: -moz-transform 300ms, all 300ms;
-        -ms-transition: -ms-transform 300ms, all 300ms;
-        transition: transform 300ms, all 300ms;
+        #input,#output{
+            width:50%;height:100%;position:absolute;overflow:auto;box-sizing:border-box;
+            -webkit-transition: -webkit-transform 300ms, all 300ms;
+            -moz-transition: -moz-transform 300ms, all 300ms;
+            -ms-transition: -ms-transform 300ms, all 300ms;
+            transition: transform 300ms, all 300ms;
 
-        >span{
-            color: #999;
-            padding: 5px;
-            line-height: 25px
+            >span{
+                color: #999;
+                padding: 5px;
+                line-height: 25px
+            }
         }
-    }
 
-    #input{
-        padding-bottom: 30px;background:#f6f6f6;
+        #input{
+            padding-bottom: 30px;background:#f6f6f6;
 
-        >#editor{
-            max-width: $maxPanelWidth;
-            margin:0 auto;
+            >#editor{
+                max-width: $maxPanelWidth;
+                margin:0 auto;
+            }
+            >#editor, >#editor>form{
+                height:100%;
+            }
         }
-        >#editor, >#editor>form{
-            height:100%;
-        }
-    }
 
-    #output{
-        background:#fff;
-        left:50%;
-        padding:$marginNormal;
-        z-index:10;
-        
-        // Typographic grid test:
-        // background-size: 20px 20px;
-        // background-image: repeating-linear-gradient(0deg, #ccc, #ccc 1px, transparent 1px, transparent 40px),repeating-linear-gradient(-90deg, #fff, #fff 1px, transparent 1px, transparent 20px);
+        #output{
+            background:#fff;
+            left:50%;
+            padding:$marginNormal;
+            z-index:10;
+            
+            // Typographic grid test:
+            // background-size: 20px 20px;
+            // background-image: repeating-linear-gradient(0deg, #ccc, #ccc 1px, transparent 1px, transparent 40px),repeating-linear-gradient(-90deg, #fff, #fff 1px, transparent 1px, transparent 20px);
 
-        #preview{
-            max-width: $maxPanelWidth;
-            margin:0 auto;/* Overflow fix */
-            padding-bottom: $marginExtraLarge;
-            word-wrap: break-word;
+            #preview{
+                max-width: $maxPanelWidth;
+                margin:0 auto;/* Overflow fix */
+                padding-bottom: $marginExtraLarge;
+                word-wrap: break-word;
 
-            h1, h2, h3, h4, h5{
-                color: $colorTextHeavy;
-            }
-            h2, h3, h4, h5{
-                font-weight:$fontWeightHeavy;
-            }
-            h4, h5{
-                line-height: $lineHeightNormal;
-                font-size: $fontSizeNormal;
-                margin: $marginLarge 0 0;
-            }
-            h1{
-                font-weight: $fontWeightHeavy;
-                font-size: $fontSizeExtraLarge;
-                margin: $marginLarge 0;
-                color: $colorTextHeavy;
-                line-height: $lineHeightNormal * 2;
-            }
-            h2{
-                font-size: $fontSizeLarge;
-                line-height: $lineHeightNormal * 2;
-                margin: 25px 0 15px;
-            }
-            h3{
-                font-size: 19px;
-                line-height: $lineHeightNormal;
-                margin: $marginLarge 0;
-            }
-            h4{
-                text-transform: uppercase;
-            }
-            ul, ol{
-                margin: 0 0 $marginLarge;
-                padding-left:$marginExtraLarge;
-                .task{
-                    list-style:none;position:relative;
-                    .checkbox{margin-left:-22px;text-align:center;display:inline-block;font-size:12px;width:12px;height:12px;line-height:12px;color:transparent;border:1px solid #999;position:relative;left:-8px;top:-2px;}
-                    &.task-open>.checkbox{}
-                    &.task-closed>.checkbox{border-color:$colorSuccess;color:$colorSuccess;}
+                h1, h2, h3, h4, h5{
+                    color: $colorTextHeavy;
                 }
-            }
-
-            //Content blocks
-            code, pre, blockquote, .latex.block{
-                background:$colorSectionBlockBackground;
-            }
-            p, pre, blockquote, .latex.block{
-                margin: 0 0 20px;
-            }
-            pre, blockquote{
-                padding: 20px;
-                >*:last-child{
-                    margin-bottom:0!important;
+                h2, h3, h4, h5{
+                    font-weight:$fontWeightHeavy;
                 }
-            }
-            code, pre{
-                font-family: 'Roboto Mono', monospace;
-                font-size: 12px;
-            }
-            pre{
-                overflow: auto;
-                >code{
-                    background: transparent;
+                h4, h5{
+                    line-height: $lineHeightNormal;
+                    font-size: $fontSizeNormal;
+                    margin: $marginLarge 0 0;
                 }
-            }
-
-            br+.latex.block{margin-top:-20px;}
-            b, strong{font-weight:$fontWeightExtraHeavy;color:$colorTextHeavy}
-
-            hr{border:0;border-top:1px solid $colorBorderLight;margin:$marginExtraLarge 0;}
-            img{max-width: 100%}
-            li>ul, li>ol{margin:0;}
-
-            p{
-                font-size: inherit;
-            }
-            table{
-                border-collapse:collapse;
-                th, td{border:1px solid $colorBorderLight;padding:3px 5px;}
-                th:empty, td:empty{border:none;padding:0;}
-            }
-
-
-            .MathJax{ //Inline
-                display:inline-block;
-                .noError{ // Formulas with errors
-                    border:0;
-                    color:inherit;
-                    font-size:100%;
-                    font-family:inherit;
-                    font-weight:$fontWeightNormal;
-                    border-bottom: 1px dashed #f00;
+                h1{
+                    font-weight: $fontWeightHeavy;
+                    font-size: $fontSizeExtraLarge;
+                    margin: $marginLarge 0;
+                    color: $colorTextHeavy;
+                    line-height: $lineHeightNormal * 2;
                 }
-            }
-            .MathJax_Display{ //Block
-                text-align: left!important;
-                margin:0;
-                >.MathJax{
-                    background:none; margin:0;
-                    padding: $marginExtraSmall $marginSmall;
-                    box-sizing:border-box;
-                    border-radius:0;
+                h2{
+                    font-size: $fontSizeLarge;
+                    line-height: $lineHeightNormal * 2;
+                    margin: 25px 0 15px;
                 }
-                ~br{display:none;}
+                h3{
+                    font-size: 19px;
+                    line-height: $lineHeightNormal;
+                    margin: $marginLarge 0;
+                }
+                h4{
+                    text-transform: uppercase;
+                }
+                ul, ol{
+                    margin: 0 0 $marginLarge;
+                    padding-left:$marginExtraLarge;
+                    .task{
+                        list-style:none;position:relative;
+                        .checkbox{margin-left:-22px;text-align:center;display:inline-block;font-size:12px;width:12px;height:12px;line-height:12px;color:transparent;border:1px solid #999;position:relative;left:-8px;top:-2px;}
+                        &.task-open>.checkbox{}
+                        &.task-closed>.checkbox{border-color:$colorSuccess;color:$colorSuccess;}
+                    }
+                }
+
+                //Content blocks
+                code, pre, blockquote, .latex.block{
+                    background:$colorSectionBlockBackground;
+                }
+                p, pre, blockquote, .latex.block{
+                    margin: 0 0 20px;
+                }
+                pre, blockquote{
+                    padding: 20px;
+                    >*:last-child{
+                        margin-bottom:0!important;
+                    }
+                }
+                code, pre{
+                    font-family: 'Roboto Mono', monospace;
+                    font-size: 12px;
+                }
+                pre{
+                    overflow: auto;
+                    >code{
+                        background: transparent;
+                    }
+                }
+
+                br+.latex.block{margin-top:-20px;}
+                b, strong{font-weight:$fontWeightExtraHeavy;color:$colorTextHeavy}
+
+                hr{border:0;border-top:1px solid $colorBorderLight;margin:$marginExtraLarge 0;}
+                img{max-width: 100%}
+                li>ul, li>ol{margin:0;}
+
+                p{
+                    font-size: inherit;
+                }
+                table{
+                    border-collapse:collapse;
+                    th, td{border:1px solid $colorBorderLight;padding:3px 5px;}
+                    th:empty, td:empty{border:none;padding:0;}
+                }
+
+
+                .MathJax{ //Inline
+                    display:inline-block;
+                    .noError{ // Formulas with errors
+                        border:0;
+                        color:inherit;
+                        font-size:100%;
+                        font-family:inherit;
+                        font-weight:$fontWeightNormal;
+                        border-bottom: 1px dashed #f00;
+                    }
+                }
+                .MathJax_Display{ //Block
+                    text-align: left!important;
+                    margin:0;
+                    >.MathJax{
+                        background:none; margin:0;
+                        padding: $marginExtraSmall $marginSmall;
+                        box-sizing:border-box;
+                        border-radius:0;
+                    }
+                    ~br{display:none;}
+                }
             }
         }
     }
 }
+
 
 .input-only{
     #main #input{width:100%;background:#fff;}
@@ -407,11 +408,24 @@
 
 
 /* Drag and drop upload overlay */
-body.dragOver header, body.dragOver #main{opacity:0.5;filter:blur(2px);-moz-filter:blur(2px);-webkit-filter:blur(2px);-ms-filter:blur(2px);}
-body.dragOver #file-drop{display:block;}
-#file-drop{
+body.dragOver{
+    #markdownnotes-wrapper{
+        header, #main{
+            filter:blur(2px);-moz-filter:blur(2px);-webkit-filter:blur(2px);-ms-filter:blur(2px);
+        }
+        #file-drop{
+            display:block;
+            background: rgba(255,255,255,0.6);
+            h1{
+                margin-top: 100px;
+                color: $colorTextHeavy;
+            }
+        }
+    }
+}
+#markdownnotes-wrapper #file-drop{
     z-index:1000;
-    position:fixed;
+    position:absolute;
     top:0;
     left:0;
     width:100%;
