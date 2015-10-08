@@ -1,4 +1,4 @@
-var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'ui.fullscreen', 'ui.preview', 'timeRelative']);
+var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'ui.fullscreen', 'ui.preview', 'timeRelative', 'utils']);
 
 app.config(function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode(false);
@@ -11,7 +11,7 @@ app.config(function($locationProvider, $routeProvider) {
         .otherwise({ redirectTo: '/' });
 });
 
-app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope){
+app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.codemirrorOptions = {
@@ -74,7 +74,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
                     }
                 },
             ],
-            function(newValue, oldValue){
+            debounce(function(newValue, oldValue){
                 //Save 1s after keyup
                 if(saveTimeout){
                     $timeout.cancel(saveTimeout);
@@ -83,14 +83,8 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
                     if(newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
                 }, 1000);
 
-                //Refresh the preview 200ms after keyup
-                if(previewTimeout){
-                    $timeout.cancel(previewTimeout);
-                }
-                previewTimeout = $timeout(function(){
-                    $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);
-                }, 200);
-            }
+                $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);
+            }, 200)
         );
 
         // Load the right note based on the note ID in the URL if it's updated elsewhere
