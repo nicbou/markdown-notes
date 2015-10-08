@@ -24,7 +24,7 @@
     padding: 0;
     margin: 0;
     overflow: hidden;
-    background: #000;
+    background: $colorBodyBackground;
     color: $colorTextNormal;
 
     header{
@@ -386,26 +386,51 @@
             }
         }
     }
+
+    &.input-only{
+        #main #input{width:100%;background:#fff;}
+        #main #output{left:100%;}
+        #btn-mode-input{background:$colorTopBarHighlight;}
+        #btn-mode-hybrid{background:transparent!important;}
+    }
+    &.output-only{
+        #main #input{left:-50%;background:#fff;}
+        #main #output{width:100%;left:0;}
+        #btn-mode-output{background:$colorTopBarHighlight;}
+        #btn-mode-hybrid{background:transparent!important;}
+    }
+
+    #MathJax_Message{display:none!important;}
+
+    #side-menu, #btn-menu{/* Menu open transition */-webkit-transition: -webkit-transform 300ms, all 300ms;-moz-transition: -moz-transform 300ms, all 300ms;-ms-transition: -ms-transform 300ms, all 300ms;transition: transform 300ms, all 300ms;}
+
+    /* Messages */
+    #messages{
+        bottom:0;
+        left:0;
+        margin:0 auto;
+        max-width:100%;
+        min-width:400px;
+        position:absolute;
+        right:0;
+        width:50%;
+        z-index:1001;
+
+        .message{
+            border-radius:3px;
+            box-shadow:0 5px 10px -5px rgba(0,0,0,0.1);
+            box-sizing:border-box;
+            color:#fff;
+            margin-bottom:3px;
+            padding:3px 5px;
+            width:100%;
+
+            &.error{background: $colorErrorBackground}
+            &.warning{background: $colorWarningBackground}
+            &.info{background: $colorInfoBackground}
+        }
+    }
 }
-
-
-.input-only{
-    #main #input{width:100%;background:#fff;}
-    #main #output{left:100%;}
-    #btn-mode-input{background:$colorTopBarHighlight;}
-    #btn-mode-hybrid{background:transparent!important;}
-}
-.output-only{
-    #main #input{left:-50%;background:#fff;}
-    #main #output{width:100%;left:0;}
-    #btn-mode-output{background:$colorTopBarHighlight;}
-    #btn-mode-hybrid{background:transparent!important;}
-}
-
-#MathJax_Message{display:none!important;}
-
-#side-menu, #btn-menu{/* Menu open transition */-webkit-transition: -webkit-transform 300ms, all 300ms;-moz-transition: -moz-transform 300ms, all 300ms;-ms-transition: -ms-transform 300ms, all 300ms;transition: transform 300ms, all 300ms;}
-
 
 /* Drag and drop upload overlay */
 body.dragOver{
@@ -439,35 +464,6 @@ body.dragOver{
         font-weight:$fontWeightHeavy;
     }
 }
-
-
-/* Messages */
-#messages{
-    bottom:0;
-    left:0;
-    margin:0 auto;
-    max-width:100%;
-    min-width:400px;
-    position:absolute;
-    right:0;
-    width:50%;
-    z-index:1001;
-
-    .message{
-        border-radius:3px;
-        box-shadow:0 5px 10px -5px rgba(0,0,0,0.1);
-        box-sizing:border-box;
-        color:#fff;
-        margin-bottom:3px;
-        padding:3px 5px;
-        width:100%;
-
-        &.error{background: $colorErrorBackground}
-        &.warning{background: $colorWarningBackground}
-        &.info{background: $colorInfoBackground}
-    }
-}
-
 
 /* Scrollbars */
 ::-webkit-scrollbar{width:7px;height:7px;}

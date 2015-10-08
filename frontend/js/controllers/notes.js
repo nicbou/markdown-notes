@@ -322,7 +322,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
 
     //Hide the preview, show only the editor
     $scope.toggleMode = function(mode){
-        var main = $('body');
+        var main = $('#markdownnotes-wrapper');
         if(mode === 'input'){
             main.removeClass('output-only');
             main.addClass('input-only');
