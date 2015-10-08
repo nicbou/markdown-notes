@@ -15,13 +15,13 @@
             --><span class="separator"></span><!--
             --><a id="btn-mode-fullscreen" title="Toggle full screen mode" ng-click="toggleFullScreen()"><i class="icon ion-arrow-expand"></i></a>
         </nav>
-        <a href="" id="btn-menu" ng-click="toggleMenu()">Menu</a>
+        <a href="" id="btn-menu" ng-click="sideMenuOpen = !sideMenuOpen" ng-class="{'open': sideMenuOpen}">Menu</a>
         <div id="note-title-wrapper">
             <input type="text" id="note-title" placeholder="Untitled note" tabindex="1" ng-model="notesService.notes[currentNoteIndex].title">
         </div>
     </header>
     <div id="main">
-        <nav id="side-menu">
+        <nav id="side-menu" ng-class="{'open': sideMenuOpen}">
             <ul>
                 <li class="new"><a ng-click="create(true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
                 <li class="separator"></li>

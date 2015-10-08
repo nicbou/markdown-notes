@@ -49,6 +49,8 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         init();
     });
 
+    $scope.sideMenuOpen = false;
+
     //Controller setup
     function init(){
         var currentNote = 0;
@@ -126,7 +128,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
     //Create a note
     $scope.create = function(loadCreatedNote){
         //Close the menu
-        $("#side-menu, #btn-menu").removeClass("open");
+        $scope.sideMenuOpen = false;
 
         $scope.notesService.save({
             title: '',
@@ -157,7 +159,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
 
         if(hideMenu){
-            $("#side-menu, #btn-menu").removeClass("open");
+            $scope.sideMenuOpen = false;
         }
         
         return noteFound;
@@ -291,11 +293,6 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
     //Sets the focus on the editor
     $scope.focusEditor = function(){
         $('.CodeMirror')[0].CodeMirror.focus();
-    };
-
-    //Opens the notes menu
-    $scope.toggleMenu = function(){
-        $("#side-menu, #btn-menu").toggleClass("open");
     };
 
     //Toggle full screen mode in supported browsers
