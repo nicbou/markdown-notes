@@ -22,6 +22,12 @@ Markdown Notes is a Django application with an AngularJS front-end.
 4. Sync the database with `python manage.py syncdb`.
 5. Run the server with `python manage.py runserver`.
 
+###Deployment tools
+
+A crude tool for automatic deployments is available. Install `forever` (`npm install -g forever`) and run `forever start webhooks.js` to have the server redeploy every time there is activity on the GitHub repo.
+
+`deploy.sh` will pull code from the git repository, sync the database, collect static files and minimize them before restarting the server. It is used by `webhooks.js`, but can also be called manually.
+
 ##Get involved
 
 You can contribute to Markdown Notes by looking at the submitted issues and sending pull requests with your fixes.
