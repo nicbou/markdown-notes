@@ -7,6 +7,9 @@ git pull &&
 pip install -r requirements.txt &&
 bower install --allow-root &&
 
+# Migrate database
+python manage.py migrate
+
 # Collect and compress static files
 python manage.py collectstatic --noinput &&
 python manage.py compress --force &&
