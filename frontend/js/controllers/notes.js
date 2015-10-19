@@ -1,4 +1,4 @@
-app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.codemirrorOptions = {

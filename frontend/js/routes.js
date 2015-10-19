@@ -1,6 +1,4 @@
-var app = angular.module('notes', ['notes.service', 'notes.utils', 'notes.ui', 'ngRoute', 'ui.codemirror', 'timeRelative']);
-
-app.config(function($locationProvider, $routeProvider) {
+angular.module('notes').config(function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode(false);
     $routeProvider
         .when('/', {

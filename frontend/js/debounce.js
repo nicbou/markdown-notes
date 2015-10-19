@@ -1,4 +1,4 @@
-angular.module('notes.utils', []).factory('debounce', function($timeout, $q) {
+angular.module('notes.utils').factory('debounce', function($timeout, $q) {
     return function(func, wait, immediate) {
         var timeout;
         var deferred = $q.defer();
