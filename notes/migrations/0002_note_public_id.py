@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='note',
             name='public_id',
-            field=models.CharField(default=notes.models.generate_hash, max_length=32),
+            field=models.CharField(default=lambda:notes.models.generate_hash(), max_length=32),
         ),
     ]

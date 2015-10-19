@@ -56,7 +56,7 @@ class SoftDeletionModel(models.Model):
 
 
 def generate_hash():
-    return random.getrandbits(128)
+    return str(random.getrandbits(128))[0:32]
 
 
 class Note(SoftDeletionModel):
