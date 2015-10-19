@@ -1,5 +1,4 @@
-angular.module('notes.ui', [])
-.directive("imagedrop", function ($parse, $document) {
+angular.module('notes.ui').directive("imagedrop", function ($parse, $document) {
     return {
         restrict: "A",
         link: function (scope, element, attrs) {

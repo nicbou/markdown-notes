@@ -1,4 +1,4 @@
-app.controller('NotesPreviewCtrl', function NotesCtrl($scope, $notesService, $routeParams, $rootScope, $document){
+angular.module('notes').controller('NotesPreviewCtrl', function NotesCtrl($scope, $notesService, $routeParams, $rootScope, $document){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.notesService = $notesService;

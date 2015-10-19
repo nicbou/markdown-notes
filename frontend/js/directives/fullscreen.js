@@ -1,6 +1,5 @@
 //Toggles full screen mode in supported browsers
-angular.module('notes.ui', [])
-.directive("fullscreen", function ($document, $rootScope) {
+angular.module('notes.ui').directive("fullscreen", function ($document, $rootScope) {
     return {
         restrict: "A",
         link: function (scope, element, attrs) {
