@@ -1,6 +1,6 @@
 angular.module('notes.service').factory('Uploader', ['$http', function($http){
     var Uploader = function(data) {
-        angular.extend(this, data);['ngResource', 'notes.config']
+        angular.extend(this, data);
     };
 
     Uploader.uploadImage = function(file, note) {
