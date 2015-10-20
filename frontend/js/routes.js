@@ -6,7 +6,7 @@ angular.module('notes').config(function($locationProvider, $routeProvider) {
             controller: 'NotesCtrl',
             reloadOnSearch: false,
         })
-        .when('/share/:noteId', {
+        .when('/:noteId/', {
             templateUrl: '/static/js/views/preview.html',
             controller: 'NotesPreviewCtrl',
             reloadOnSearch: false,
