@@ -437,6 +437,39 @@
             &.info{background: $colorInfoBackground}
         }
     }
+
+    .modal{
+        background: $colorModalBackground;
+        color: $colorModalText;
+        position: absolute;
+        width: 100%;
+        max-width: 350px;
+        z-index: 2000;
+        padding: $marginNormal;
+        box-shadow: 5px 5px 10px -3px rgba(0,0,0,0.1);
+
+        .close{
+            font-size: 25px;
+            cursor: pointer;
+            position: absolute;
+            top: $marginNormal;
+            right: $marginNormal;
+        }
+
+        &.share{
+            top: $topBarHeight + $marginSmall;
+            right: $marginSmall;
+
+            h2{
+                margin: 5px 0 10px;
+                font-weight: 100;
+            }
+            .share-url{
+                padding: $marginExtraSmall;
+                border: 1px solid rgba(255,255,255,0.2);
+            }
+        }
+    }
 }
 
 /* Drag and drop upload overlay */
