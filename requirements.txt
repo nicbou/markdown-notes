@@ -19,3 +19,4 @@ six==1.9.0
 static3==0.5.1
 wsgiref==0.1.2
 django-libsass
+base36>=0.1.1

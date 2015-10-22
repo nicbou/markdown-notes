@@ -1,4 +1,4 @@
-angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.codemirrorOptions = {
@@ -20,9 +20,16 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $note
     $scope.messages = [];
     $scope.messageService = $messageService;
     $scope.notesService = $notesService;
-    $scope.notesService.fetchFromServer().then(function(){
-        init();
-    });
+    $scope.notesService.fetchFromServer().then(
+        function(){
+            init();
+        },
+        function(err){
+            if(err.status === 401){
+                $window.location.href = '/auth/login/';
+            }
+        }
+    );
 
     $scope.sideMenuOpen = false;
 

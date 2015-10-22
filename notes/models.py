@@ -4,6 +4,7 @@ from django.db.models.query import QuerySet
 from django.template.loader import render_to_string
 from django.db.models.signals import post_save
 import random
+import base36
 
 
 class SoftDeletionQuerySet(QuerySet):
@@ -56,7 +57,7 @@ class SoftDeletionModel(models.Model):
 
 
 def generate_hash():
-    return str(random.getrandbits(128))[0:32]
+    return base36.dumps(random.getrandbits(32))
 
 
 class Note(SoftDeletionModel):
