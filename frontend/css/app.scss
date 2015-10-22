@@ -66,10 +66,10 @@
                     line-height: $lineHeightNormal;
                     color: $colorTopBarTextMuted;
                 }
-                & input:hover, & input:focus{
+            }
+            input#note-title:hover, input#note-title:focus{
                     border-bottom: 1px solid rgba(255,255,255,0.5);
                 }
-            }
             span#note-title{
                 display:block;
                 max-width: $maxPanelWidth;
