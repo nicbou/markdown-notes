@@ -26,6 +26,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
             return $http.post(notesUrl, note).success(function(returnedNote) {
                 if(!note.id){
                     note.date_created = moment.utc(returnedNote.date_created).tz(timeZone).toJSON();
+                    note.public_id = returnedNote.public_id;
 
                     notesService.notes.push(note);
                 }

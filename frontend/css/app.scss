@@ -439,11 +439,10 @@
     }
 
     .modal{
+        box-sizing: border-box;
         background: $colorModalBackground;
         color: $colorModalText;
         position: absolute;
-        width: 100%;
-        max-width: 350px;
         z-index: 2000;
         padding: $marginNormal;
         box-shadow: 5px 5px 10px -3px rgba(0,0,0,0.1);
@@ -464,6 +463,8 @@
         &.share{
             top: $topBarHeight + $marginSmall;
             right: $marginSmall;
+            width: calc(100% - #{$marginSmall * 2});
+            max-width: 350px;
 
             h2{
                 margin: 5px 0 10px;
