@@ -9,6 +9,7 @@
         <h2>Share this note</h2>
         <i class="close icon ion-ios-close-outline" ng-click="shareWindowOpen = null"></i>
         <div class="share-url" ng-bind="'http://markdownnotes.com/' + notesService.notes[currentNoteIndex].public_id"></div>
+        <span class="hint">People who know this URL can see this note, but cannot edit it.</span>
     </div>
     <header>
         <nav id="menu-bar"><!--

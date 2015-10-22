@@ -456,6 +456,11 @@
             right: $marginNormal;
         }
 
+        .hint{
+            font-size: $fontSizeSmall;
+            color: $colorMenuTextMuted;
+        }
+
         &.share{
             top: $topBarHeight + $marginSmall;
             right: $marginSmall;
