@@ -1,11 +1,16 @@
 {% extends "base.html" %}
-
 {% load i18n %}
-{% block title %}Log in{% endblock %}
-{% block description %}Log in to edit your notes{% endblock %}
+{% block title %}Account settings{% endblock %}
+{% block description %}Change your account settings{% endblock %}
 {% block page %}
-    <div class="section light login">
-        <h1 class="page-header">{% trans "Your account" %}</h1>
-        {% include "form.html" with submit_text="Save changes" %}
-    </div>
+    {% if user.is_authenticated %}
+        <div class="section light header">
+            <h1 class="page-header">{% trans "Account settings" %}</h1>
+        </div>
+        <div class="section dark">
+            {% include "form.html" with submit_text="Save changes" %}
+        </div>
+    {% else %}
+        <p>You must be logged in to see this page.</p>
+    {% endif %}
 {% endblock %}
