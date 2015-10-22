@@ -521,25 +521,46 @@ body.dragOver{
 
 /* Print */
 @media print{
-    #input, #btn-mode-fullscreen, #btn-menu, #side-menu, #menu-bar, #note-title-wrapper{display:none!important;}
-    #markdownnotes-wrapper{overflow: visible!important;}
-    #preview h1,#preview h2,#preview h3,#preview h4,#preview h5{break-after: avoid}
-    #markdownnotes-wrapper header{background:transparent;}
-    #main{height:auto;top:0;}
-        #main, #output{width:100%!important;border:none!important;left:0!important;overflow:visible!important;}
-        #input,#output{-webkit-transition:none;-moz-transition:none;-ms-transition:none;}
-        #output{margin-top:0!important;padding:0 $marginExtraSmall 20px;font-size:$fontSizeNormal;}
-            h1,h2,h3{page-break-after:avoid}
-            h1, h2, h3, h4, h5{
-                &:first-child{
-                    margin-top: 0;
+    *{-webkit-transition:none!important;-moz-transition:none!important;-ms-transition:none!important;}
+    #input, #btn-mode-fullscreen, #btn-menu, #side-menu, #menu-bar, #note-title-wrapper, .modal, #markdownnotes-wrapper header{display:none!important;}
+    
+    #markdownnotes-wrapper{
+        overflow: visible!important;
+        
+        #main{
+            height:auto;
+            top:0;
+
+            #output{
+                margin-top:0;
+                padding:0 $marginExtraSmall 20px;
+                font-size:$fontSizeNormal;
+
+                h1, h2, h3{page-break-after:avoid}
+                h1, h2, h3, h4, h5{
+                    &:first-child{
+                        margin-top: 0;
+                    }
                 }
             }
 
-        #preview h1:first-child, #preview h2:first-child, #preview h3:first-child{margin-top:0;padding-top:0;}
+            #preview{
+                &h1, &h2, &h3, &h4, &h5{break-after: avoid}
 
-    #preview .checkbox{border:1px solid $colorTextHeavy!important;}
-        #preview .checkbox.done{color:$colorTextHeavy!important}
+                & h1:first-child, & h2:first-child, & h3:first-child{margin-top:0;padding-top:0;}
+
+                .checkbox{
+                    border:1px solid $colorTextHeavy!important;
+
+                    .done{
+                        color:$colorTextHeavy!important
+                    }
+                }
+            }
+        }
+
+        #main, #main #output{width:100%!important;border:none!important;left:0!important;overflow:visible!important;}
+    }
 }
 
 
