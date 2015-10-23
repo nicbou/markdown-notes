@@ -39,8 +39,7 @@ class UserNotesAuthorization(Authorization):
         return bundle.obj.user == bundle.request.user
 
     def delete_list(self, object_list, bundle):
-        # Sorry user, no deletes for you!
-        return object_list.filter(user=bundle.request.user)
+        raise Unauthorized()
 
     def delete_detail(self, object_list, bundle):
         return bundle.obj.user == bundle.request.user
@@ -71,7 +70,7 @@ class NoteResource(ModelResource):
         return object_list.filter(user=request.user)
 
 
-class UserNotesAuthorization(Authorization):
+class SharedNotesAuthorization(Authorization):
     """
     Only allows a user to modify its own notes
     """
@@ -108,7 +107,7 @@ class SharedNoteResource(ModelResource):
         queryset = Note.objects.all()
         resource_name = 'shared-note'
         list_allowed_methods = ['get']
-        authorization = UserNotesAuthorization()
+        authorization = SharedNotesAuthorization()
         always_return_data = True
 
     def override_urls(self):
