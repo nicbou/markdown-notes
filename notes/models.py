@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.db.models.query import QuerySet
 from django.template.loader import render_to_string
 from django.db.models.signals import post_save
+import random
+import base36
+
 
 class SoftDeletionQuerySet(QuerySet):
     def delete(self):
@@ -18,6 +21,7 @@ class SoftDeletionQuerySet(QuerySet):
     def deleted(self):
         return self.exclude(deleted=False)
 
+
 class SoftDeletionManager(models.Manager):
     def __init__(self, *args, **kwargs):
         self.active_only = kwargs.pop('active_only', True)
@@ -30,6 +34,7 @@ class SoftDeletionManager(models.Manager):
 
     def hard_delete(self):
         return self.get_queryset().hard_delete()
+
 
 class SoftDeletionModel(models.Model):
     """
@@ -50,6 +55,11 @@ class SoftDeletionModel(models.Model):
     def hard_delete(self):
         super(SoftDeletionModel, self).delete()
 
+
+def generate_hash():
+    return base36.dumps(random.getrandbits(32))
+
+
 class Note(SoftDeletionModel):
     """
     Model for individual notes.
@@ -59,14 +69,17 @@ class Note(SoftDeletionModel):
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    public_id = models.CharField(max_length=32, default=generate_hash)
 
     objects = SoftDeletionManager()
+
 
     def __unicode__(self):
         return "%s by %s" % (self.title, self.user)
 
     class Meta:
         ordering = ['-date_updated', 'title']
+
 
 class DummyNote(Note):
     """
@@ -76,6 +89,7 @@ class DummyNote(Note):
 
     class Meta:
         ordering = ['-date_updated', 'title']
+
 
 # Create a 'getting started' note when a user is created
 def user_created(sender, **kwargs):

@@ -1,27 +1,35 @@
-<div id="markdownnotes-wrapper">
+<div id="markdownnotes-wrapper" ng-class="displayMode" set-mode-on-resize>
     <div id="file-drop" imagedrop on-image-drop="uploadImage()">
         <h1>Drop images anywhere to insert them</h1>
     </div>
     <div id="messages" ng-repeat="message in messageService.messages">
         <div class="message {{message.class}}">{{message.message}}</div>
     </div>
+    <div ng-show="shareWindowOpen" class="modal share">
+        <h2>Share this note</h2>
+        <i class="close icon ion-ios-close-outline" ng-click="shareWindowOpen = null"></i>
+        <div class="share-url" ng-bind="'http://markdownnotes.com/+' + notesService.notes[currentNoteIndex].public_id"></div>
+        <span class="hint">People who know this URL can see this note, but cannot edit it.</span>
+    </div>
     <header>
         <nav id="menu-bar"><!--
-            --><a id="btn-mode-input" title="Show only the editor window"  ng-click="toggleMode('input')">Editor</a><!--
+            --><a id="btn-mode-input" title="Show only the editor window"  ng-click="toggleMode(MODE_INPUT_ONLY)">Editor</a><!--
             --><span class="separator"></span><!--
-            --><a id="btn-mode-hybrid" title="Show the editor and preview window"  ng-click="toggleMode('hybrid')">Editor + Preview</a><!--
+            --><a id="btn-mode-hybrid" title="Show the editor and preview window"  ng-click="toggleMode(MODE_HYBRID)">Editor + Preview</a><!--
             --><span class="separator"></span><!--
-            --><a id="btn-mode-output" title="Show only the preview window"  ng-click="toggleMode('output')">Preview</a><!--
+            --><a id="btn-mode-output" title="Show only the preview window"  ng-click="toggleMode(MODE_OUTPUT_ONLY)">Preview</a><!--
             --><span class="separator"></span><!--
-            --><a id="btn-mode-fullscreen" title="Toggle full screen mode" ng-click="toggleFullScreen()"><i class="icon ion-arrow-expand"></i></a>
+            --><a title="Share this note" ng-click="shareWindowOpen = true"><i class="icon ion-ios-redo"></i> Share</a><!--
+            --><span class="separator"></span><!--
+            --><a id="btn-mode-fullscreen" title="Toggle full screen mode" fullscreen><i class="icon ion-arrow-expand"></i></a>
         </nav>
-        <a href="" id="btn-menu" ng-click="toggleMenu()">Menu</a>
+        <a href="" id="btn-menu" ng-click="sideMenuOpen = !sideMenuOpen" ng-class="{'open': sideMenuOpen}">Menu</a>
         <div id="note-title-wrapper">
             <input type="text" id="note-title" placeholder="Untitled note" tabindex="1" ng-model="notesService.notes[currentNoteIndex].title">
         </div>
     </header>
     <div id="main">
-        <nav id="side-menu">
+        <nav id="side-menu" ng-class="{'open': sideMenuOpen}">
             <ul>
                 <li class="new"><a ng-click="create(true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
                 <li class="separator"></li>
@@ -38,6 +46,7 @@
                 <li class="separator"></li>
                 <li class="no-demo"><a onclick="ga('send', 'event', 'Account', 'Account settings', 'Side menu')" href="/auth/account/"><i class="icon ion-ios-gear-outline"></i>Account settings</a></li>
                 <li class="no-demo"><a onclick="ga('send', 'event', 'Social', 'Feedback', 'Side menu')" href="/feedback/" title="Give feedback"><i class="icon ion-ios-chatboxes-outline"></i>Give feedback</a></li>
+                <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=contact%40nicolasbouliane%2ecom&lc=CA&item_name=Markdown%20Notes&no_note=1&no_shipping=1&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" target="_blank"><i class="icon ion-ios-heart-outline"></i>Donate</a></li>
                 <li class="separator"></li>
                 <li class="no-demo"><a onclick="ga('send', 'event', 'Account', 'Log out', 'Side menu')" href="/auth/logout/">Log out</a></li>
             </ul>
@@ -50,7 +59,7 @@
             </div>
         </div>
         <div id="output">
-            <div id="preview">
+            <div id="preview" preview>
             </div>
         </div>
     </div>

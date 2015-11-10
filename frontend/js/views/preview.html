@@ -1,0 +1,16 @@
+<div id="markdownnotes-wrapper" class="output-only">
+    <div id="messages" ng-repeat="message in messageService.messages">
+        <div class="message {{message.class}}">{{message.message}}</div>
+    </div>
+    <header>
+        <div id="note-title-wrapper">
+            <span id="note-title" placeholder="Untitled note" tabindex="1">{{ note.title }}</span>
+        </div>
+    </header>
+    <div id="main">
+        <div id="output">
+            <div id="preview" preview>
+            </div>
+        </div>
+    </div>
+</div>

@@ -45,8 +45,12 @@
         .cm-bracket {color: #997;}
         .cm-tag {}
         .cm-attribute {color: #00c;}
-        .cm-header {color: #000; font-size: 120%;font-weight:bold}
-        .cm-formatting-header{font-weight:300;}
+        .cm-header {color: #000; font-size: 14px;font-weight:bold}
+            .cm-header-1{font-size:24px}
+            .cm-header-2{font-size:21px}
+            .cm-header-3{font-size:18px}
+            .cm-header-4{font-size:15px}
+        .cm-formatting-header{font-weight:300}
         .cm-formatting-list {color: #000;font-weight:bold}
             .cm-formatting-list ul{}
         .cm-hr {color: #999;}

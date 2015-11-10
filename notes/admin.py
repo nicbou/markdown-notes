@@ -10,4 +10,7 @@ class NoteAdmin(admin.ModelAdmin):
         'deleted',
     )
 
+    def get_queryset(self, request):
+        return Note.all_objects.all()
+
 admin.site.register(Note, NoteAdmin)

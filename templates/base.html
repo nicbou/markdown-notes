@@ -30,12 +30,19 @@
         <script src="{% static "bower_components/codemirror/addon/display/placeholder.js" %}"></script>
         <script src="{% static "js/codemirror/mode/gfm-latex/gfm-latex.js" %}"></script>
         <script src="{% static "js/codemirror/keymap/markdownnotes.js" %}"></script>
+        <script src="{% static "js/modules.js" %}"></script>
+        <script src="{% static "js/routes.js" %}"></script>
+        <script src="{% static "js/debounce.js" %}"></script>
         <script src="{% static "js/services/notes.js" %}"></script>
         <script src="{% static "js/services/uploads.js" %}"></script>
         <script src="{% static "js/services/messages.js" %}"></script>
         <script src="{% static "js/controllers/notes.js" %}"></script>
+        <script src="{% static "js/controllers/notesPreview.js" %}"></script>
         <script src="{% static "js/directives/codemirror.js" %}"></script>
+        <script src="{% static "js/directives/fullscreen.js" %}"></script>
         <script src="{% static "js/directives/imagedrop.js" %}"></script>
+        <script src="{% static "js/directives/preview.js" %}"></script>
+        <script src="{% static "js/directives/setModeOnResize.js" %}"></script>
         <script src="{% static "js/directives/ng-time-relative.js" %}"></script>
     {% endcompress %}
     {% block extra_scripts %}{% endblock extra_scripts %}

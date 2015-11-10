@@ -1,56 +1,33 @@
-var app = angular.module('notes', ['notes.service', 'ngRoute', 'ui.codemirror', 'ui.imagedrop', 'timeRelative']);
-
-app.config(function($locationProvider, $routeProvider) {
-    $locationProvider.html5Mode(false);
-    $routeProvider
-        .when('/', {
-            templateUrl: '/static/js/views/main.html',
-            controller: 'NotesCtrl',
-            reloadOnSearch: false,
-        })
-        .otherwise({ redirectTo: '/' });
-});
-
-app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService){
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
     var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
-    $scope.mathjaxOptions = {
-        tex2jax: {
-            inlineMath: [['$$','$$'],],
-            displayMath: [['$$$','$$$'],]
-        },
-        showProcessingMessages: false,
-        messageStyle: "none",
-        showMathMenu: false,
-        "HTML-CSS": { linebreaks: { automatic: true, width: "75% container" } },
-    };
-
-    $scope.cachedFormulas = {};
     $scope.currentNoteIndex = -1;
     $scope.messages = [];
     $scope.messageService = $messageService;
     $scope.notesService = $notesService;
-    $scope.notesService.fetchFromServer().then(function(){
-        init();
-    });
+    $scope.notesService.fetchFromServer().then(
+        function(){
+            init();
+        },
+        function(err){
+            if(err.status === 401){
+                $window.location.href = '/auth/login/';
+            }
+        }
+    );
+
+    $scope.sideMenuOpen = false;
+
+    $scope.MODE_INPUT_ONLY = 'input-only';
+    $scope.MODE_OUTPUT_ONLY = 'output-only';
+    $scope.MODE_HYBRID = 'hybrid';
+    $scope.displayMode = $scope.MODE_HYBRID;
 
     //Controller setup
     function init(){
         var currentNote = 0;
 
-        //MatJax options (latex equations)
-        MathJax.Hub.Config($scope.mathjaxOptions);
-        MathJax.Hub.Configured();
-
-        //Cache rendered formulas
-        MathJax.Hub.Register.MessageHook("End Process", function (message) {
-            span = $(message[1]);
-            formula = span.attr('data-formula');
-            output = span.html();
-            $scope.cachedFormulas[formula] = output;
-        });
-
-        //Load a first note (or create one if needed)
+        // Load a first note (or create one if needed)
         currentNote = parseInt($location.search().note, 10);
         if(currentNote){
             $scope.load(currentNote);
@@ -62,6 +39,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
             $scope.load($scope.notesService.notes[0].id);
         }
 
+        // Monitor note changes
         $scope.$watchGroup(
             [     
                 function(){
@@ -75,23 +53,10 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
                     }
                 },
             ],
-            function(newValue, oldValue){
-                //Save 1s after keyup
-                if(saveTimeout){
-                    $timeout.cancel(saveTimeout);
-                }
-                saveTimeout = $timeout(function(){
-                    if(newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
-                }, 1000);
-
-                //Refresh the preview 200ms after keyup
-                if(previewTimeout){
-                    $timeout.cancel(previewTimeout);
-                }
-                previewTimeout = $timeout(function(){
-                    $scope.updatePreview();
-                }, 200);
-            }
+            debounce(function(newValue, oldValue){
+                if(newValue && newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
+                $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);
+            }, 200)
         );
 
         // Load the right note based on the note ID in the URL if it's updated elsewhere
@@ -111,7 +76,6 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
     $scope.bindEditor = function(editor){
         //Prevents Ctrl+Z'ing back into the previous note
         $scope.$watch('currentNoteIndex', function(newId, oldId){
-            console.log('cleared.')
             editor.getDoc().clearHistory();
         });
     };
@@ -136,7 +100,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
     //Create a note
     $scope.create = function(loadCreatedNote){
         //Close the menu
-        $("#side-menu, #btn-menu").removeClass("open");
+        $scope.sideMenuOpen = false;
 
         $scope.notesService.save({
             title: '',
@@ -167,7 +131,7 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
 
         if(hideMenu){
-            $("#side-menu, #btn-menu").removeClass("open");
+            $scope.sideMenuOpen = false;
         }
         
         return noteFound;
@@ -218,50 +182,6 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         });
     };
 
-    //Updates the preview window
-    $scope.updatePreview = function(){
-        if($scope.notesService.notes[$scope.currentNoteIndex] === undefined) return;
-
-        var outputWindow = $('#output');
-
-        //Get the scroll position
-        var scrollTop = outputWindow.scrollTop();
-
-        //Convert the markup to HTML and update the preview
-        var content = $scope.notesService.notes[$scope.currentNoteIndex].content;
-
-        $('#preview').html(marked(
-            content,
-            {
-                gfm: true,
-                breaks: true,
-                smartLists: true,
-                highlight: function (code){return hljs.highlightAuto(code).value;}, //Code highlighting
-                sanitize: true,
-                renderer: customRenderer,
-            }
-        ));
-
-        //Set the scroll position, since it might have been changed by loaded elements
-        outputWindow.scrollTop(scrollTop);
-
-        //Update the preview to show LaTex equations
-        var counter = 0;
-        $('.latex').each(function(){
-            var id = 'latex-' + counter;
-            $(this).attr('id', id);
-
-            formula = $(this).attr('data-formula');
-            if($scope.cachedFormulas[formula] !== undefined){
-                $(this).html($scope.cachedFormulas[formula]);
-            }
-            else{
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, id]);
-            }
-            counter++;
-        });
-    };
-
     $scope.uploadImage = function(){
         var error,
             message = {
@@ -303,49 +223,20 @@ app.controller('NotesCtrl', function NotesCtrl($scope, $notesService, Uploader, 
         $('.CodeMirror')[0].CodeMirror.focus();
     };
 
-    //Opens the notes menu
-    $scope.toggleMenu = function(){
-        $("#side-menu, #btn-menu").toggleClass("open");
-    };
-
-    //Toggle full screen mode in supported browsers
-    $scope.toggleFullScreen = function(){
-        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) {
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) {
-                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-            }
-            ga('send', 'event', 'Notes', 'Full screen');
-        } else {
-            if (document.cancelFullScreen) {
-                document.cancelFullScreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitCancelFullScreen) {
-                document.webkitCancelFullScreen();
-            }
-        }
-    };
+    $rootScope.$on('fullScreen', function(){
+        ga('send', 'event', 'Notes', 'Full screen');
+    });
 
     //Hide the preview, show only the editor
     $scope.toggleMode = function(mode){
-        var main = $('body');
-        if(mode === 'input'){
-            main.removeClass('output-only');
-            main.addClass('input-only');
+        $scope.displayMode = mode;
+        if(mode === $scope.MODE_INPUT_ONLY){
             ga('send', 'event', 'Notes', 'Toggle view', 'Input only');
         }
-        else if(mode === 'output'){
-            main.removeClass('input-only');
-            main.addClass('output-only');
+        else if(mode === $scope.MODE_OUTPUT_ONLY){
             ga('send', 'event', 'Notes', 'Toggle view', 'Output only');
         }
-        else if(mode === 'hybrid'){
-            main.removeClass('output-only');
-            main.removeClass('input-only');
+        else if(mode === $scope.MODE_HYBRID){
             ga('send', 'event', 'Notes', 'Toggle view', 'Hybrid');
         }
     };

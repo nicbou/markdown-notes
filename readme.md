@@ -19,8 +19,15 @@ Markdown Notes is a Django application with an AngularJS front-end.
 1. Install all requirements with pip: `pip install -r requirements.txt`.
 2. Install the external libraries with `bower install`
 3. Rename `markdown_notes/local_settings.py.template` and update it with your own settings. Some values in `settings.py` need to be set in environment variables.
-4. Sync the database with `python manage.py syncdb`.
-5. Run the server with `python manage.py runserver`.
+4. Collect the static files with `python manage.py collectstatic`. When `DEBUG = False`, you will also need to call `python manage.py compress`.
+5. Create the database with `python manage.py migrate`.
+6. Run the server with `python manage.py runserver`.
+
+###Deployment tools
+
+A crude tool for automatic deployments is available. Install `forever` (`npm install -g forever`) and run `forever start webhooks.js` to have the server redeploy every time there is activity on the GitHub repo.
+
+`deploy.sh` will pull code from the git repository, sync the database, collect static files and minimize them before restarting the server. It is used by `webhooks.js`, but can also be called manually.
 
 ##Get involved
 
