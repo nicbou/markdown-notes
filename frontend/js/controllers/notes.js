@@ -1,5 +1,4 @@
 angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
-    var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
 
     $scope.codemirrorOptions = {
         dragDrop: false, //Disabled so the window receives the event
@@ -24,11 +23,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         function(){
             init();
         },
-        function(err){
-            if(err.status === 401){
-                $window.location.href = '/auth/login/';
-            }
-        }
+        $scope.handleNetworkError
     );
 
     $scope.sideMenuOpen = false;
@@ -69,7 +64,9 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 },
             ],
             debounce(function(newValue, oldValue){
-                if(newValue && newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
+                if(newValue && newValue[0] !== undefined && newValue[1] !== undefined){
+                    $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]).catch($scope.handleNetworkError);
+                }
                 $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);
             }, 200)
         );
@@ -93,14 +90,13 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         //Close the menu
         $scope.sideMenuOpen = false;
 
-        $scope.notesService.save({
-            title: '',
-            content: '',
-        }).then(function(response){
-            if(loadCreatedNote) $scope.load(response.data.id);
-        });
-
-        ga('send', 'event', 'Notes', 'Create');
+        $scope.notesService.save({title:'', content:''}).then(
+            function(response){
+                if(loadCreatedNote) $scope.load(response.data.id);
+                ga('send', 'event', 'Notes', 'Create');
+            },
+            $scope.handleNetworkError
+        );
     };
 
     //Loads a note from the server
@@ -161,16 +157,19 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         var index,
             isCurrentNote = note.id === $scope.notesService.notes[$scope.currentNoteIndex].id;
 
-        $scope.notesService.remove(note).then(function(){
-            if($scope.notesService.notes.length === 0){
-                $scope.create(true);
-            }
-            else if(isCurrentNote){
-                // Don't leave the user on a deleted note. Load the next note.
-                index = Math.min($scope.currentNoteIndex, $scope.notesService.notes.length-1);
-                $scope.load($scope.notesService.notes[index].id, false);
-            }
-        });
+        $scope.notesService.remove(note).then(
+            function(){
+                if($scope.notesService.notes.length === 0){
+                    $scope.create(true);
+                }
+                else if(isCurrentNote){
+                    // Don't leave the user on a deleted note. Load the next note.
+                    index = Math.min($scope.currentNoteIndex, $scope.notesService.notes.length-1);
+                    $scope.load($scope.notesService.notes[index].id, false);
+                }
+            },
+            $scope.handleNetworkError
+        );
     };
 
     $scope.uploadImage = function(){
@@ -192,11 +191,14 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 
                 //Delete the "uploading" message
                 $scope.messageService.remove(message);
+
+                ga('send', 'event', 'Notes', 'Upload', 'Image upload');
             },
-            function(imageUrl){
+            function(){
                 error = {
                     message: 'An error occured while uploading the images.',
-                    class: $scope.messageService.classes.ERROR
+                    class: $scope.messageService.classes.ERROR,
+                    timeout: 5000,
                 };
                 $scope.messageService.replace(message, error);
             }
@@ -204,9 +206,6 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
         //Clear the uploaded file
         $scope.uploadedFile = null;
-
-        //Google analytics tracking
-        ga('send', 'event', 'Notes', 'Upload', 'Image upload');
     };
 
     //Sets the focus on the editor
@@ -229,6 +228,19 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         }
         else if(mode === $scope.MODE_HYBRID){
             ga('send', 'event', 'Notes', 'Toggle view', 'Hybrid');
+        }
+    };
+
+    $scope.handleNetworkError = function(err){
+        if(err.status === 401){
+            $window.location.href = '/auth/login/';
+        }
+        else{
+            $scope.messageService.add({
+                message: 'An error occured while saving the note.',
+                class: $scope.messageService.classes.ERROR,
+                timeout: 5000
+            });
         }
     };
 });
