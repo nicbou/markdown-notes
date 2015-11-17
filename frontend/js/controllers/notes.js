@@ -1,4 +1,4 @@
-angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, $sce, DEMO_MODE){
 
     $scope.codemirrorOptions = {
         dragDrop: false, //Disabled so the window receives the event
@@ -83,6 +83,35 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
             }
         });
+
+        if(!DEMO_MODE && !localStorage.getItem('introMessageDismissed')){
+            // Show a promotional message at load
+            var introMessages = [
+                    "Hello! {a}Are you hiring a developer?{/a}",
+                    "Hello! {a}Are you looking for a developer?{/a}",
+                    "The creator of Markdown Notes {a}needs a small favor{/a}",
+                    "Hello! I created Markdown Notes and {a}I need a small favor{/a}",
+                    "Hello! I created Markdown Notes and {a}I am looking for a job{/a}",
+                    "The creator of Markdown Notes {a}is looking for a job{/a}",
+                    "Hiring in Berlin? {a}I need a small favor{/a}",
+                ],
+                introMessageText = introMessages[Math.floor(Math.random()*introMessages.length)], //Pick a random one
+                aElement = '<a href="http://markdownnotes.com/app/#/1daghcj/" target="_blank" onclick="ga(\'send\', \'event\', \'Shameless plug\', \'Clicked\', \'' + introMessageText + '\')">',
+                introMessage = introMessageText.replace('{/a}', '</a>').replace('{a}', aElement);
+
+            $scope.messageService.add({
+                message:  $sce.trustAsHtml(introMessage), //Pick a random message
+                class: $scope.messageService.classes.INFO,
+                id: 'shamelessPlug', //not used by the service
+                track: true,
+            });
+            $rootScope.$on('messageRemoved', function(e, message){
+                if(message.id === 'shamelessPlug'){
+                    ga('send', 'event', 'Shameless plug', 'Dismissed', message.message);
+                    localStorage.setItem('introMessageDismissed', true);
+                }
+            });
+        }
     }
 
     //Create a note
@@ -92,7 +121,9 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
         $scope.notesService.save({title:'', content:''}).then(
             function(response){
-                if(loadCreatedNote) $scope.load(response.data.id);
+                if(response && response.data && loadCreatedNote){
+                    $scope.load(response.data.id);
+                }
                 ga('send', 'event', 'Notes', 'Create');
             },
             $scope.handleNetworkError

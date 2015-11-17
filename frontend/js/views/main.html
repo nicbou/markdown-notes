@@ -3,7 +3,10 @@
         <h1>Drop images anywhere to insert them</h1>
     </div>
     <div id="messages">
-        <div ng-repeat="message in messageService.messages" class="message {{message.class}}">{{message.message}}</div>
+        <div ng-repeat="message in messageService.messages" class="message {{message.class}}">
+            <span ng-bind-html="message.message"></span>
+            <i ng-hide="messageService.timeout" class="icon dismiss ion-ios-close-empty" ng-click="messageService.remove(message)"></i>
+        </div>
     </div>
     <div ng-show="shareWindowOpen" class="modal share">
         <h2>Share this note</h2>
