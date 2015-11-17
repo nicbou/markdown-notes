@@ -105,6 +105,8 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 id: 'shamelessPlug', //not used by the service
                 track: true,
             });
+            ga('send', 'event', 'Shameless plug', 'Displayed', introMessageText);
+
             $rootScope.$on('messageRemoved', function(e, message){
                 if(message.id === 'shamelessPlug'){
                     ga('send', 'event', 'Shameless plug', 'Dismissed', message.message);
