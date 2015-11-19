@@ -18,6 +18,7 @@ angular.module('notes.service')
                         function(){
                             this.remove(message);
                         },
+                        message.timeout
                     );
                 }
                 $rootScope.$broadcast('messageAdded', message);
