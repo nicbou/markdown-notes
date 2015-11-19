@@ -1,4 +1,4 @@
-angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, $sce, DEMO_MODE){
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, DEMO_MODE){
 
     $scope.codemirrorOptions = {
         dragDrop: false, //Disabled so the window receives the event
@@ -100,7 +100,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 introMessage = introMessageText.replace('{/a}', '</a>').replace('{a}', aElement);
 
             $scope.messageService.add({
-                message:  $sce.trustAsHtml(introMessage), //Pick a random message
+                message: introMessage, //Pick a random message
                 class: $scope.messageService.classes.INFO,
                 id: 'shamelessPlug', //not used by the service
                 track: true,
