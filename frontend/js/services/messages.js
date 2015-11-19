@@ -16,23 +16,22 @@ angular.module('notes.service')
                 if(message.timeout){
                     $timeout(
                         function(){
-                            var messageIndex = messageService.messages.indexOf(message);
-                            if(messageIndex >= 0){
-                                messageService.messages.splice(messageIndex, 1);
-                            }
+                            this.remove(message);
                         },
-                        message.timeout
                     );
                 }
                 $rootScope.$broadcast('messageAdded', message);
             },
             replace: function(oldMessage, newMessage) {
-                this.messages.splice(this.messages.indexOf(oldMessage), 1);
+                this.remove(oldMessage);
                 this.add(newMessage);
             },
             remove: function(message) {
-                this.messages.splice(this.messages.indexOf(message), 1);
-                $rootScope.$broadcast('messageRemoved', message);
+                var messageIndex = messageService.messages.indexOf(message);
+                if(messageIndex >= 0){
+                    messageService.messages.splice(messageIndex, 1);
+                    $rootScope.$broadcast('messageRemoved', message);
+                }
             }
         };
 
