@@ -16,7 +16,7 @@ angular.module('notes.service')
                 if(message.timeout){
                     $timeout(
                         function(){
-                            this.remove(message);
+                            messageService.remove(message);
                         },
                         message.timeout
                     );
@@ -28,6 +28,7 @@ angular.module('notes.service')
                 this.add(newMessage);
             },
             remove: function(message) {
+                var messageService = this;
                 var messageIndex = messageService.messages.indexOf(message);
                 if(messageIndex >= 0){
                     messageService.messages.splice(messageIndex, 1);
