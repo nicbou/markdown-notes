@@ -49,18 +49,21 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
             var notesService = this,
                 apiUrl = publicNoteId ? sharedNoteUrl + publicNoteId : notesUrl;
                 apiUrl = apiUrl + '?format=json';
-            return $http.get(apiUrl).then(function(response) {
-                if(publicNoteId){
-                    notesService.notes = [response.data];
-                }
-                else{
-                    notesService.notes = response.data.objects;
-                    notesService.notes.forEach(function(note){
-                        note.date_created = moment.utc(note.date_created).tz(timeZone).toJSON();
-                        note.date_updated = note.date_created;
-                    });
-                }
-            });
+            return $http.get(apiUrl).then(
+                function(response) {
+                    if(publicNoteId){
+                        notesService.notes = [response.data];
+                    }
+                    else{
+                        notesService.notes = response.data.objects;
+                        notesService.notes.forEach(function(note){
+                            note.date_created = moment.utc(note.date_created).tz(timeZone).toJSON();
+                            note.date_updated = note.date_created;
+                        });
+                    }
+                },
+                angular.noop //If this is ommited, the following .then() error callbacks are ignored
+            );
         }
     };
 
