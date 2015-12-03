@@ -163,20 +163,44 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         }
     });
 
-    //Deletes a note from the list
+    //Returns a value on which notes are sorted
+    $scope.noteRanker = function(note){
+        return -moment(note.date_updated).valueOf(); //Most recent first
+    };
+    //Sorts notes based on $scope.noteRanker values
+    $scope.noteSorter = function(note1, note2){
+        return $scope.noteRanker(note1) - $scope.noteRanker(note2);
+    };
+
+    //Deletes a note from the list, loads the next one in the list
     $scope.remove = function(note){
-        var index,
-            isCurrentNote = note.id === $scope.notesService.notes[$scope.currentNoteIndex].id;
+        var isCurrentNote = note.id === $scope.notesService.notes[$scope.currentNoteIndex].id,
+            nextNoteId = $scope.notesService.notes[$scope.currentNoteIndex].id;
+
+        // Don't leave the user on a deleted note. Load the next note.
+        if(isCurrentNote){
+            //The notes in noteService are in arbitrary order, while those in the menu are sorted
+            //based on $scope.noteRanker. When deleting a note, we load the next one in the menu,
+            //not necessarily the next one in notesService.notes.
+            var sortedNotes = $scope.notesService.notes.slice().sort($scope.noteSorter),
+                indexInSortedNotes = sortedNotes.indexOf(note),
+                isLastInList = indexInSortedNotes === sortedNotes.length-1, //If deleting the last note, load the next-to-last note
+                nextNoteIndex = isLastInList ? indexInSortedNotes-1 : indexInSortedNotes+1;
+
+            if(nextNoteIndex >= 0){ //Happens when deleting the only note left
+                nextNoteId = sortedNotes[nextNoteIndex].id;
+            }
+        }
 
         $scope.notesService.remove(note).then(
             function(){
+                //If we deleted the last note, create a new one
                 if($scope.notesService.notes.length === 0){
                     $scope.create(true);
                 }
-                else if(isCurrentNote){
-                    // Don't leave the user on a deleted note. Load the next note.
-                    index = Math.min($scope.currentNoteIndex, $scope.notesService.notes.length-1);
-                    $scope.load($scope.notesService.notes[index].id, false);
+                //Update the currentNoteIndex, since the array changed
+                else{
+                    $scope.load(nextNoteId, false);
                 }
             },
             $scope.handleNetworkError
