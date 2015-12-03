@@ -1,6 +1,6 @@
 //Syncs notes with the API
 angular.module('notes.service')
-    .factory('$messageService', function($timeout){
+    .factory('$messageService', function($timeout, $rootScope, $sce){
         var $messageService = {
             classes: {
                 INFO: 'info',
@@ -9,21 +9,30 @@ angular.module('notes.service')
             },
             messages: [],
             add: function(message) {
+                message.message = $sce.trustAsHtml(message.message);
+
                 this.messages.push(message);
                 var messageService = this;
-                $timeout(
-                    function(){
-                        messageService.messages.splice(messageService.messages.indexOf(message), 1);
-                    },
-                    message.timeout || 4000
-                );
+                if(message.timeout){
+                    $timeout(
+                        function(){
+                            this.remove(message);
+                        },
+                        message.timeout
+                    );
+                }
+                $rootScope.$broadcast('messageAdded', message);
             },
             replace: function(oldMessage, newMessage) {
-                this.messages.splice(this.messages.indexOf(oldMessage), 1);
+                this.remove(oldMessage);
                 this.add(newMessage);
             },
-            remove: function(oldMessage, newMessage) {
-                this.messages.splice(this.messages.indexOf(oldMessage), 1);
+            remove: function(message) {
+                var messageIndex = messageService.messages.indexOf(message);
+                if(messageIndex >= 0){
+                    messageService.messages.splice(messageIndex, 1);
+                    $rootScope.$broadcast('messageRemoved', message);
+                }
             }
         };
 

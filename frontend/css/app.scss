@@ -435,6 +435,18 @@
             &.error{background: $colorErrorBackground}
             &.warning{background: $colorWarningBackground}
             &.info{background: $colorInfoBackground}
+
+            .icon{
+                font-size:25px;
+                float: right;
+                cursor: pointer;
+                display: inline-block;
+                margin: -3px 0 0;
+                padding: 0 2px;
+            }
+            a{
+                color: #fff;
+            }
         }
     }
 

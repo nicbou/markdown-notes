@@ -1,1 +1,1 @@
-angular.module('notes.config').constant('DUMMY_API', false);
+angular.module('notes.config').constant('DEMO_MODE', false);

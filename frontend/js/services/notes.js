@@ -1,6 +1,6 @@
 //Syncs notes with the API
-angular.module('notes.service').factory('$notesService', ['$rootScope', '$http', 'DUMMY_API','$q', function($rootScope, $http, DUMMY_API, $q){
-    var notesUrl = DUMMY_API ? '/api/v1/note-dummy/' : '/api/v1/note/',
+angular.module('notes.service').factory('$notesService', ['$rootScope', '$http', 'DEMO_MODE','$q', function($rootScope, $http, DEMO_MODE, $q){
+    var notesUrl = DEMO_MODE ? '/api/v1/note-dummy/' : '/api/v1/note/',
         sharedNoteUrl = '/api/v1/shared-note/';
 
     function fakePromise(){
@@ -17,7 +17,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
             note.title = note.title || "";
             note.date_updated = moment.utc().tz(timeZone).toJSON();
 
-            if(DUMMY_API){
+            if(DEMO_MODE){
                 note.id = note.id || Math.ceil(Math.random()*10000);
                 return fakePromise();
             }
@@ -37,7 +37,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
             var index = this.notes.indexOf(note);
 
             if(index >= 0){
-                if(DUMMY_API) return fakePromise();
+                if(DEMO_MODE) return fakePromise();
 
                 var notesService = this;
                 return $http.delete(notesUrl + note.id + '/?format=json').success(function(){

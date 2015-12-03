@@ -6,6 +6,7 @@ from tastypie.resources import ModelResource
 from tastypie.exceptions import Unauthorized
 import datetime
 
+
 class UserNotesAuthorization(Authorization):
     """
     Only allows a user to modify its own notes
@@ -44,6 +45,7 @@ class UserNotesAuthorization(Authorization):
     def delete_detail(self, object_list, bundle):
         return bundle.obj.user == bundle.request.user
 
+
 class NoteResource(ModelResource):
     class Meta:
         queryset = Note.objects.all()
@@ -68,6 +70,18 @@ class NoteResource(ModelResource):
         Return the user's notes
         """
         return object_list.filter(user=request.user)
+
+    def alter_detail_data_to_serialize(self, request, bundle):
+        """
+        Avoid returning the full note data, since we only need a few fields on the client side
+        """
+        if request.method == 'POST':
+            bundle.data = {
+                'id': bundle.data['id'],
+                'public_id': bundle.data['public_id'],
+                'date_updated': bundle.data['date_updated'],
+            }
+        return bundle
 
 
 class SharedNotesAuthorization(Authorization):
@@ -101,14 +115,13 @@ class SharedNotesAuthorization(Authorization):
 
 class SharedNoteResource(ModelResource):
     """
-    Shared notes are accessible by all, but use a public hash instead of the id
+    Shared notes are accessible by all, but use a public hash instead of an id
     """
     class Meta:
         queryset = Note.objects.all()
         resource_name = 'shared-note'
-        list_allowed_methods = ['get']
+        list_allowed_methods = ['get',]
         authorization = SharedNotesAuthorization()
-        always_return_data = True
 
     def override_urls(self):
         return [
@@ -125,8 +138,6 @@ class DummyNoteResource(ModelResource):
         resource_name = 'note-dummy'
 
         list_allowed_methods = ['get',]
-        always_return_data = True
 
     def get_object_list(self, request):
         return super(DummyNoteResource, self).get_object_list(request).filter(deleted=False)
-

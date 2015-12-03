@@ -1,5 +1,4 @@
-angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce){
-    var saveTimeout, previewTimeout; //Tracks the preview refresh and autosave delays
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, DEMO_MODE){
 
     $scope.currentNoteIndex = -1;
     $scope.messages = [];
@@ -9,11 +8,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         function(){
             init();
         },
-        function(err){
-            if(err.status === 401){
-                $window.location.href = '/auth/login/';
-            }
-        }
+        $scope.handleNetworkError
     );
 
     $scope.sideMenuOpen = false;
@@ -54,7 +49,9 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 },
             ],
             debounce(function(newValue, oldValue){
-                if(newValue && newValue[0] !== undefined && newValue[1] !== undefined) $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]);
+                if(newValue && newValue[0] !== undefined && newValue[1] !== undefined){
+                    $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]).catch($scope.handleNetworkError);
+                }
                 $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);
             }, 200)
         );
@@ -71,6 +68,37 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
             }
         });
+
+        if(!DEMO_MODE && !localStorage.getItem('introMessageDismissed')){
+            // Show a promotional message at load
+            var introMessages = [
+                    "Hello! {a}Are you hiring a developer?{/a}",
+                    "Hello! {a}Are you looking for a developer?{/a}",
+                    "The creator of Markdown Notes {a}needs a small favor{/a}",
+                    "Hello! I created Markdown Notes and {a}I need a small favor{/a}",
+                    "Hello! I created Markdown Notes and {a}I am looking for a job{/a}",
+                    "The creator of Markdown Notes {a}is looking for a job{/a}",
+                    "Hiring in Berlin? {a}I need a small favor{/a}",
+                ],
+                introMessageText = introMessages[Math.floor(Math.random()*introMessages.length)], //Pick a random one
+                aElement = '<a href="http://markdownnotes.com/app/#/1daghcj/" target="_blank" onclick="ga(\'send\', \'event\', \'Shameless plug\', \'Clicked\', \'' + introMessageText + '\')">',
+                introMessage = introMessageText.replace('{/a}', '</a>').replace('{a}', aElement);
+
+            $scope.messageService.add({
+                message: introMessage, //Pick a random message
+                class: $scope.messageService.classes.INFO,
+                id: 'shamelessPlug', //not used by the service
+                track: true,
+            });
+            ga('send', 'event', 'Shameless plug', 'Displayed', introMessageText);
+
+            $rootScope.$on('messageRemoved', function(e, message){
+                if(message.id === 'shamelessPlug'){
+                    ga('send', 'event', 'Shameless plug', 'Dismissed', message.message);
+                    localStorage.setItem('introMessageDismissed', true);
+                }
+            });
+        }
     }
 
     $scope.bindEditor = function(editor){
@@ -102,14 +130,15 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         //Close the menu
         $scope.sideMenuOpen = false;
 
-        $scope.notesService.save({
-            title: '',
-            content: '',
-        }).then(function(response){
-            if(loadCreatedNote) $scope.load(response.data.id);
-        });
-
-        ga('send', 'event', 'Notes', 'Create');
+        $scope.notesService.save({title:'', content:''}).then(
+            function(response){
+                if(response && response.data && loadCreatedNote){
+                    $scope.load(response.data.id);
+                }
+                ga('send', 'event', 'Notes', 'Create');
+            },
+            $scope.handleNetworkError
+        );
     };
 
     //Loads a note from the server
@@ -170,16 +199,19 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         var index,
             isCurrentNote = note.id === $scope.notesService.notes[$scope.currentNoteIndex].id;
 
-        $scope.notesService.remove(note).then(function(){
-            if($scope.notesService.notes.length === 0){
-                $scope.create(true);
-            }
-            else if(isCurrentNote){
-                // Don't leave the user on a deleted note. Load the next note.
-                index = Math.min($scope.currentNoteIndex, $scope.notesService.notes.length-1);
-                $scope.load($scope.notesService.notes[index].id, false);
-            }
-        });
+        $scope.notesService.remove(note).then(
+            function(){
+                if($scope.notesService.notes.length === 0){
+                    $scope.create(true);
+                }
+                else if(isCurrentNote){
+                    // Don't leave the user on a deleted note. Load the next note.
+                    index = Math.min($scope.currentNoteIndex, $scope.notesService.notes.length-1);
+                    $scope.load($scope.notesService.notes[index].id, false);
+                }
+            },
+            $scope.handleNetworkError
+        );
     };
 
     $scope.uploadImage = function(){
@@ -201,11 +233,14 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 
                 //Delete the "uploading" message
                 $scope.messageService.remove(message);
+
+                ga('send', 'event', 'Notes', 'Upload', 'Image upload');
             },
-            function(imageUrl){
+            function(){
                 error = {
                     message: 'An error occured while uploading the images.',
-                    class: $scope.messageService.classes.ERROR
+                    class: $scope.messageService.classes.ERROR,
+                    timeout: 5000,
                 };
                 $scope.messageService.replace(message, error);
             }
@@ -213,9 +248,6 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
         //Clear the uploaded file
         $scope.uploadedFile = null;
-
-        //Google analytics tracking
-        ga('send', 'event', 'Notes', 'Upload', 'Image upload');
     };
 
     //Sets the focus on the editor
@@ -238,6 +270,19 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         }
         else if(mode === $scope.MODE_HYBRID){
             ga('send', 'event', 'Notes', 'Toggle view', 'Hybrid');
+        }
+    };
+
+    $scope.handleNetworkError = function(err){
+        if(err.status === 401){
+            $window.location.href = '/auth/login/';
+        }
+        else{
+            $scope.messageService.add({
+                message: 'An error occured while saving the note.',
+                class: $scope.messageService.classes.ERROR,
+                timeout: 5000
+            });
         }
     };
 });
