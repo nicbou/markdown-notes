@@ -43,7 +43,12 @@ angular.module('notes.ui').directive("preview", function ($rootScope) {
                         gfm: true,
                         breaks: true,
                         smartLists: true,
-                        highlight: function (code){return hljs.highlightAuto(code).value;}, //Code highlighting
+                        highlight: function(code, lang){
+                            if(lang){
+                                return hljs.highlight(lang, code).value;
+                            }
+                            return hljs.highlightAuto(code).value;
+                        }, //Code highlighting
                         sanitize: true,
                         renderer: customRenderer,
                     }
