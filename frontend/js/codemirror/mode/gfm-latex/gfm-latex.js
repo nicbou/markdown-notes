@@ -79,6 +79,7 @@ CodeMirror.defineMode("gfm-custom", function(config) {
     taskLists: true,
     highlightFormatting: true,
     strikethrough: true,
+    allowAtxHeaderWithoutSpace: true,
   });
   return CodeMirror.overlayMode(CodeMirror.getMode(config, "gfm-custom"), gfmOverlay);
 }, "markdown");
