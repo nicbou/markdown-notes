@@ -560,21 +560,24 @@ body.dragOver{
                         margin-top: 0;
                     }
                 }
-            }
 
-            #preview{
-                &h1, &h2, &h3, &h4, &h5{break-after: avoid}
+                #preview{
+                    max-width: none;
 
-                & h1:first-child, & h2:first-child, & h3:first-child{margin-top:0;padding-top:0;}
+                    &h1, &h2, &h3, &h4, &h5{break-after: avoid}
 
-                .checkbox{
-                    border:1px solid $colorTextHeavy!important;
+                    & h1:first-child, & h2:first-child, & h3:first-child{margin-top:0;padding-top:0;}
 
-                    .done{
-                        color:$colorTextHeavy!important
+                    .checkbox{
+                        border:1px solid $colorTextHeavy!important;
+
+                        .done{
+                            color:$colorTextHeavy!important
+                        }
                     }
                 }
             }
+
         }
 
         #main, #main #output{width:100%!important;border:none!important;left:0!important;overflow:visible!important;}
