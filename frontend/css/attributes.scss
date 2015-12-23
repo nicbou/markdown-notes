@@ -1,4 +1,5 @@
 $colorBodyBackground: #fff;
+$colorBodyBackgroundDark: #303749;
 $colorBorderLight: #ccc;
 $colorHighlight: #00b4f9;
 $colorMenuBackground: #353c4f;
@@ -7,7 +8,7 @@ $colorMenuText: #fff;
 $colorMenuTextMuted: rgba(255,255,255,0.5);
 $colorSectionBlockBackground: rgba(0, 0, 0, 0.07); // equivalent to #eeeeee
 $colorSuccess: #0c0;
-$colorInfoBackground: #00b4f9;
+$colorInfoBackground: $colorHighlight;
 $colorWarningBackground: #f0ad4e;
 $colorErrorBackground: #d9534f;
 $colorTextHeavy: #000;

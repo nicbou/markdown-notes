@@ -1,0 +1,188 @@
+@import 'attributes';
+
+html, body{
+    background: #fff;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+body{
+    color: #000;
+    font: 24px/36px 'Roboto',sans-serif;
+    font-weight: 100;
+}
+
+#account-buttons{
+    background: $colorMenuBackground;
+    font: #{$fontSizeNormal}/#{$topBarHeight} Roboto, sans-serif;
+    position: absolute;
+    right: 0;
+    top: $marginSmall;
+
+    .separator{
+        border-left: 1px solid rgba(255,255,255,0.1);
+        height: $topBarHeight;
+        margin-bottom: -$marginSmall;
+        margin: 0;
+    }
+
+    .btn{
+        background: $colorMenuBackground;
+        border-radius: 0;
+        border: none;
+        font: #{$fontSizeNormal}/#{$topBarHeight} Roboto, sans-serif;
+        font-weight: 300;
+        padding: 0 $marginNormal;
+        text-transform: none;
+
+        &.primary{
+            background: $colorHighlight;
+        }
+
+        &:hover{
+            color:#fff;
+        }
+    }
+}
+
+.section{
+    padding: $marginExtraLarge 0;
+    text-align:center;
+
+    &.dark{
+        background: $colorBodyBackgroundDark;
+        color: #fff!important;
+    }
+    &.header{
+        overflow:hidden;
+        padding:0;
+
+        img{
+            display:block;
+            margin:0 auto;
+            padding:0;
+        }
+    }
+
+    >h1{
+        font-family:'Roboto';
+        font-size:70px;
+        font-weight:100;
+        line-height:70px;
+        margin:0 auto;
+        max-width:650px;
+        padding:45px 0 20px;
+    }
+    >h2{
+        font-family:'Roboto';
+        font-size:50px;
+        font-weight:100;
+        line-height:55px;
+        margin:0 auto;
+        max-width:650px;
+        padding:10px 0 30px;
+    }
+    >p{
+        font-size: 24px;
+        font-weight:200;
+        line-height:36px;
+        margin:0 auto 30px;
+        max-width:650px;
+        padding:0;
+    }
+}
+
+#demo #markdownnotes-wrapper{
+    height: 350px;
+    margin: -540px auto 0;
+    width: 960px;
+
+    .no-demo{
+        display:none;
+    }
+}
+
+.btn{
+    background: $colorBodyBackgroundDark;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    color: #fff;
+    display: inline-block;
+    font-weight: 100;
+    font: 25px/60px Roboto, sans-serif;
+    padding: 0 45px;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &:hover{
+        background: #fff;
+        border:1px solid $colorBodyBackgroundDark;
+        color: $colorBodyBackgroundDark;
+        cursor: pointer;
+    }
+}
+
+.alert{
+    font-size: 18px;
+    margin: 0 auto 20px;
+    max-width: 650px;
+    padding: 5px 20px;
+    
+    &.alert-error{
+        background: $colorErrorBackground;
+        color:#fff;
+    }
+}
+
+/* Forms */
+.form-actions{
+    margin:30px 0 0;
+}
+.control-group{
+    margin:0 0 10px;
+
+    label{
+        display: inline-block;
+        font-size: 24px;
+        height: 35px;
+        text-align: left;
+        width: 205px;
+    }
+    input{
+        border: 1px solid #fff;
+        padding: 10px 6px;
+        vertical-align: bottom;
+        width: 400px;
+    }
+    &.error input{
+        border-color:#f00;
+    }
+    .controls{
+        display:inline-block;
+        height:35px
+    }
+}
+
+/* Mobile style corrections */
+@media (max-width: 767px) {
+    #screen, #demo #markdownnotes-wrapper{display:none;}
+    html,body{min-width:0;overflow-x:hidden;}
+    #account-buttons{position:absolute;top:20px;left:20px;}
+    h1,h2,p{text-align:left}
+    .header h1, .section.login h1, .section.signup h1{font-size:50px;line-height:55px;padding:60px 0 30px;}
+    h1{font-size:35px;line-height:40px;padding:15px 0;}
+    p{font-size:18px;line-height:24px}
+    .section{padding:20px}
+    .section.header{padding:20px 20px 0;}
+    .section .btn{font-size:20px;line-height:60px;width:100%;margin-bottom:10px;box-sizing:border-box;}
+    .section img{max-width: 100%}
+
+    /* Forms */
+    .section.login, .section.signup{text-align:left;padding-top:20px;}
+        .control-group{margin:0 0 15px;}
+        .control-group+.form-actions>.btn{margin-top:10px;}
+        .control-label{width:100%;}
+        .controls, .controls input{width:100%;box-sizing:border-box;}
+
+}
