@@ -22,14 +22,5 @@
 			</div>
 		{% endfor %}
 		{{ formset.management_form }}
-		<script type="text/javascript">
-			$(function() {
-				$('.{{ formset.prefix }}').formset({
-					prefix: '{{ formset.prefix }}',
-					deleteText: '<i class="icon-remove"></i>',
-					deleteCssClass: 'remove-formset'
-				});
-			})
-		</script>
 	</div>
 </fieldset>

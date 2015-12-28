@@ -20,7 +20,7 @@ angular.module('notes.ui').directive("preview", function ($rootScope) {
 
             //Cache rendered formulas
             MathJax.Hub.Register.MessageHook("End Process", function(message) {
-                span = $(message[1]);
+                span = angular.element(message[1]);
                 formula = span.attr('data-formula');
                 output = span.html();
                 scope.cachedFormulas[formula] = output;
@@ -32,7 +32,7 @@ angular.module('notes.ui').directive("preview", function ($rootScope) {
                 var outputWindow = element.parent();
 
                 //Get the scroll position
-                var scrollTop = outputWindow.scrollTop();
+                var scrollTop = outputWindow.scrollTop;
 
                 //Convert the markup to HTML and update the preview
                 var content = note.content;
@@ -55,17 +55,20 @@ angular.module('notes.ui').directive("preview", function ($rootScope) {
                 ));
 
                 //Set the scroll position, since it might have been changed by loaded elements
-                outputWindow.scrollTop(scrollTop);
+                outputWindow.scrollTop = scrollTop;
 
                 //Update the preview to show LaTex equations
                 var counter = 0;
-                $('.latex').each(function(){
-                    var id = 'latex-' + counter;
-                    $(this).attr('id', id);
+                var elements = document.getElementsByClassName('latex');
+                [].forEach.call(elements, function(el){  //HTMLCollection doesn't support forEach
+                    var id = 'latex-' + counter,
+                        element = angular.element(el);
+                    
+                    element.attr('id', id);
 
-                    formula = $(this).attr('data-formula');
+                    formula = element.attr('data-formula');
                     if(scope.cachedFormulas[formula] !== undefined){
-                        $(this).html(scope.cachedFormulas[formula]);
+                        element.html(scope.cachedFormulas[formula]);
                     }
                     else{
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, id]);

@@ -4,7 +4,7 @@ angular.module('notes.ui').directive('setModeOnResize', function ($window, $time
         var w = angular.element($window);
 
         w.bind('resize', function(){   
-            if(w.width() < 768 && scope.displayMode === scope.MODE_HYBRID){
+            if($window.innerWidth < 768 && scope.displayMode === scope.MODE_HYBRID){
                 scope.displayMode = scope.MODE_INPUT_ONLY;
                 scope.$apply();
             }

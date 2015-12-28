@@ -17,10 +17,10 @@ customRenderer.listitem = function(text){
 
 customRenderer.latex = function(text){
     if(text.substring(0,3)==='$$$'){
-        el = $("<div class='latex block'></div>");
+        el = angular.element("<div class='latex block'></div>");
     }
     else{
-        el = $("<span class='latex inline'></span>");
+        el = angular.element("<span class='latex inline'></span>");
     }
     
     el.text(text);

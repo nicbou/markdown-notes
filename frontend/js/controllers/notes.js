@@ -222,7 +222,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
                 var markdownImage = '![](' + imageUrl + ')';
 
                 //Insert at cursor in the editor
-                $('.CodeMirror')[0].CodeMirror.replaceSelection(markdownImage);
+                document.getElementsByClassName('CodeMirror')[0].CodeMirror.replaceSelection(markdownImage);
                 
                 //Delete the "uploading" message
                 $scope.messageService.remove(message);
@@ -245,7 +245,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
     //Sets the focus on the editor
     $scope.focusEditor = function(){
-        $('.CodeMirror')[0].CodeMirror.focus();
+        document.getElementsByClassName('CodeMirror')[0].CodeMirror.focus();
     };
 
     $rootScope.$on('fullScreen', function(){
