@@ -7,13 +7,13 @@ angular.module('notes.ui').directive("imagedrop", function ($parse, $document) {
             //When an item is dragged over the document
             var onDragOver = function (e) {
                 e.preventDefault();
-                angular.element('body').addClass("dragOver");
+                angular.element($document[0].body).addClass("dragOver");
             };
  
             //When the user leaves the window, cancels the drag or drops the item
             var onDragEnd = function (e) {
                 e.preventDefault();
-                angular.element('body').removeClass("dragOver");
+                angular.element($document[0].body).removeClass("dragOver");
             };
  
             //When a file is dropped
@@ -29,7 +29,7 @@ angular.module('notes.ui').directive("imagedrop", function ($parse, $document) {
             element.bind("dragleave", onDragEnd)
                    .bind("drop", function (e) {
                        onDragEnd(e);
-                       loadFile(e.originalEvent.dataTransfer.files[0]);
+                       loadFile(e.dataTransfer.files[0]);
                    });
         }
     };
