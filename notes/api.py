@@ -1,9 +1,10 @@
 from django.conf.urls import url
+from django.core.exceptions import ObjectDoesNotExist
 from notes.models import Note, DummyNote
 from tastypie.authentication import SessionAuthentication
-from tastypie.authorization import Authorization, ReadOnlyAuthorization
+from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
-from tastypie.exceptions import Unauthorized
+from tastypie.exceptions import Unauthorized, NotFound
 import datetime
 
 
@@ -57,13 +58,32 @@ class NoteResource(ModelResource):
         always_return_data = True
 
     def get_object_list(self, request):
-        return super(NoteResource, self).get_object_list(request).filter(user=request.user,deleted=False)
+        return super(NoteResource, self).get_object_list(request).filter(user=request.user, deleted=False)
 
     def obj_create(self, bundle, **kwargs):
         """
         Assign created notes to the current user
         """
         return super(NoteResource, self).obj_create(bundle, user=bundle.request.user, date_created=datetime.datetime.now())
+
+    def obj_delete(self, bundle, **kwargs):
+        """
+        A rewrite of obj_delete with support for soft deletion
+        """
+        if not hasattr(bundle.obj, 'delete'):
+            try:
+                bundle.obj = self.obj_get(bundle=bundle, **kwargs)
+            except ObjectDoesNotExist:
+                raise NotFound("A model instance matching the provided arguments could not be found.")
+
+        self.authorized_delete_detail(self.get_object_list(bundle.request), bundle)
+
+        hard_delete = bundle.request.GET.get('trash', '').lower() in ['true', '1']
+
+        if hard_delete:
+            bundle.obj.hard_delete()
+        else:
+            bundle.obj.delete()
 
     def apply_authorization_limits(self, request, object_list):
         """
@@ -120,10 +140,10 @@ class SharedNoteResource(ModelResource):
     class Meta:
         queryset = Note.objects.all()
         resource_name = 'shared-note'
-        list_allowed_methods = ['get',]
+        list_allowed_methods = ['get', ]
         authorization = SharedNotesAuthorization()
 
-    def override_urls(self):
+    def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/(?P<public_id>[a-zA-Z0-9]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
         ]
@@ -137,7 +157,7 @@ class DummyNoteResource(ModelResource):
         queryset = DummyNote.objects.all()
         resource_name = 'note-dummy'
 
-        list_allowed_methods = ['get',]
+        list_allowed_methods = ['get', ]
 
     def get_object_list(self, request):
         return super(DummyNoteResource, self).get_object_list(request).filter(deleted=False)
