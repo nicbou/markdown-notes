@@ -18,7 +18,7 @@
     .CodeMirror-gutters {white-space: nowrap; background:transparent; border:none;}
     .CodeMirror-lines {padding: 4px 0;}
     .CodeMirror pre {padding: 0 4px 0 0;}
-    .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {background-color: $colorBodyBackground;}
+    .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {background-color: $colorBackground;}
 
     .CodeMirror-foldmarker {display: none}
     .CodeMirror-foldgutter {width: $marginNormal;}
@@ -69,7 +69,7 @@
         /* LaTeX and code blocks */
         .cm-delimit-latex, .cm-code-bracket-start, .cm-code-bracket-end{display:inline-block;height:100%;color:#353c4f;background:rgba(0,0,0,0.1);padding-right:3px;padding-left:3px;}
             .cm-latex.cm-bracket{color:#777}
-        .cm-latex, .cm-code, .cm-quote, .cm-formatting-code + .cm-comment, .cm-formatting-code{color:#666;background: $colorSectionBlockBackground;padding:2px 0}
+        .cm-latex, .cm-code, .cm-quote, .cm-formatting-code + .cm-comment, .cm-formatting-code{color:#666;background: $colorBackgroundLight;padding:2px 0}
             .cm-code{display:inline-block} //This is only for code blocks. Inline code is .cm-comment
             .cm-latex.cm-tag{color:#11a;}
             .cm-latex:last-child, .cm-code:last-child{padding-right:3px;}

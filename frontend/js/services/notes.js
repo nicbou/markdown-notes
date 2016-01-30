@@ -12,7 +12,22 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
     var timeZone = jstz.determine().name();
 
     var $notesService = {
-        notes: [],
+        // We split notes by category, including 'unsorted' and 'trash'
+        notes: {
+            'unsorted': [],
+            'deleted': [],
+        },
+
+        // Utility functions
+
+        count: function(category){
+            category = category || 'unsorted';
+            return this.notes[category].length;
+        },
+
+
+        // Communication with server
+
         save: function(note) {
             note.title = note.title || "";
             note.date_updated = moment.utc().tz(timeZone).toJSON();
@@ -28,37 +43,99 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
                     note.date_created = moment.utc(returnedNote.date_created).tz(timeZone).toJSON();
                     note.public_id = returnedNote.public_id;
 
-                    notesService.notes.push(note);
+                    if(note.deleted){
+                        notesService.notes.deleted.push(note);
+                    }
+                    else{
+                        notesService.notes.unsorted.push(note);
+                    }
                 }
                 note.id = returnedNote.id;
             });
         },
         remove: function(note) {
-            var index = this.notes.indexOf(note);
+            var notesService = this,
+                deletedNotesIndex = this.notes.deleted.indexOf(note),
+                allNotesindex = this.notes.unsorted.indexOf(note);
 
-            if(index >= 0){
-                if(DEMO_MODE) return fakePromise();
+            // Note already in trash. Remove permanently.
+            if(deletedNotesIndex >= 0){
+                notesService.notes.deleted.splice(deletedNotesIndex, 1);
+                
+                if(DEMO_MODE){
+                    return fakePromise();
+                }
+                else{
+                    return $http.delete(notesUrl + note.id + '/?format=json&permanent=true');
+                }
+            }
+            // Note not in trash. Mark as deleted.
+            else if(allNotesindex >= 0){
+                notesService.notes.unsorted.splice(allNotesindex, 1);
+                notesService.notes.deleted.push(note);
 
-                var notesService = this;
-                return $http.delete(notesUrl + note.id + '/?format=json').success(function(){
-                    notesService.notes.splice(index, 1);
-                });
+                note.deleted = true;
+
+                if(DEMO_MODE){
+                    return fakePromise();
+                }
+                else{
+                    return $http.delete(notesUrl + note.id + '/?format=json');
+                }
+            }
+        },
+        removeAll: function(category) {
+            var notesService = this,
+                noteURIs = this.notes[category].map(function(note){
+                    return note.resource_uri;
+                }),
+                patchData = {
+                    'objects': [],
+                    'deleted_objects': noteURIs,
+                };
+
+                notesService.notes[category] = [];
+
+                if(DEMO_MODE){
+                    return fakePromise();
+                }
+                else{
+                    return $http.patch(notesUrl + '?format=json&permanent=true', patchData);
+                }
+        },
+        restore: function(note) {
+            var deletedNotesIndex = this.notes.deleted.indexOf(note);
+
+            // Move from trash to unsorted
+            if(deletedNotesIndex >= 0){
+                this.notes.deleted.splice(deletedNotesIndex, 1);
+                this.notes.unsorted.push(note);
+
+                note.deleted = false;
+                return this.save(note);
             }
         },
         fetchFromServer: function(publicNoteId){
             var notesService = this,
                 apiUrl = publicNoteId ? sharedNoteUrl + publicNoteId : notesUrl;
                 apiUrl = apiUrl + '?format=json';
+
             return $http.get(apiUrl).then(
                 function(response) {
                     if(publicNoteId){
-                        notesService.notes = [response.data];
+                        notesService.notes.unsorted = [response.data];
                     }
                     else{
-                        notesService.notes = response.data.objects;
-                        notesService.notes.forEach(function(note){
+                        response.data.objects.forEach(function(note){
                             note.date_created = moment.utc(note.date_created).tz(timeZone).toJSON();
                             note.date_updated = note.date_created;
+
+                            if(note.deleted){
+                                notesService.notes.deleted.push(note);
+                            }
+                            else{
+                                notesService.notes.unsorted.push(note);
+                            }
                         });
                     }
                 },

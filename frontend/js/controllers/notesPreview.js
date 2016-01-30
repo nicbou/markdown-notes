@@ -4,7 +4,7 @@ angular.module('notes').controller('NotesPreviewCtrl', function NotesCtrl($scope
     $scope.notesService = $notesService;
     $scope.notesService.fetchFromServer($routeParams.noteId).then(
         function(){
-            $scope.note = $scope.notesService.notes[0];
+            $scope.note = $scope.notesService.notes.unsorted[0];
         },
         function(){
             $scope.note = {

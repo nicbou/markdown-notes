@@ -11,7 +11,7 @@
     <div ng-show="shareWindowOpen" class="modal share">
         <h2>Share this note</h2>
         <i class="close icon ion-ios-close-outline" ng-click="shareWindowOpen = null"></i>
-        <div class="share-url" ng-bind="'http://markdownnotes.com/+' + notesService.notes[currentNoteIndex].public_id"></div>
+        <div class="share-url" ng-bind="'http://markdownnotes.com/+' + notesService.notes.unsorted[currentNoteIndex].public_id"></div>
         <span class="hint">People who know this URL can see this note, but cannot edit it.</span>
     </div>
     <header>
@@ -28,23 +28,50 @@
         </nav>
         <a href="" id="btn-menu" ng-click="sideMenuOpen = !sideMenuOpen" ng-class="{'open': sideMenuOpen}">Menu</a>
         <div id="note-title-wrapper">
-            <input type="text" id="note-title" placeholder="Untitled note" tabindex="1" ng-model="notesService.notes[currentNoteIndex].title">
+            <input type="text" id="note-title" placeholder="Untitled note" tabindex="1" ng-model="notesService.notes.unsorted[currentNoteIndex].title">
         </div>
     </header>
     <div id="main">
         <nav id="side-menu" ng-class="{'open': sideMenuOpen}">
             <ul>
-                <li class="new"><a ng-click="create(true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a></li>
+                <li class="new">
+                    <a ng-click="create(true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a>
+                </li>
                 <li class="separator"></li>
-                <li ng-repeat="note in notesService.notes | orderBy:noteRanker">
+                <li ng-repeat="note in notesService.notes.unsorted | orderBy:noteRanker">
                     <a class='link' ng-click="loadFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
                         <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
                         <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                     </a>
                     <div class="actions">
                         <a ng-click="export(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
-                        <a ng-click="remove(note)" class='icon ion-ios-close-outline delete'></a>
+                        <a ng-click="remove(note)" class='icon ion-ios-trash-outline no-demo'></a>
                     </div>
+                </li>
+                <li class="separator no-demo"></li>
+                <li class="folder trash no-demo" ng-class="{'expanded': showTrash}">
+                    <a class='link' ng-click="showTrash = !showTrash">
+                        <i class="icon ion-ios-trash-outline"></i>Trash
+                    </a>
+                    <div class="actions">
+                        <a ng-click="emptyTrash()" ng-confirm-click="This will delete every note in the trash permanently. This action cannot be reversed." class='icon ion-ios-close-outline' ng-show="notesService.notes.deleted.length > 0"></a>
+                    </div>
+                    <ul ng-show="showTrash">
+                        <li class="separator"></li>
+                        <li ng-show="notesService.notes.deleted.length === 0">
+                            <span class='title muted'>No notes in trash</span>
+                        </li>
+                        <li ng-repeat="note in notesService.notes.deleted | orderBy:noteRanker">
+                            <span>
+                                <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
+                                <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
+                            </span>
+                            <div class="actions">
+                                <a ng-click="restore(note)" class="icon ion-ios-undo-outline"></a>
+                                <a ng-click="remove(note)" ng-confirm-click="This will delete this note permanently. This action cannot be reversed." class='icon ion-ios-close-outline'></a>
+                            </div>
+                        </li>
+                    </ul>
                 </li>
                 <li class="separator"></li>
                 <li class="no-demo"><a onclick="ga('send', 'event', 'Account', 'Account settings', 'Side menu')" href="/auth/account/"><i class="icon ion-ios-gear-outline"></i>Account settings</a></li>
@@ -57,7 +84,7 @@
         <div id="input">
             <div id="editor" ng-click="focusEditor()">
                 <form action="">
-                    <textarea id="textarea" placeholder="Start typing here..." name="input" ui-codemirror="codemirrorOptions" ng-model="notesService.notes[currentNoteIndex].content"></textarea>
+                    <textarea id="textarea" placeholder="Start typing here..." name="input" ui-codemirror="codemirrorOptions" ng-model="notesService.notes.unsorted[currentNoteIndex].content"></textarea>
                 </form>
             </div>
         </div>

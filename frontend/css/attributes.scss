@@ -1,26 +1,24 @@
-$colorBodyBackground: #fff;
-$colorBodyBackgroundDark: #303749;
+// Generic colors
+$colorBackground: #fff;
+$colorBackgroundInverted: #303749;
+$colorBackGroundInvertedLight: #353c4f;
+$colorBackgroundLight: rgba(0, 0, 0, 0.07); // equivalent to #eeeeee;
 $colorBorderLight: #ccc;
-$colorHighlight: #00b4f9;
-$colorMenuBackground: #353c4f;
-$colorMenuSeparator: #485065;
-$colorMenuText: #fff;
-$colorMenuTextMuted: rgba(255,255,255,0.5);
-$colorSectionBlockBackground: rgba(0, 0, 0, 0.07); // equivalent to #eeeeee
-$colorSuccess: #0c0;
-$colorInfoBackground: $colorHighlight;
-$colorWarningBackground: #f0ad4e;
+$colorBorderLightInverted: #485065;
 $colorErrorBackground: #d9534f;
+$colorHighlight: #00b4f9;
+$colorHighlightInverted: #49506a;
+$colorInfoBackground: #00b4f9;
+$colorSuccess: #0c0;
+$colorText: #333;
 $colorTextHeavy: #000;
-$colorTextNormal: #333;
-$colorTopBarBackground: $colorMenuBackground;
-$colorTopBarHighlight: #49506a;
-$colorTopBarSeparator: $colorMenuSeparator;
-$colorTopBarText: #fff;
-$colorTopBarTextMuted: $colorMenuTextMuted;
+$colorTextHeavyInverted: #fff;
+$colorTextInverted: #fff;
 $colorTextMuted: #999;
-$colorModalBackground: $colorMenuBackground;
-$colorModalText: #fff;
+$colorTextMutedInverted: rgba(255,255,255,0.5);
+$colorWarningBackground: #f0ad4e;
+
+// Generic sizes
 $fontFamilyNormal: Roboto, sans-serif;
 $fontSizeMonospace: 13px;
 $fontSizeExtraLarge: 40px; // H1

@@ -41,7 +41,14 @@ class UserNotesAuthorization(Authorization):
         return bundle.obj.user == bundle.request.user
 
     def delete_list(self, object_list, bundle):
-        raise Unauthorized()
+        allowed = []
+
+        # Since they may not all be saved, iterate over them.
+        for obj in object_list:
+            if obj.user == bundle.request.user:
+                allowed.append(obj)
+
+        return allowed
 
     def delete_detail(self, object_list, bundle):
         return bundle.obj.user == bundle.request.user
@@ -49,16 +56,19 @@ class UserNotesAuthorization(Authorization):
 
 class NoteResource(ModelResource):
     class Meta:
-        queryset = Note.objects.all()
+        queryset = Note.all_objects.all()  # Includes soft-deleted notes
         resource_name = 'note'
 
-        list_allowed_methods = ['get', 'post', 'put', 'delete']
+        list_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']
         authentication = SessionAuthentication()
         authorization = UserNotesAuthorization()
         always_return_data = True
+        filtering = {
+            'deleted': 'exact'
+        }
 
     def get_object_list(self, request):
-        return super(NoteResource, self).get_object_list(request).filter(user=request.user, deleted=False)
+        return super(NoteResource, self).get_object_list(request).filter(user=request.user)
 
     def obj_create(self, bundle, **kwargs):
         """
@@ -78,7 +88,7 @@ class NoteResource(ModelResource):
 
         self.authorized_delete_detail(self.get_object_list(bundle.request), bundle)
 
-        hard_delete = bundle.request.GET.get('trash', '').lower() in ['true', '1']
+        hard_delete = bundle.request.GET.get('permanent', '').lower() in ['true', '1']
 
         if hard_delete:
             bundle.obj.hard_delete()
@@ -154,10 +164,7 @@ class DummyNoteResource(ModelResource):
     Dummy notes API. Returns a preset list of notes, doesn't obey save requests
     """
     class Meta:
-        queryset = DummyNote.objects.all()
+        queryset = DummyNote.objects.all()  # Excludes soft-deleted notes
         resource_name = 'note-dummy'
 
         list_allowed_methods = ['get', ]
-
-    def get_object_list(self, request):
-        return super(DummyNoteResource, self).get_object_list(request).filter(deleted=False)

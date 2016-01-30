@@ -27,45 +27,45 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         if(currentNote){
             $scope.load(currentNote);
         }
-        else if($scope.notesService.notes.length === 0){
+        else if($scope.notesService.count() === 0){
             $scope.create(true);
         }
         else{
-            $scope.load($scope.notesService.notes[0].id);
+            $scope.load($scope.notesService.notes.unsorted[0].id);
         }
 
         // Monitor note changes
         $scope.$watchGroup(
             [     
                 function(){
-                    if($scope.currentNoteIndex >= 0 && $scope.notesService.notes.length > 0){
-                        return $scope.notesService.notes[$scope.currentNoteIndex].title;
+                    if($scope.currentNoteIndex >= 0 && $scope.notesService.count() > 0){
+                        return $scope.notesService.notes.unsorted[$scope.currentNoteIndex].title;
                     }
                 },   
                 function(){
-                    if($scope.currentNoteIndex >= 0 && $scope.notesService.notes.length > 0){
-                        return $scope.notesService.notes[$scope.currentNoteIndex].content;
+                    if($scope.currentNoteIndex >= 0 && $scope.notesService.count() > 0){
+                        return $scope.notesService.notes.unsorted[$scope.currentNoteIndex].content;
                     }
                 },
             ],
             debounce(function(newValue, oldValue){
                 if(newValue && newValue[0] !== undefined && newValue[1] !== undefined){
-                    $scope.notesService.save($scope.notesService.notes[$scope.currentNoteIndex]).catch($scope.handleNetworkError);
+                    $scope.notesService.save($scope.notesService.notes.unsorted[$scope.currentNoteIndex]).catch($scope.handleNetworkError);
                 }
-                $rootScope.$broadcast('noteChanged', $scope.notesService.notes[$scope.currentNoteIndex]);
+                $rootScope.$broadcast('noteChanged', $scope.notesService.notes.unsorted[$scope.currentNoteIndex]);
             }, 200)
         );
 
         // Load the right note based on the note ID in the URL if it's updated elsewhere
         $scope.$on('$routeUpdate', function(){
-            var currentNoteId = $scope.notesService.notes[$scope.currentNoteIndex].id;
+            var currentNoteId = $scope.notesService.notes.unsorted[$scope.currentNoteIndex].id;
             if($location.search().note){
                 if(currentNoteId !== +$location.search().note){
                     $scope.load(+$location.search().note);
                 }
             }
             else{
-                $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
+                $location.search('note', $scope.notesService.notes.unsorted[$scope.currentNoteIndex].id);
             }
         });
     }
@@ -116,8 +116,9 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         hideMenu = hideMenu === undefined ? true : false;
 
         //Load an existing note
-        for(var i=0; i<$scope.notesService.notes.length; i++){
-            if($scope.notesService.notes[i].id === noteId){
+        for(var i=0; i<$scope.notesService.count(); i++){
+            var note = $scope.notesService.notes.unsorted[i];
+            if(note.id === noteId && !note.deleted){
                 $scope.currentNoteIndex = i;
                 noteFound = true;
             }
@@ -126,7 +127,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         if(!noteFound){
             $scope.currentNoteIndex = 0;
         }
-        $location.search('note', $scope.notesService.notes[$scope.currentNoteIndex].id);
+        $location.search('note', $scope.notesService.notes.unsorted[$scope.currentNoteIndex].id);
 
         if(hideMenu){
             $scope.sideMenuOpen = false;
@@ -158,7 +159,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     //Ctrl + S shortcut to export files
     $document.bind('keydown', function(event) {
         if((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase()==='s') {
-            $scope.export($scope.notesService.notes[$scope.currentNoteIndex]);
+            $scope.export($scope.notesService.notes.unsorted[$scope.currentNoteIndex]);
             return false;
         }
     });
@@ -167,22 +168,30 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     $scope.noteRanker = function(note){
         return -moment(note.date_updated).valueOf(); //Most recent first
     };
-    //Sorts notes based on $scope.noteRanker values
+    //Sorts notes based on $scope.noteRanker values, but send the deleted ones at the end
     $scope.noteSorter = function(note1, note2){
-        return $scope.noteRanker(note1) - $scope.noteRanker(note2);
+        if(note1.deleted && !note2.deleted){
+            return 1;
+        }
+        else if(!note1.deleted && note2.deleted){
+            return -1;
+        }
+        else{
+            return $scope.noteRanker(note1) - $scope.noteRanker(note2);
+        }
     };
 
     //Deletes a note from the list, loads the next one in the list
     $scope.remove = function(note){
-        var isCurrentNote = note.id === $scope.notesService.notes[$scope.currentNoteIndex].id,
-            nextNoteId = $scope.notesService.notes[$scope.currentNoteIndex].id;
+        var isCurrentNote = note.id === $scope.notesService.notes.unsorted[$scope.currentNoteIndex].id,
+            nextNoteId = $scope.notesService.notes.unsorted[$scope.currentNoteIndex].id;
 
         // Don't leave the user on a deleted note. Load the next note.
         if(isCurrentNote){
-            //The notes in noteService are in arbitrary order, while those in the menu are sorted
+            //The notes in notesService are in arbitrary order, while those in the menu are sorted
             //based on $scope.noteRanker. When deleting a note, we load the next one in the menu,
             //not necessarily the next one in notesService.notes.
-            var sortedNotes = $scope.notesService.notes.slice().sort($scope.noteSorter),
+            var sortedNotes = $scope.notesService.notes.unsorted.slice().sort($scope.noteSorter),
                 indexInSortedNotes = sortedNotes.indexOf(note),
                 isLastInList = indexInSortedNotes === sortedNotes.length-1, //If deleting the last note, load the next-to-last note
                 nextNoteIndex = isLastInList ? indexInSortedNotes-1 : indexInSortedNotes+1;
@@ -195,7 +204,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         $scope.notesService.remove(note).then(
             function(){
                 //If we deleted the last note, create a new one
-                if($scope.notesService.notes.length === 0){
+                if($scope.notesService.count() === 0){
                     $scope.create(true);
                 }
                 //Update the currentNoteIndex, since the array changed
@@ -205,6 +214,14 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
             },
             $scope.handleNetworkError
         );
+    };
+
+    $scope.restore = function(note){
+        $scope.notesService.restore(note);
+    };
+
+    $scope.emptyTrash = function(){
+        $scope.notesService.removeAll('deleted');
     };
 
     $scope.uploadImage = function(){
@@ -217,7 +234,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         $scope.messageService.add(message);
 
         //Upload the image
-        Uploader.uploadImage($scope.uploadedFile, $scope.notesService.notes[$scope.currentNoteIndex]).then(
+        Uploader.uploadImage($scope.uploadedFile, $scope.notesService.notes.unsorted[$scope.currentNoteIndex]).then(
             function(imageUrl){
                 var markdownImage = '![](' + imageUrl + ')';
 

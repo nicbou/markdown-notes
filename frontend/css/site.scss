@@ -14,7 +14,7 @@ body{
 }
 
 #account-buttons{
-    background: $colorMenuBackground;
+    background: $colorBackGroundInvertedLight;
     font: #{$fontSizeNormal}/#{$topBarHeight} Roboto, sans-serif;
     position: absolute;
     right: 0;
@@ -28,7 +28,7 @@ body{
     }
 
     .btn{
-        background: $colorMenuBackground;
+        background: $colorBackGroundInvertedLight;
         border-radius: 0;
         border: none;
         font: #{$fontSizeNormal}/#{$topBarHeight} Roboto, sans-serif;
@@ -51,7 +51,7 @@ body{
     text-align:center;
 
     &.dark{
-        background: $colorBodyBackgroundDark;
+        background: $colorBackgroundInverted;
         color: #fff!important;
     }
     &.header{
@@ -104,7 +104,7 @@ body{
 }
 
 .btn{
-    background: $colorBodyBackgroundDark;
+    background: $colorBackgroundInverted;
     border-radius: 5px;
     border: 1px solid #fff;
     color: #fff;
@@ -117,8 +117,8 @@ body{
 
     &:hover{
         background: #fff;
-        border:1px solid $colorBodyBackgroundDark;
-        color: $colorBodyBackgroundDark;
+        border:1px solid $colorBackgroundInverted;
+        color: $colorBackgroundInverted;
         cursor: pointer;
     }
 }

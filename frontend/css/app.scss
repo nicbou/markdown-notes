@@ -24,11 +24,11 @@
     padding: 0;
     margin: 0;
     overflow: hidden;
-    background: $colorBodyBackground;
-    color: $colorTextNormal;
+    background: $colorBackground;
+    color: $colorText;
 
     header{
-        background: $colorTopBarBackground;
+        background: $colorBackGroundInvertedLight;
         box-sizing: border-box;
         height: $topBarHeight;
         line-height: 30px;
@@ -46,7 +46,7 @@
             #note-title{
                 background:transparent;
                 border:none;
-                color: $colorTopBarText;
+                color: $colorTextInverted;
                 font: {
                     family: $fontFamilyNormal;
                     size: $fontSizeNormal;
@@ -64,7 +64,7 @@
                         family: $fontFamilyNormal;
                     }
                     line-height: $lineHeightNormal;
-                    color: $colorTopBarTextMuted;
+                    color: $colorTextMutedInverted;
                 }
             }
             input#note-title:hover, input#note-title:focus{
@@ -86,7 +86,7 @@
                 repeat: no-repeat;
                 size: 11px;
             }
-            color: $colorTopBarText;
+            color: $colorTextInverted;
             display: inline-block;
             float: left;
             left: -$marginNormal;
@@ -109,10 +109,10 @@
     #menu-bar{
         float: right;
         height: $topBarHeight;
-        color: $colorTopBarText;
+        color: $colorTextInverted;
 
         .separator{
-            border-left: 1px solid $colorTopBarSeparator;
+            border-left: 1px solid $colorBorderLightInverted;
             display: inline-block;
             height: $topBarHeight;
             margin: 0 0 -10px;
@@ -128,7 +128,7 @@
             vertical-align: middle;
         }
         #btn-mode-hybrid{
-            background: $colorTopBarHighlight;
+            background: $colorHighlightInverted;
         }
     }
 
@@ -142,7 +142,7 @@
         width: 100%;
 
         #side-menu{
-            background: $colorMenuBackground;
+            background: $colorBackGroundInvertedLight;
             box-shadow: 0 0 20px rgba(0,0,0,0.2);
             height: 100%;
             left: -350px;
@@ -167,9 +167,12 @@
                     width:100%;
                     margin:0;
                     position:relative;
-                    cursor:pointer;
 
-                    a{
+                    > a {
+                        cursor: pointer;
+                    }
+
+                    > a, > span{
                         display:block;
                         width:100%;
                         height:100%;
@@ -178,20 +181,22 @@
                         overflow: hidden;
                         text-overflow:ellipsis;
                         white-space:nowrap;
-                        color: $colorMenuText;
+                        color: $colorTextInverted;
                         box-sizing:border-box;
                     } 
 
-                    >a>.icon{
+                    > a > .icon{
                         font-size:26px;
                         vertical-align:middle;
                         margin-right:10px;
+                        width:23px;
+                        display:inline-block;
                     }
 
                     &:hover{
                         background-color:#49506a!important;
 
-                        a{
+                        span{
                             padding-right:35px
                         }
 
@@ -200,20 +205,51 @@
                         }
                     }
 
+                    &.folder{
+                        &.expanded{
+                            background-color:#49506a!important;
+
+                            > .actions{
+                                display: block;
+                            }
+                        }
+
+                        li:hover{
+                            background-color:transparent!important;
+                        }
+
+                        > .actions{
+                            top:8px;
+                            display:none;
+                        }
+
+                        > ul .actions{
+                            display:block;
+                        }
+
+                        .separator{
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                        }
+                    }
+
                     &.separator{
-                        border-bottom: 1px solid $colorMenuSeparator;
+                        border-bottom: 1px solid $colorBorderLightInverted;
                         height: 0;
                         margin: -1px $marginNormal -1px;
                         width: 320px;
                     }
                     &.separator+.separator{display: none;}
 
-                    .title .untitled{color: $colorMenuText;}
+                    .title .untitled{color: $colorTextInverted;}
+
+                    .muted{display:block;
+                        color: $colorTextMutedInverted;
+                    }
 
                     .subtitle{display:block;
                         font-size: $fontSizeSmall;
                         text-transform: uppercase;
-                        color: $colorMenuTextMuted;
+                        color: $colorTextMutedInverted;
                     }
 
                     .actions{
@@ -224,14 +260,16 @@
                         text-align:right;
 
                         a{
-                            padding:0!important;
-                            width:30px;
+                            border-radius: 30px;
+                            color: $colorTextInverted;
+                            cursor: pointer;
+                            display:inline-block;
                             font-size:26px;
                             height:30px;
-                            display:inline-block;
-                            border-radius: 30px;
                             line-height: 30px;
+                            padding:0!important;
                             text-align: center;
+                            width:30px;
 
                             &:hover{
                                 background:#353c4f;
@@ -329,7 +367,7 @@
 
                 //Content blocks
                 code, pre, blockquote, .latex.block{
-                    background:$colorSectionBlockBackground;
+                    background:$colorBackgroundLight;
                 }
                 p, pre, blockquote, .latex.block{
                     margin: 0 0 20px;
@@ -397,13 +435,13 @@
     &.input-only{
         #main #input{width:100%;background:#fff;}
         #main #output{left:100%;}
-        #btn-mode-input{background:$colorTopBarHighlight;}
+        #btn-mode-input{background:$colorHighlightInverted;}
         #btn-mode-hybrid{background:transparent!important;}
     }
     &.output-only{
         #main #input{left:-50%;background:#fff;}
         #main #output{width:100%;left:0;}
-        #btn-mode-output{background:$colorTopBarHighlight;}
+        #btn-mode-output{background:$colorHighlightInverted;}
         #btn-mode-hybrid{background:transparent!important;}
     }
 
@@ -452,8 +490,8 @@
 
     .modal{
         box-sizing: border-box;
-        background: $colorModalBackground;
-        color: $colorModalText;
+        background: $colorBackGroundInvertedLight;
+        color: $colorTextInverted;
         position: absolute;
         z-index: 2000;
         padding: $marginNormal;
@@ -469,7 +507,7 @@
 
         .hint{
             font-size: $fontSizeSmall;
-            color: $colorMenuTextMuted;
+            color: $colorTextMutedInverted;
         }
 
         &.share{
