@@ -218,10 +218,12 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
     $scope.restore = function(note){
         $scope.notesService.restore(note);
+        ga('send', 'event', 'Notes', 'Trash', 'Restore note');
     };
 
     $scope.emptyTrash = function(){
         $scope.notesService.removeAll('deleted');
+        ga('send', 'event', 'Notes', 'Trash', 'Empty trash');
     };
 
     $scope.uploadImage = function(){
