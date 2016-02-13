@@ -12,25 +12,24 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
     var timeZone = jstz.determine().name();
 
     var $notesService = {
-        // We split notes by category, including 'unsorted' and 'trash'
         notes: {
-            'unsorted': [],
+            'active': [],
             'deleted': [],
         },
 
         // Utility functions
 
         count: function(category){
-            category = category || 'unsorted';
+            category = category || 'active';
             return this.notes[category].length;
         },
-
 
         // Communication with server
 
         save: function(note) {
             note.title = note.title || "";
             note.date_updated = moment.utc().tz(timeZone).toJSON();
+            note.notebook_uri = note.notebook_uri || null;
 
             if(DEMO_MODE){
                 note.id = note.id || Math.ceil(Math.random()*10000);
@@ -39,7 +38,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
 
             var notesService = this;
             return $http.post(notesUrl + '?format=json', note).success(function(returnedNote) {
-                if(!note.id){
+                if(!note.id){ //New note
                     note.date_created = moment.utc(returnedNote.date_created).tz(timeZone).toJSON();
                     note.public_id = returnedNote.public_id;
 
@@ -47,7 +46,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
                         notesService.notes.deleted.push(note);
                     }
                     else{
-                        notesService.notes.unsorted.push(note);
+                        notesService.notes.active.push(note);
                     }
                 }
                 note.id = returnedNote.id;
@@ -56,7 +55,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
         remove: function(note) {
             var notesService = this,
                 deletedNotesIndex = this.notes.deleted.indexOf(note),
-                allNotesindex = this.notes.unsorted.indexOf(note);
+                allNotesindex = this.notes.active.indexOf(note);
 
             // Note already in trash. Remove permanently.
             if(deletedNotesIndex >= 0){
@@ -71,7 +70,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
             }
             // Note not in trash. Mark as deleted.
             else if(allNotesindex >= 0){
-                notesService.notes.unsorted.splice(allNotesindex, 1);
+                notesService.notes.active.splice(allNotesindex, 1);
                 notesService.notes.deleted.push(note);
 
                 note.deleted = true;
@@ -106,10 +105,10 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
         restore: function(note) {
             var deletedNotesIndex = this.notes.deleted.indexOf(note);
 
-            // Move from trash to unsorted
+            // Move from trash to active
             if(deletedNotesIndex >= 0){
                 this.notes.deleted.splice(deletedNotesIndex, 1);
-                this.notes.unsorted.push(note);
+                this.notes.active.push(note);
 
                 note.deleted = false;
                 return this.save(note);
@@ -123,7 +122,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
             return $http.get(apiUrl).then(
                 function(response) {
                     if(publicNoteId){
-                        notesService.notes.unsorted = [response.data];
+                        notesService.notes.active = [response.data];
                     }
                     else{
                         response.data.objects.forEach(function(note){
@@ -134,7 +133,7 @@ angular.module('notes.service').factory('$notesService', ['$rootScope', '$http',
                                 notesService.notes.deleted.push(note);
                             }
                             else{
-                                notesService.notes.unsorted.push(note);
+                                notesService.notes.active.push(note);
                             }
                         });
                     }

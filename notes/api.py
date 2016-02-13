@@ -1,16 +1,17 @@
 from django.conf.urls import url
 from django.core.exceptions import ObjectDoesNotExist
-from notes.models import Note, DummyNote
+from notes.models import Note, DummyNote, Notebook
+from tastypie import fields
 from tastypie.authentication import SessionAuthentication
 from tastypie.authorization import Authorization
-from tastypie.resources import ModelResource
 from tastypie.exceptions import Unauthorized, NotFound
+from tastypie.resources import ModelResource
 import datetime
 
 
 class UserNotesAuthorization(Authorization):
     """
-    Only allows a user to modify its own notes
+    Only allows a user to modify his own notes
     """
     def read_list(self, object_list, bundle):
         # This assumes a ``QuerySet`` from ``ModelResource``.
@@ -54,14 +55,42 @@ class UserNotesAuthorization(Authorization):
         return bundle.obj.user == bundle.request.user
 
 
+class NotebookResource(ModelResource):
+    class Meta:
+        queryset = Notebook.objects.all()
+        resource_name = 'notebook'
+
+        list_allowed_methods = ['get', 'post', 'put', 'delete']
+        authentication = SessionAuthentication()
+        authorization = UserNotesAuthorization()
+        always_return_data = True
+
+    def get_object_list(self, request):
+        return super(NotebookResource, self).get_object_list(request).filter(user=request.user)
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Assign created notebooks to the current user
+        """
+        return super(NotebookResource, self).obj_create(bundle, user=bundle.request.user, date_created=datetime.datetime.now())
+
+    def apply_authorization_limits(self, request, object_list):
+        """
+        Return the user's notebooks
+        """
+        return object_list.filter(user=request.user)
+
+
 class NoteResource(ModelResource):
+    notebook_uri = fields.ForeignKey(NotebookResource, attribute='notebook', null=True, full=False)
+
     class Meta:
         queryset = Note.all_objects.all()  # Includes soft-deleted notes
         resource_name = 'note'
 
         list_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']
         authentication = SessionAuthentication()
-        authorization = UserNotesAuthorization()
+        authorization = UserNotesAuthorization()  # Same as notes
         always_return_data = True
         filtering = {
             'deleted': 'exact'
@@ -78,7 +107,8 @@ class NoteResource(ModelResource):
 
     def obj_delete(self, bundle, **kwargs):
         """
-        A rewrite of obj_delete with support for soft deletion
+        A rewrite of obj_delete with support for soft deletion. Pass it ?permanent=true
+        to delete the object permanently.
         """
         if not hasattr(bundle.obj, 'delete'):
             try:
@@ -100,18 +130,6 @@ class NoteResource(ModelResource):
         Return the user's notes
         """
         return object_list.filter(user=request.user)
-
-    def alter_detail_data_to_serialize(self, request, bundle):
-        """
-        Avoid returning the full note data, since we only need a few fields on the client side
-        """
-        if request.method == 'POST':
-            bundle.data = {
-                'id': bundle.data['id'],
-                'public_id': bundle.data['public_id'],
-                'date_updated': bundle.data['date_updated'],
-            }
-        return bundle
 
 
 class SharedNotesAuthorization(Authorization):

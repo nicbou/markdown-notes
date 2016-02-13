@@ -56,6 +56,17 @@ class SoftDeletionModel(models.Model):
         super(SoftDeletionModel, self).delete()
 
 
+class Notebook(models.Model):
+    """
+    Notebooks let users group their notes together
+    """
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ['title']
+
+
 def generate_hash():
     return base36.dumps(random.getrandbits(32))
 
@@ -71,8 +82,9 @@ class Note(SoftDeletionModel):
     date_updated = models.DateTimeField(auto_now=True)
     public_id = models.CharField(max_length=32, default=generate_hash)
 
-    objects = SoftDeletionManager()
+    notebook = models.ForeignKey(Notebook, null=True, blank=True, on_delete=models.SET_NULL)
 
+    objects = SoftDeletionManager()
 
     def __unicode__(self):
         return "%s by %s" % (self.title, self.user)
@@ -95,9 +107,9 @@ class DummyNote(Note):
 def user_created(sender, **kwargs):
     if kwargs["created"]:
         note = Note(
-            user = kwargs["instance"],
-            title = "Getting started",
-            content = render_to_string('notes/getting_started.md'),
+            user=kwargs["instance"],
+            title="Getting started",
+            content=render_to_string('notes/getting_started.md'),
         )
         note.save()
 

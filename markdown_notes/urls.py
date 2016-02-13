@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
-from notes.api import NoteResource, DummyNoteResource, SharedNoteResource
+from notes.api import NoteResource, DummyNoteResource, SharedNoteResource, NotebookResource
 from notes.views import NotesView, SharedNoteRedirectView
 from tastypie.api import Api
 from uploads.views import S3RedirectView
@@ -11,6 +11,7 @@ from uploads.views import S3RedirectView
 # API urls
 v1_api = Api(api_name='v1')
 v1_api.register(NoteResource())
+v1_api.register(NotebookResource())
 v1_api.register(DummyNoteResource())
 v1_api.register(SharedNoteResource())
 
