@@ -32,7 +32,7 @@ angular.module('notes').controller('NotesPreviewCtrl', function NotesCtrl($scope
     //Ctrl + S shortcut to export files
     $document.bind('keydown', function(event) {
         if((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase()==='s') {
-            $scope.export($scope.note);
+            $scope.exportNote($scope.note);
             return false;
         }
     });

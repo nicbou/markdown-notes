@@ -49,7 +49,7 @@
                         <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                     </a>
                     <div class="actions">
-                        <a ng-click="export(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
+                        <a ng-click="exportNote(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
                         <a ng-click="removeNote(note)" class='icon ion-ios-trash-outline no-demo'></a>
                     </div>
                 </li>
@@ -68,7 +68,7 @@
                                 <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                             </a>
                             <div class="actions">
-                                <a ng-click="export(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
+                                <a ng-click="exportNote(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
                                 <a ng-click="removeNote(note)" class='icon ion-ios-trash-outline no-demo'></a>
                             </div>
                         </li>

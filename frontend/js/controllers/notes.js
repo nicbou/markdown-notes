@@ -150,7 +150,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     };
 
     //Saves a note then exports it to .md
-    $scope.export = function(note, track){
+    $scope.exportNote = function(note, track){
         var blob = new Blob([note.content], {type:'text/x-markdown'});
         var fileName = note.title.toSlug(100);
         fileName = fileName.length === 0 ? "untitled note" : fileName;
@@ -165,7 +165,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     //Ctrl + S shortcut to export files
     $document.bind('keydown', function(event) {
         if((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase()==='s') {
-            $scope.export($scope.notesService.notes.active[$scope.currentNoteIndex]);
+            $scope.exportNote($scope.notesService.notes.active[$scope.currentNoteIndex]);
             return false;
         }
     });
