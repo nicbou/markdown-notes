@@ -232,6 +232,10 @@
                         }
                     }
 
+                    &.folder.expanded+.folder.expanded{
+                        border-top: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+
                     &.separator{
                         border-bottom: 1px solid $colorBorderLightInverted;
                         height: 0;
