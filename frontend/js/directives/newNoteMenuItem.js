@@ -3,7 +3,7 @@ angular.module('notes.ui').directive("newNoteMenuItem", function ($timeout) {
     return {
         restrict: "A",
         template:
-            '<li>' +
+            '<li ng-class="{\'creating-notebook\': creatingNotebook}">' +
             '   <a ng-click="newNotebook()" ng-hide="creatingNotebook">' +
             '       <i class="icon ion-ios-browsers-outline"></i>' +
             '       Create a notebook' +
@@ -13,8 +13,8 @@ angular.module('notes.ui').directive("newNoteMenuItem", function ($timeout) {
             '       <input type="text" ng-model="newNotebookTitle" placeholder="Give your notebook a name">' +
             '   </span>' +
             '   <div class="actions" ng-show="creatingNotebook">' +
-            '       <a ng-click="saveNotebook()" class="icon ion-ios-checkmark-empty"></a>' +
-            '       <a ng-click="cancelNewNotebook()" class="icon ion-ios-close-empty"></a>' +
+            '       <a ng-click="saveNotebook()" class="icon ion-ios-checkmark-outline"></a>' +
+            '       <a ng-click="cancelNewNotebook()" class="icon ion-ios-close-outline"></a>' +
             '   </div>' +
             '</li>',
         replace: true,

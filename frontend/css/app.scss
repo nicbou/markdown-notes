@@ -161,12 +161,16 @@
             ul{
                 margin:0;
                 padding:0;
+                color: $colorTextInverted;
 
                 li{
                     list-style:none;
                     width:100%;
                     margin:0;
                     position:relative;
+                    display:flex;
+                    flex-flow:row wrap;
+                    align-items: center;
 
                     > a {
                         cursor: pointer;
@@ -185,15 +189,9 @@
                         color: $colorTextInverted;
                         box-sizing:border-box;
 
-                        > .icon{
-                            font-size:26px;
-                            vertical-align:middle;
-                            margin-right:10px;
-                            width:23px;
-                            display:inline-block;
-                        }
-
                         &.editable{
+                            display:flex;
+
                             input{
                                 background: transparent;
                                 color:#fff;
@@ -203,36 +201,32 @@
                                 line-height: 20px;
                                 font:inherit;
                                 vertical-align:top;
-                                margin-right:$marginExtraSmall;
+                                flex:1 1;
                             }
-                            .save{
-                                font-size:26px;
-                                color:#fff;
-                            }
+                        }
+
+                        > .icon{ // Main icon
+                            font-size:26px;
+                            vertical-align:middle;
+                            margin-right:$marginSmall;
+                            width:23px;
+                            display:inline-block;
+                            flex:0 0;
                         }
                     }
 
-                    &:hover{
-                        background-color:#49506a!important;
 
-                        span{
-                            padding-right:35px
-                        }
+                    &:hover, &.folder.expanded, &.creating-notebook{
+                        background-color:#49506a!important;
 
                         .actions{
                             display:block;
+                            white-space:nowrap;
+                            flex:0 0;
                         }
                     }
 
                     &.folder{
-                        &.expanded{
-                            background-color:#49506a!important;
-
-                            > .actions{
-                                display: block;
-                            }
-                        }
-
                         li:hover{
                             background-color:transparent!important;
                         }
@@ -242,8 +236,13 @@
                             display:none;
                         }
 
-                        > ul .actions{
-                            display:block;
+                        > ul{
+                            width:100%;
+                            flex:0 100%;
+
+                            .actions{
+                                display:block;
+                            } 
                         }
 
                         .separator{
@@ -276,10 +275,8 @@
                     }
 
                     .actions{
-                        position:absolute;
                         display:none;
-                        top:11px;
-                        right:10px;
+                        padding-right:10px;
                         text-align:right;
 
                         a{

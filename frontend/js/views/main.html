@@ -43,7 +43,7 @@
                 <li new-note-menu-item></li>
                 <li class="separator"></li>
                 <li ng-repeat="note in notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: null}">
-                    <a class='link' ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
+                    <a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
                         <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
                         <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                     </a>
@@ -54,8 +54,9 @@
                 </li>
                 <li class="separator" ng-show="notebooksService.notebooks.length > 0"></li>
                 <li class="folder" ng-repeat="notebook in notebooksService.notebooks" ng-class="{'expanded': notebook.expanded}">
-                    <a class='link' ng-click="showTrash = !showTrash; notebook.expanded = !notebook.expanded">
-                        <i class="icon ion-ios-browsers-outline"></i>{{notebook.title}}
+                    <a ng-click="notebook.expanded = !notebook.expanded">
+                        <i class="icon ion-ios-browsers-outline"></i>
+                        {{notebook.title}}
                     </a>
                     <div class="actions">
                         <a class='icon ion-ios-close-outline' ng-click="deleteNotebook(notebook)"></a>
@@ -63,7 +64,7 @@
                     <ul ng-show="notebook.expanded">
                         <li class="separator"></li>
                         <li ng-repeat="note in notes = (notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: notebook.resource_uri})">
-                            <a class='link' ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
+                            <a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
                                 <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
                                 <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                             </a>
@@ -78,8 +79,9 @@
                     </ul>
                 </li>
                 <li class="folder trash no-demo" ng-class="{'expanded': showTrash}">
-                    <a class='link' ng-click="showTrash = !showTrash">
-                        <i class="icon ion-ios-trash-outline"></i>Trash
+                    <a ng-click="showTrash = !showTrash">
+                        <i class="icon ion-ios-trash-outline"></i>
+                        Trash
                     </a>
                     <div class="actions">
                         <a ng-click="emptyTrash()" ng-confirm-click="This will delete every note in the trash permanently. This action cannot be reversed." class='icon ion-ios-close-outline' ng-show="notesService.notes.deleted.length > 0"></a>
