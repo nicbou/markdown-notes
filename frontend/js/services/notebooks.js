@@ -22,14 +22,14 @@ angular.module('notes.service').factory('$notebooksService', ['$rootScope', '$ht
             }
 
             var notebooksService = this;
-            return $http.post(notebooksUrl + '?format=json', note).success(function(returnedNotebook) {
+            return $http.post(notebooksUrl + '?format=json', notebook).success(function(returnedNotebook) {
                 if(!notebook.id){
                     notebooksService.notebooks.push(notebook);
                 }
                 notebook.id = returnedNotebook.id;
             });
         },
-        remove: function(notebook) {
+        delete: function(notebook) {
             var notebooksService = this,
                 notebookIndex = this.notebooks.indexOf(notebook);
 

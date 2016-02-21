@@ -219,7 +219,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         );
     };
 
-    $scope.restore = function(note){
+    $scope.restoreNote = function(note){
         $scope.notesService.restore(note);
         ga('send', 'event', 'Notes', 'Trash', 'Restore note');
     };
@@ -263,6 +263,28 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
         //Clear the uploaded file
         $scope.uploadedFile = null;
+    };
+
+    $scope.createNotebook = function(title){
+        $scope.notebooksService.save({
+            title: title || 'Untitled notebook',
+        });
+    };
+
+    $scope.deleteNotebook = function(notebook){
+        var clearNotebookUri = function(note){
+            if(note.notebook_uri === notebook.resource_uri){
+                note.notebook_uri = null;
+            }
+        };
+
+        //Unassign the notebook from any note that has it.
+        //This is already done server-side when deleting the notebook.
+        //We just avoid a needless sync.
+        $scope.notesService.notes.active.forEach(clearNotebookUri);
+        $scope.notesService.notes.deleted.forEach(clearNotebookUri);
+
+        $scope.notebooksService.delete(notebook);
     };
 
     //Sets the focus on the editor

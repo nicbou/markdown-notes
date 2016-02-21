@@ -35,13 +35,12 @@
         <nav id="side-menu" ng-class="{'open': sideMenuOpen}">
             <ul>
                 <li class="new">
-                    <a ng-click="createNote(true)"><i class="icon ion-ios-compose-outline"></i>Create a note</a>
-                </li>
-                <li>
-                    <a ng-click="createNoteBook(true)">
-                        <i class="icon ion-ios-browsers-outline"></i>Create a notebook
+                    <a ng-click="createNote(true)">
+                        <i class="icon ion-ios-compose-outline"></i>
+                        Create a note
                     </a>
                 </li>
+                <li new-note-menu-item></li>
                 <li class="separator"></li>
                 <li ng-repeat="note in notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: null}">
                     <a class='link' ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
@@ -59,7 +58,7 @@
                         <i class="icon ion-ios-browsers-outline"></i>{{notebook.title}}
                     </a>
                     <div class="actions">
-                        <a class='icon ion-ios-close-outline' ng-show="notebooksService.notebooks.length > 0"></a>
+                        <a class='icon ion-ios-close-outline' ng-click="deleteNotebook(notebook)"></a>
                     </div>
                     <ul ng-show="notebook.expanded">
                         <li class="separator"></li>
@@ -96,7 +95,7 @@
                                 <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                             </span>
                             <div class="actions">
-                                <a ng-click="restore(note)" class="icon ion-ios-undo-outline"></a>
+                                <a ng-click="restoreNote(note)" class="icon ion-ios-undo-outline"></a>
                                 <a ng-click="removeNote(note)" ng-confirm-click="This will delete this note permanently. This action cannot be reversed." class='icon ion-ios-close-outline'></a>
                             </div>
                         </li>

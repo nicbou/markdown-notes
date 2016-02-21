@@ -173,6 +173,7 @@
                     }
 
                     > a, > span{
+                        flex:1 1;
                         display:block;
                         width:100%;
                         height:100%;
@@ -183,14 +184,32 @@
                         white-space:nowrap;
                         color: $colorTextInverted;
                         box-sizing:border-box;
-                    } 
 
-                    > a > .icon{
-                        font-size:26px;
-                        vertical-align:middle;
-                        margin-right:10px;
-                        width:23px;
-                        display:inline-block;
+                        > .icon{
+                            font-size:26px;
+                            vertical-align:middle;
+                            margin-right:10px;
+                            width:23px;
+                            display:inline-block;
+                        }
+
+                        &.editable{
+                            input{
+                                background: transparent;
+                                color:#fff;
+                                border:none;
+                                border-bottom: 1px solid rgba(255,255,255,0.5);
+                                outline:none;
+                                line-height: 20px;
+                                font:inherit;
+                                vertical-align:top;
+                                margin-right:$marginExtraSmall;
+                            }
+                            .save{
+                                font-size:26px;
+                                color:#fff;
+                            }
+                        }
                     }
 
                     &:hover{
