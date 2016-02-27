@@ -214,14 +214,19 @@
                             vertical-align:middle;
                             margin-right:$marginSmall;
                             width:23px;
+                            margin-top:-3px;
                             display:inline-block;
-                            flex:0 0;
+                            float:left;
                         }
                     }
 
 
                     &:hover, &.folder.expanded, &.creating-notebook{
                         background-color:#49506a!important;
+
+                        &.danger:hover{
+                            background-color:rgba(255,0,0,0.7)!important;
+                        }
 
                         .actions{
                             display:block;

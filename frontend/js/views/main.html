@@ -39,7 +39,7 @@
                         <i class="icon ion-ios-compose-outline"></i>Create a note
                     </a>
                 </li>
-                <li new-note-menu-item></li>
+                <li new-notebook-menu-item></li>
                 <li class="separator"></li>
                 <li ng-repeat="note in notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: null}">
                     <a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
@@ -52,14 +52,29 @@
                     </div>
                 </li>
                 <li class="separator" ng-show="notebooksService.notebooks.length > 0"></li>
-                <li class="folder" ng-repeat="notebook in notebooksService.notebooks" ng-class="{'expanded': notebook.expanded}">
-                    <a ng-click="notebook.expanded = !notebook.expanded">
-                        <i class="icon ion-ios-browsers-outline"></i>{{notebook.title}}
+                <li class="folder notebook" ng-repeat="notebook in notebooksService.notebooks" ng-class="{'expanded': notebook.expanded}" notebook-menu-item>
+                    <a ng-click="toggleExpanded()" ng-hide="notebook.settingsOpen">
+                        <i class="icon ion-ios-browsers-outline"></i>{{notebook.title}}<span class="untitled" ng-show="!notebook.title">Untitled notebook</span>
                     </a>
+                    <span class="editable" ng-show="notebook.settingsOpen">
+                        <i class="icon ion-ios-browsers-outline"></i>
+                        <input type="text" ng-model="notebook.title" placeholder="Untitled notebook">
+                    </span>
+
                     <div class="actions">
-                        <a class='icon ion-ios-close-outline' ng-click="deleteNotebook(notebook)"></a>
+                        <a ng-show="notebook.settingsOpen" class='icon ion-ios-checkmark-outline' ng-click="toggleSettings()"></a>
+                        <a ng-hide="notebook.settingsOpen" class='icon ion-ios-settings' ng-click="toggleSettings()"></a>
                     </div>
-                    <ul ng-show="notebook.expanded">
+                    <ul class="settings" ng-show="notebook.expanded && notebook.settingsOpen">
+                        <li class="separator"></li>
+                        <li class="danger">
+                            <a ng-click="deleteNotebook(notebook)" ng-confirm-click="This will delete the notebook. All notes in this notebook will be preserved.">
+                                <span class="title">Delete notebook</span>
+                                <span class="subtitle">Notes in the notebook will be not be deleted</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul ng-show="notebook.expanded && !notebook.settingsOpen">
                         <li class="separator"></li>
                         <li ng-repeat="note in notes = (notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: notebook.resource_uri})">
                             <a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">

@@ -1,12 +1,11 @@
 //Toggles full screen mode in supported browsers
-angular.module('notes.ui').directive("newNoteMenuItem", function ($timeout) {
+angular.module('notes.ui').directive("newNotebookMenuItem", function ($timeout) {
     return {
         restrict: "A",
         template:
             '<li ng-class="{\'creating-notebook\': creatingNotebook}">' +
             '   <a ng-click="newNotebook()" ng-hide="creatingNotebook">' +
-            '       <i class="icon ion-ios-browsers-outline"></i>' +
-            '       Create a notebook' +
+            '       <i class="icon ion-ios-browsers-outline"></i>Create a notebook' +
             '   </a>' +
             '   <span class="editable" ng-show="creatingNotebook">' +
             '       <i class="icon ion-ios-browsers-outline"></i>' +

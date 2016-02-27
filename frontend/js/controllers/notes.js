@@ -267,7 +267,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
     $scope.createNotebook = function(title){
         $scope.notebooksService.save({
-            title: title || 'Untitled notebook',
+            title: title || '',
         });
     };
 
