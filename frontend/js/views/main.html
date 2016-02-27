@@ -36,15 +36,14 @@
             <ul>
                 <li class="new">
                     <a ng-click="createNote(true)">
-                        <i class="icon ion-ios-compose-outline"></i>
-                        Create a note
+                        <i class="icon ion-ios-compose-outline"></i>Create a note
                     </a>
                 </li>
                 <li new-note-menu-item></li>
                 <li class="separator"></li>
                 <li ng-repeat="note in notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: null}">
                     <a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
-                        <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
+                        <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">Untitled note</span></span>
                         <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                     </a>
                     <div class="actions">
@@ -55,8 +54,7 @@
                 <li class="separator" ng-show="notebooksService.notebooks.length > 0"></li>
                 <li class="folder" ng-repeat="notebook in notebooksService.notebooks" ng-class="{'expanded': notebook.expanded}">
                     <a ng-click="notebook.expanded = !notebook.expanded">
-                        <i class="icon ion-ios-browsers-outline"></i>
-                        {{notebook.title}}
+                        <i class="icon ion-ios-browsers-outline"></i>{{notebook.title}}
                     </a>
                     <div class="actions">
                         <a class='icon ion-ios-close-outline' ng-click="deleteNotebook(notebook)"></a>
@@ -65,7 +63,7 @@
                         <li class="separator"></li>
                         <li ng-repeat="note in notes = (notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: notebook.resource_uri})">
                             <a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
-                                <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
+                                <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">Untitled note</span></span>
                                 <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                             </a>
                             <div class="actions">
@@ -80,8 +78,7 @@
                 </li>
                 <li class="folder trash no-demo" ng-class="{'expanded': showTrash}">
                     <a ng-click="showTrash = !showTrash">
-                        <i class="icon ion-ios-trash-outline"></i>
-                        Trash
+                        <i class="icon ion-ios-trash-outline"></i>Trash
                     </a>
                     <div class="actions">
                         <a ng-click="emptyTrash()" ng-confirm-click="This will delete every note in the trash permanently. This action cannot be reversed." class='icon ion-ios-close-outline' ng-show="notesService.notes.deleted.length > 0"></a>
@@ -93,7 +90,7 @@
                         </li>
                         <li ng-repeat="note in notesService.notes.deleted | orderBy:noteRanker">
                             <span>
-                                <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">(untitled note)</span></span>
+                                <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">Untitled note</span></span>
                                 <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                             </span>
                             <div class="actions">
