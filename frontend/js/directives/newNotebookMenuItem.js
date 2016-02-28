@@ -39,7 +39,7 @@ angular.module('notes.ui').directive("newNotebookMenuItem", function ($timeout) 
                 scope.creatingNotebook = false;
             };
 
-            angular.element(textbox).bind('keydown keypress', function(e){
+            angular.element(textbox).bind('keypress', function(e){
                 if(e.which == 13){ //enter
                     scope.saveNotebook();
                 }
