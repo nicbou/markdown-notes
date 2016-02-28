@@ -47,8 +47,8 @@
                         <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                     </a>
                     <div class="actions">
-                        <a ng-click="exportNote(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
-                        <a ng-click="removeNote(note)" class='icon ion-ios-trash-outline no-demo'></a>
+                        <a ng-click="exportNote(note, true)" title="Download note" class="icon ion-ios-cloud-download-outline export"></a>
+                        <a ng-click="removeNote(note)" title="Send note to trash" class='icon ion-ios-trash-outline no-demo'></a>
                     </div>
                 </li>
                 <li class="separator" ng-show="notebooksService.notebooks.length > 0"></li>
@@ -62,8 +62,8 @@
                     </span>
 
                     <div class="actions">
-                        <a ng-show="notebook.settingsOpen" class='icon ion-ios-checkmark-outline' ng-click="toggleSettings()"></a>
-                        <a ng-hide="notebook.settingsOpen" class='icon ion-ios-settings' ng-click="toggleSettings()"></a>
+                        <a ng-show="notebook.settingsOpen" title="Close settings" class='icon ion-ios-checkmark-outline' ng-click="toggleSettings()"></a>
+                        <a ng-hide="notebook.settingsOpen" title="Notebook settings" class='icon ion-ios-settings' ng-click="toggleSettings()"></a>
                     </div>
                     <ul class="settings" ng-show="notebook.expanded && notebook.settingsOpen">
                         <li class="separator"></li>
@@ -82,8 +82,8 @@
                                 <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                             </a>
                             <div class="actions">
-                                <a ng-click="exportNote(note, true)" class="icon ion-ios-cloud-download-outline export"></a>
-                                <a ng-click="removeNote(note)" class='icon ion-ios-trash-outline no-demo'></a>
+                                <a ng-click="exportNote(note, true)" title="Download note" class="icon ion-ios-cloud-download-outline export"></a>
+                                <a ng-click="removeNote(note)" title="Send note to trash" class='icon ion-ios-trash-outline no-demo'></a>
                             </div>
                         </li>
                         <li ng-show="notes.length === 0">
@@ -96,7 +96,7 @@
                         <i class="icon ion-ios-trash-outline"></i>Trash
                     </a>
                     <div class="actions">
-                        <a ng-click="emptyTrash()" ng-confirm-click="This will delete every note in the trash permanently. This action cannot be reversed." class='icon ion-ios-close-outline' ng-show="notesService.notes.deleted.length > 0"></a>
+                        <a title="Empty trash" ng-click="emptyTrash()" ng-confirm-click="This will delete every note in the trash permanently. This action cannot be reversed." class='icon ion-ios-close-outline' ng-show="notesService.notes.deleted.length > 0"></a>
                     </div>
                     <ul ng-show="showTrash">
                         <li class="separator"></li>
@@ -109,8 +109,8 @@
                                 <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
                             </span>
                             <div class="actions">
-                                <a ng-click="restoreNote(note)" class="icon ion-ios-undo-outline"></a>
-                                <a ng-click="removeNote(note)" ng-confirm-click="This will delete this note permanently. This action cannot be reversed." class='icon ion-ios-close-outline'></a>
+                                <a ng-click="restoreNote(note)" title="Restore note" class="icon ion-ios-undo-outline"></a>
+                                <a ng-click="removeNote(note)" title="Delete note permanently" ng-confirm-click="This will delete this note permanently. This action cannot be reversed." class='icon ion-ios-close-outline'></a>
                             </div>
                         </li>
                     </ul>
