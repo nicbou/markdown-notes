@@ -41,16 +41,7 @@
                 </li>
                 <li new-notebook-menu-item></li>
                 <li class="separator"></li>
-                <li ng-repeat="note in notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: null}">
-                    <a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
-                        <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">Untitled note</span></span>
-                        <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
-                    </a>
-                    <div class="actions">
-                        <a ng-click="exportNote(note, true)" title="Download note" class="icon ion-ios-cloud-download-outline export"></a>
-                        <a ng-click="removeNote(note)" title="Send note to trash" class='icon ion-ios-trash-outline no-demo'></a>
-                    </div>
-                </li>
+                <li note-menu-item ng-repeat="note in notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: null}"></li>
                 <li class="separator" ng-show="notebooksService.notebooks.length > 0"></li>
                 <li class="folder notebook" ng-repeat="notebook in notebooksService.notebooks" ng-class="{'expanded': notebook.expanded}" notebook-menu-item>
                     <a ng-click="toggleExpanded()" ng-hide="notebook.settingsOpen">
@@ -76,16 +67,7 @@
                     </ul>
                     <ul ng-show="notebook.expanded && !notebook.settingsOpen">
                         <li class="separator"></li>
-                        <li ng-repeat="note in notes = (notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: notebook.resource_uri})">
-                            <a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
-                                <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">Untitled note</span></span>
-                                <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
-                            </a>
-                            <div class="actions">
-                                <a ng-click="exportNote(note, true)" title="Download note" class="icon ion-ios-cloud-download-outline export"></a>
-                                <a ng-click="removeNote(note)" title="Send note to trash" class='icon ion-ios-trash-outline no-demo'></a>
-                            </div>
-                        </li>
+                        <li note-menu-item ng-repeat="note in notes = (notesService.notes.active | orderBy:noteRanker | filter:{notebook_uri: notebook.resource_uri})"></li>
                         <li ng-show="notes.length === 0">
                             <span class='title muted'>Drag notes here to add them to this notebook.</span>
                         </li>

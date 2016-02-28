@@ -221,7 +221,7 @@
                     }
 
 
-                    &:hover, &.folder.expanded, &.creating-notebook{
+                    &:hover, &.folder.expanded, &.creating-notebook, &.drag-over{
                         background-color:#49506a!important;
 
                         &.danger:hover{
@@ -558,7 +558,7 @@
 }
 
 /* Drag and drop upload overlay */
-body.dragOver{
+body.drag-over{
     #markdownnotes-wrapper{
         header, #main{
             filter:blur(2px);-moz-filter:blur(2px);-webkit-filter:blur(2px);-ms-filter:blur(2px);

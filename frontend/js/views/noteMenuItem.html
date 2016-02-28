@@ -1,0 +1,8 @@
+<a ng-click="loadNoteFromMenu($event, note.id)" ng-href="/app/#/?note={{note.id}}">
+    <span class='title'>{{note.title}}<span class="untitled" ng-show="!note.title">Untitled note</span></span>
+    <time class='subtitle' relative datetime="{{ note.date_updated }}"></time>
+</a>
+<div class="actions">
+    <a ng-click="exportNote(note, true)" title="Download note" class="icon ion-ios-cloud-download-outline export"></a>
+    <a ng-click="removeNote(note)" title="Send note to trash" class='icon ion-ios-trash-outline no-demo'></a>
+</div>
