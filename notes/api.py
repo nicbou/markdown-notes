@@ -170,6 +170,7 @@ class SharedNoteResource(ModelResource):
         resource_name = 'shared-note'
         list_allowed_methods = ['get', ]
         authorization = SharedNotesAuthorization()
+        detail_uri_name = 'public_id'
 
     def prepend_urls(self):
         return [
