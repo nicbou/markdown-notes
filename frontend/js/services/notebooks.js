@@ -27,6 +27,7 @@ angular.module('notes.service').factory('$notebooksService', ['$rootScope', '$ht
                     notebooksService.notebooks.push(notebook);
                 }
                 notebook.id = returnedNotebook.id;
+                notebook.resource_uri = returnedNotebook.resource_uri;
             });
         },
         delete: function(notebook) {
