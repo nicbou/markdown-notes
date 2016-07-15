@@ -7,6 +7,39 @@ class UserForm(forms.ModelForm):
     """
     A limited user form
     """
+
+    old_password = forms.CharField(label=_(u'Old password'), required=False, widget=forms.PasswordInput())
+    new_password1 = forms.CharField(label=_(u'New password'), required=False, widget=forms.PasswordInput())
+    new_password2 = forms.CharField(label=_(u'Repeat new password'), required=False, widget=forms.PasswordInput())
+
+    def clean(self):
+        cleaned_data = super(UserForm, self).clean()
+        old_password = cleaned_data.get("old_password")
+        new_password1 = cleaned_data.get("new_password1")
+        new_password2 = cleaned_data.get("new_password2")
+
+        if old_password or new_password1 or new_password2:
+
+            if not (old_password and new_password1 and new_password2):
+                raise ValidationError(_(u'To change password, you have to fill all password fields.'))
+
+            if not self.instance.check_password(old_password):
+                raise ValidationError(_(u'The old password you have entered is not correct.'))
+
+            if not new_password1 == new_password2:
+                raise ValidationError(_(u'New passwords are not matching.'))
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super(UserForm, self).save(False)
+        instance.set_password(self.cleaned_data['new_password1'])
+
+        if commit:
+            instance.save()
+
+        return instance
+
     class Meta:
         model = User
         fields = ['email']
