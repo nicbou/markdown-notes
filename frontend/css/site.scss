@@ -53,6 +53,10 @@ body{
     &.dark{
         background: $colorBackgroundInverted;
         color: #fff!important;
+
+        a{
+            color: #fff!important;
+        }
     }
     &.header{
         overflow:hidden;
