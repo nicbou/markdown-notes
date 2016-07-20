@@ -72,13 +72,13 @@
                     <span class="separator"></span>
                 {% endblock %}
                 {% if not user.is_authenticated %}
-                    <a class="btn primary" onclick="ga('send', 'event', 'Account', 'Sign up', 'Top bar')" href="{% url 'signup' %}">Sign up</a>
+                    <a class="btn primary" onclick="ga('send', 'event', 'Account', 'Sign up', 'Top bar')" href="{% url 'index' %}">Sign up</a>
                     <span class="separator"></span>
-                    <a class="btn" onclick="ga('send', 'event', 'Account', 'Log in', 'Top bar')" href="{% url 'login' %}">Log in</a>
+                    <a class="btn" onclick="ga('send', 'event', 'Account', 'Log in', 'Top bar')" href="{% url 'index' %}">Log in</a>
                 {% else %}
                     <a class="btn primary" href="{% url 'index' %}">My notes</a>
                     <span class="separator"></span>
-                    <a class="btn" onclick="ga('send', 'event', 'Account', 'Log out', 'Top bar')" href="{% url 'logout' %}">Log out</a>
+                    <a class="btn" onclick="ga('send', 'event', 'Account', 'Log out', 'Top bar')" href="{% url 'index' %}">Log out</a>
                 {% endif %}
             {% endspaceless %}
         </div>
