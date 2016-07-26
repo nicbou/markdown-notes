@@ -32,13 +32,13 @@ class UserForm(forms.ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
-        instance = super(UserForm, self).save(False)
-        instance.set_password(self.cleaned_data['new_password1'])
+        user = super(UserForm, self).save(False)
+        user.set_password(self.cleaned_data['new_password1'])
 
         if commit:
-            instance.save()
+            user.save()
 
-        return instance
+        return user
 
     class Meta:
         model = User

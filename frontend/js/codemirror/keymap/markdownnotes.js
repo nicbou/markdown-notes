@@ -110,7 +110,7 @@
     CodeMirror.keyMap["default"][ctrl+"B"] = "toggleBold";
     CodeMirror.keyMap["default"][ctrl+"I"] = "toggleItalics";
     CodeMirror.keyMap["default"][ctrl+"K"] = "toggleLink";
-    CodeMirror.keyMap["default"][ctrl+"Q"] = "toggleFold";
+    CodeMirror.keyMap["default"][ctrl+"M"] = "toggleFold";
     CodeMirror.keyMap["default"]["Shift-"+ctrl+"K"] = "toggleImageLink";
     CodeMirror.keyMap["default"]["Enter"] = "newlineAndIndentContinueMarkdownList";
 })();

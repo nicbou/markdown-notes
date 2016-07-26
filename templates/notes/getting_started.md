@@ -120,7 +120,7 @@ Click the download button next to a note in the notes menu to export that note t
 
 Click the small `▾` icons at the left of the editor to collapse the section under them. Click them again to reveal the hidden sections.
 
-You can also use for section folding keyboard shortcut `Ctrl+Q`. If you will use it in middle of text, it will fold the closest surrounding section.
+You can also use for section folding keyboard shortcut `Ctrl+M`. If you will use it in middle of text, it will fold the closest surrounding section.
 
 ###2.6. Keyboard shortcuts
 
@@ -130,7 +130,7 @@ The following standard shortcuts are supported:
 * **Italics:** `Ctrl+I`
 * **Link:** `Ctrl+K`
 * **Image:** `Ctrl+Shift+K`
-* **Fold section:** `Ctrl+Q`
+* **Fold section:** `Ctrl+M`
 * **Print:** `Ctrl+P`
 
 ###2.7. Multiple cursors
