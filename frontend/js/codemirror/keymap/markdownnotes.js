@@ -103,9 +103,14 @@
         CodeMirror.commands.toggleLink(cm, "image");
     };
 
+    CodeMirror.commands.toggleFold = function(cm){
+        cm.foldCode(cm.getCursor(), {scanUp: true});
+    };
+
     CodeMirror.keyMap["default"][ctrl+"B"] = "toggleBold";
     CodeMirror.keyMap["default"][ctrl+"I"] = "toggleItalics";
     CodeMirror.keyMap["default"][ctrl+"K"] = "toggleLink";
+    CodeMirror.keyMap["default"][ctrl+"M"] = "toggleFold";
     CodeMirror.keyMap["default"]["Shift-"+ctrl+"K"] = "toggleImageLink";
     CodeMirror.keyMap["default"]["Enter"] = "newlineAndIndentContinueMarkdownList";
 })();

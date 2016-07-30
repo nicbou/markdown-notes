@@ -6,6 +6,10 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# Site
+SITE_NAME = 'Markdown-Notes'
+SITE_DOMAIN = 'MarkdownNotes.com'
+
 # Emails
 ADMINS = ()
 MANAGERS = ADMINS
@@ -15,6 +19,7 @@ EMAIL_HOST_USER = 'postmaster@markdownnotes.com'
 EMAIL_HOST_PASSWORD = 'password'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'noreply@markdownnotes.com'
 
 # Databases
 DATABASES = {}

@@ -10,6 +10,8 @@
         <div class="section dark login">
             {% trans "Log in" as signup_text %}
             {% include "form.html" with form=form submit_text=signup_text %}
+
+            <a href="{% url 'password_reset' %}">Did you forget password?</a>
         </div>
     {% else %}
         <p>You are already logged in.</p>
