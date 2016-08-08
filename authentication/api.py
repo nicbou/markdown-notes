@@ -69,7 +69,9 @@ class CreateUserResource(ModelResource):
 
 
 class UserResource(ModelResource):
-    """Get and update user profile, also serves as login route for retrieving the ApiKey."""
+    """
+    Get and update user profile, also serves as login route for retrieving the ApiKey.
+    """
 
     class Meta:
         # For authentication, allow both basic and api key so that the key
@@ -80,7 +82,7 @@ class UserResource(ModelResource):
         authorization = Authorization()
 
         list_allowed_methods = []
-        detail_allowed_methods = ['get', 'put', 'patch']
+        detail_allowed_methods = ['get', 'patch']
         always_return_data = True
         include_resource_uri = False
 
@@ -94,12 +96,51 @@ class UserResource(ModelResource):
         ]
 
     def current_user_redirect(self, request, **kwargs):
+        """
+        Special view which enables to override the root route "/" for accessing the
+        data of currently authenticated user.
+        :param request:
+        :param kwargs:
+        :return:
+        """
         self.method_check(request, allowed=['get', 'patch'])
         self.is_authenticated(request)
 
         user = getattr(request, 'user', None)
         if user and not user.is_anonymous():
             return self.dispatch_detail(request, pk=str(request.user.id))
+
+    def update_in_place(self, request, original_bundle, new_data):
+        """
+        Validation for duplicates of username and email through PATCH requests.
+        :param request:
+        :param original_bundle:
+        :param new_data:
+        :return:
+        """
+        try:
+            email = new_data["email"]
+            if User.objects.filter(email=email):
+                raise CustomBadRequest(
+                    code="duplicate_exception",
+                    message="That email is already used.")
+        except KeyError:
+            pass
+        except User.DoesNotExist:
+            pass
+
+        try:
+            username = new_data["username"]
+            if User.objects.filter(username=username):
+                raise CustomBadRequest(
+                    code="duplicate_exception",
+                    message="That username is already used.")
+        except KeyError:
+            pass
+        except User.DoesNotExist:
+            pass
+
+        return super(UserResource, self).update_in_place(request, original_bundle, new_data)
 
     def authorized_read_list(self, object_list, bundle):
         return object_list.filter(id=bundle.request.user.id).select_related()
