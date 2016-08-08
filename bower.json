@@ -1,5 +1,5 @@
 {
-  "name": "awesomeProject",
+  "name": "MarkdownNotes",
   "version": "0.1.0",
   "dependencies": {
     "FileSaver": "https://github.com/Teleborder/FileSaver.js.git",
@@ -7,6 +7,7 @@
     "highlightjs": ">=8.5.0",
     "moment": ">=2.6.0",
     "moment-timezone": ">=0.4.0",
-    "codemirror": ">=5.9.0"
+    "codemirror": ">=5.9.0",
+    "angular-modal-service": "~0.10.1"
   }
 }

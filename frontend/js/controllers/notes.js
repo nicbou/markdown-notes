@@ -1,21 +1,34 @@
-angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, $notebooksService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, DEMO_MODE){
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, $notebooksService, $authService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, DEMO_MODE){
 
     $scope.currentNoteIndex = -1;
     $scope.messages = [];
     $scope.messageService = $messageService;
     $scope.notebooksService = $notebooksService;
-    $scope.notebooksService.fetchFromServer().then(function(){
-        $scope.notebooksService.notebooks.forEach(function(notebook){
-            notebook.expanded = false;
-        });
-    });
     $scope.notesService = $notesService;
-    $scope.notesService.fetchFromServer().then(
-        function(){
-            init();
-        },
-        $scope.handleNetworkError
-    );
+
+
+    var loadData = function () {
+        $scope.notebooksService.fetchFromServer().then(function () {
+            $scope.notebooksService.notebooks.forEach(function (notebook) {
+                notebook.expanded = false;
+            });
+        });
+
+        $scope.notesService.fetchFromServer().then(
+            function () {
+                init();
+            },
+            $scope.handleNetworkError
+        );
+    };
+
+    if ($authService.isLoggedIn()) {
+        loadData();
+    } else {
+        $authService.login().then(function () {
+            loadData();
+        });
+    }
 
     $scope.sideMenuOpen = false;
 
@@ -42,12 +55,12 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
         // Monitor note changes
         $scope.$watchGroup(
-            [     
+            [
                 function(){
                     if($scope.currentNoteIndex >= 0 && $scope.notesService.count() > 0){
                         return $scope.notesService.notes.active[$scope.currentNoteIndex].title;
                     }
-                },   
+                },
                 function(){
                     if($scope.currentNoteIndex >= 0 && $scope.notesService.count() > 0){
                         return $scope.notesService.notes.active[$scope.currentNoteIndex].content;
@@ -138,7 +151,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         if(hideMenu){
             $scope.sideMenuOpen = false;
         }
-        
+
         return noteFound;
     };
     //Preserves ctrl+clicking to open notes in a new tab
@@ -245,7 +258,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
                 //Insert at cursor in the editor
                 document.getElementsByClassName('CodeMirror')[0].CodeMirror.replaceSelection(markdownImage);
-                
+
                 //Delete the "uploading" message
                 $scope.messageService.remove(message);
 
@@ -312,7 +325,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
     $scope.handleNetworkError = function(err){
         if(err.status === 401){
-            $window.location.href = '/auth/login/';
+            $authService.login();
         }
         else{
             $scope.messageService.add({
