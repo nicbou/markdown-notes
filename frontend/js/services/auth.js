@@ -3,15 +3,16 @@
  */
 var servicesModule = angular.module('notes.service');
 
-servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64) {
+servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64, $window) {
     var LOGIN_ROUTE = '/api/v1/user/',
         SIGNUP_ROUTE = '/api/v1/createuser/';
 
     var apiKey = undefined;
 
     var getLocalApiKey = function () {
-        // TODO: "Remember me" check for locally stored ApiKey
-        return undefined;
+        // TODO: "Remember me" feature
+        apiKey = $window.sessionStorage.apiKey || $window.localStorage.apiKey;
+        return apiKey;
     };
 
     var $authService = {
@@ -22,6 +23,7 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
             return $http.get(LOGIN_ROUTE, {headers: headers})
                 .then(function (response) {
                     apiKey = username + ":" + response.data.api_key;
+                    $window.sessionStorage.apiKey = apiKey;
                     return apiKey;
                 });
         },
