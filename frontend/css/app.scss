@@ -559,42 +559,53 @@
 
 #overlay {
     position: fixed;
-    left: 25%;
-    top: 25%;
-    padding: 25px;
-    border: 2px solid black;
+    left: 50%;
+    top: 50%;
     background-color: #ffffff;
-    width: 50%;
-    height: 50%;
-    z-index: 100;
+    width: 400px;
+    height: 500px;
+    margin-left: -200px;
+    margin-top: -250px;
+    z-index: 120;
+
+    .dark{
+        padding-left:20px;
+        padding-right:20px;
+    }
+
+    input:not([type="submit"]){
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+        border: none;
+        border-bottom: 2px solid white;
+        background-color: transparent;
+        font-size: $fontSizeLarge;
+        color: white;
+        text-align: center;
+
+        &:focus{
+            outline: none;
+        }
+    }
+
+    input[type="submit"] {
+        margin-top: 20px;
+    }
 }
 #fade {
     position: fixed;
-    left: 0%;
-    top: 0%;
+    left: 0;
+    top: 0;
     background-color: black;
     -moz-opacity: 0.7;
     opacity: .70;
     filter: alpha(opacity=70);
     width: 100%;
     height: 100%;
-    z-index: 90;
+    z-index: 110;
 }
 
-#custom-modal.ng-enter {
-  transition: opacity .5s ease-out;
-  opacity: 0;
-}
-#custom-modal.ng-enter.ng-enter-active {
-  opacity: 1;
-}
-#custom-modal.ng-leave {
-  transition: opacity .5s ease-out;
-  opacity: 1;
-}
-#custom-modal.ng-leave.ng-leave-active {
-  opacity: 0;
-}
 /* Drag and drop upload overlay */
 body.drag-over{
     #markdownnotes-wrapper{

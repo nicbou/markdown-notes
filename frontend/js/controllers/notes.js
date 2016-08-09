@@ -8,11 +8,14 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
 
     var loadData = function () {
-        $scope.notebooksService.fetchFromServer().then(function () {
-            $scope.notebooksService.notebooks.forEach(function (notebook) {
-                notebook.expanded = false;
-            });
-        });
+        $scope.notebooksService.fetchFromServer().then(
+            function () {
+                $scope.notebooksService.notebooks.forEach(function (notebook) {
+                    notebook.expanded = false;
+                });
+            },
+            $scope.handleNetworkError
+        );
 
         $scope.notesService.fetchFromServer().then(
             function () {
@@ -25,7 +28,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     if ($authService.isLoggedIn()) {
         loadData();
     } else {
-        $authService.login().then(function () {
+        $authService.modal().then(function () {
             loadData();
         });
     }
@@ -325,7 +328,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
     $scope.handleNetworkError = function(err){
         if(err.status === 401){
-            $authService.login();
+            $authService.modal();
         }
         else{
             $scope.messageService.add({

@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.core.exceptions import ObjectDoesNotExist
 from notes.models import Note, DummyNote, Notebook
 from tastypie import fields
-from tastypie.authentication import SessionAuthentication
+from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized, NotFound
 from tastypie.resources import ModelResource
@@ -61,7 +61,7 @@ class NotebookResource(ModelResource):
         resource_name = 'notebook'
 
         list_allowed_methods = ['get', 'post', 'put', 'delete']
-        authentication = SessionAuthentication()
+        authentication = ApiKeyAuthentication()
         authorization = UserNotesAuthorization()
         always_return_data = True
 
@@ -89,7 +89,7 @@ class NoteResource(ModelResource):
         resource_name = 'note'
 
         list_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']
-        authentication = SessionAuthentication()
+        authentication = ApiKeyAuthentication()
         authorization = UserNotesAuthorization()  # Same as notes
         always_return_data = True
         filtering = {

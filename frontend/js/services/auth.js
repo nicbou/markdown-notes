@@ -1,52 +1,85 @@
 /**
  * Holds ApiKey and take care of managing Modal window with User management
  */
-angular.module('notes.service')
-    .factory('$authService', function (ModalService, $timeout, $q) {
+var servicesModule = angular.module('notes.service');
 
-        var apiKey = undefined;
+servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64) {
+    var LOGIN_ROUTE = '/api/v1/user/',
+        SIGNUP_ROUTE = '/api/v1/createuser/';
 
-        var getLocalApiKey = function () {
-            // TODO: "Remember me" check for locally stored ApiKey
-            return undefined;
-        };
+    var apiKey = undefined;
 
-        var $authService = {
-            /**
-             * Return ApiKey or undefined if no ApiKey is found
-             * @returns {*}
-             */
-            getApiKey: function () {
-                if (apiKey === undefined) {
-                    return getLocalApiKey();
-                }
+    var getLocalApiKey = function () {
+        // TODO: "Remember me" check for locally stored ApiKey
+        return undefined;
+    };
 
-                return apiKey;
-            },
+    var $authService = {
+        login: function (username, password) {
+            var auth = $base64.encode(username + ":" + password),
+                headers = {"Authorization": "Basic " + auth};
 
-            /**
-             * True if UserService has ApiKey and therefore User is logged in
-             * @returns {boolean}
-             */
-            isLoggedIn: function () {
-                return this.getApiKey() !== undefined;
-            },
-
-            login: function () {
-                return $q(function (resolve, reject) {
-
-                    ModalService.showModal({
-                        templateUrl: "/static/js/views/modal.html",
-                        controller: "AuthCtrl"
-                    }).then(function (modal) {
-                        modal.close.then(function (newApiKey) {
-                            apiKey = newApiKey;
-                            resolve(apiKey);
-                        });
-                    });
+            return $http.get(LOGIN_ROUTE, {headers: headers})
+                .then(function (response) {
+                    apiKey = username + ":" + response.data.api_key;
+                    return apiKey;
                 });
-            }
-        };
+        },
 
-        return $authService;
-    });
+        /**
+         * Return ApiKey or undefined if no ApiKey is found
+         *
+         * @returns {*}
+         */
+        getApiKey: function () {
+            if (apiKey === undefined) {
+                return getLocalApiKey();
+            }
+
+            return apiKey;
+        },
+
+        /**
+         * True if UserService has ApiKey and therefore User is logged in
+         *
+         * @returns {boolean}
+         */
+        isLoggedIn: function () {
+            return this.getApiKey() !== undefined;
+        },
+
+        /**
+         * Create modal window with login/signup form and return promise
+         * which will result with ApiKey of the user.
+         *
+         * @returns {Promise}
+         */
+        modal: function () {
+            return ModalService.showModal({
+                templateUrl: "/static/js/views/modal.html",
+                controller: "AuthCtrl"
+            }).then(function (modal) {
+                return modal.close;
+            });
+        }
+    };
+
+    return $authService;
+});
+
+servicesModule.factory('httpRequestInterceptor', function ($injector) {
+    return {
+        request: function (config) {
+            var $authService = $injector.get('$authService');
+
+            if ($authService.isLoggedIn()) {
+                config.headers['Authorization'] = 'ApiKey ' + $authService.getApiKey();
+            }
+            return config;
+        }
+    };
+});
+
+servicesModule.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('httpRequestInterceptor');
+});
