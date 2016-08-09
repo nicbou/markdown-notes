@@ -125,6 +125,24 @@ body{
         color: $colorBackgroundInverted;
         cursor: pointer;
     }
+
+    &.btn-small{
+        font-size: $fontSizeNormal;
+        line-height: $fontSizeNormal + 14;
+        padding: 0 20px;
+    }
+
+    &.btn-inverted {
+        background-color: $colorBackground;
+        color: $colorBackgroundInverted;
+        border-color: $colorBackgroundInverted;
+
+        &:hover{
+            background-color: $colorBackgroundInverted;
+            color: $colorBackground;
+            border-color: $colorBackground;
+        }
+    }
 }
 
 .alert{

@@ -10,9 +10,27 @@
                     <input type="password" placeholder="Password" ng-model="formData.password"/>
                     <input type="submit" class="btn btn-primary btn-large" value="Log in"/>
                 </div>
+                <div class="links">
+                    <a class="btn btn-small btn-inverted" ng-click="formType = 'signup'">Sign up</a>
+                    <a class="btn btn-small btn-inverted" ng-click="formType = 'passwordRecovery'">Lost password</a>
+                </div>
             </form>
         </div>
         <div ng-show="formType == 'signup'">
+            <form ng-submit="signup()">
+                <div class="section light header login">
+                    <h1>Sign Up</h1>
+                </div>
+                <div class="section dark login">
+                    <input type="text" placeholder="Username" ng-model="formData.username"/>
+                    <input type="email" placeholder="Email" ng-model="formData.email"/>
+                    <input type="password" placeholder="Password" ng-model="formData.password"/>
+                    <input type="password" placeholder="Password again" ng-model="formData.passwordAgain"/>
+                    <input type="submit" class="btn btn-primary btn-large" value="Sign Up"/>
+                </div>
+            </form>
+        </div>
+        <div ng-show="formType == 'passwordRecovery'">
 
         </div>
     </div>

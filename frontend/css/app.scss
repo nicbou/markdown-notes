@@ -573,6 +573,18 @@
         padding-right:20px;
     }
 
+    .links{
+        margin-top: 20px;
+        text-align: center;
+        padding: 0 56px;
+
+        .btn{
+            display: block;
+            margin-bottom: 8px;
+
+        }
+    }
+
     input:not([type="submit"]){
         display: block;
         width: 100%;

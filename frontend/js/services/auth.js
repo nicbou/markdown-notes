@@ -5,22 +5,39 @@ var servicesModule = angular.module('notes.service');
 
 servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64, $window) {
     var LOGIN_ROUTE = '/api/v1/user/',
-        SIGNUP_ROUTE = '/api/v1/createuser/';
+        SIGNUP_ROUTE = '/api/v1/create_user/';
 
     var apiKey = undefined;
 
-    var getLocalApiKey = function () {
-        // TODO: "Remember me" feature
-        apiKey = $window.sessionStorage.apiKey || $window.localStorage.apiKey;
-        return apiKey;
-    };
-
     var $authService = {
+        /**
+         * Function for logging in the user and retrieving ApiKey using
+         * HTTP Basic Authentication.
+         *
+         * @param username
+         * @param password
+         * @returns {angular.IPromise<TResult>}
+         */
         login: function (username, password) {
             var auth = $base64.encode(username + ":" + password),
                 headers = {"Authorization": "Basic " + auth};
 
             return $http.get(LOGIN_ROUTE, {headers: headers})
+                .then(function (response) {
+                    apiKey = username + ":" + response.data.api_key;
+                    $window.sessionStorage.apiKey = apiKey;
+                    return apiKey;
+                });
+        },
+
+        signUp: function (username, email, password) {
+            var payload = {
+                'username': username,
+                'email': email,
+                'password': password
+            };
+
+            return $http.post(SIGNUP_ROUTE, payload)
                 .then(function (response) {
                     apiKey = username + ":" + response.data.api_key;
                     $window.sessionStorage.apiKey = apiKey;
@@ -34,8 +51,9 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
          * @returns {*}
          */
         getApiKey: function () {
+            // Check local storage for ApiKey
             if (apiKey === undefined) {
-                return getLocalApiKey();
+                apiKey = $window.sessionStorage.apiKey || $window.localStorage.apiKey;
             }
 
             return apiKey;
@@ -54,7 +72,7 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
          * Create modal window with login/signup form and return promise
          * which will result with ApiKey of the user.
          *
-         * @returns {Promise}
+         * @returns {angular.IPromise<TResult>}
          */
         modal: function () {
             return ModalService.showModal({
