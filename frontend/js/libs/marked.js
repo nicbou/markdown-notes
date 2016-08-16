@@ -13,6 +13,7 @@
 var block = {
   newline: /^\n+/,
   code: /^( {4}[^\n]+\n*)+/,
+  latex: /^(?:(\${2,3})\s*([\s\S]*?[^$])\s*(\1)(?!\1)\s?)+/,
   fences: noop,
   hr: /^( *[-*_]){3,} *(?:\n+|$)/,
   heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,
@@ -167,6 +168,16 @@ Lexer.prototype.token = function(src, top, bq) {
           type: 'space'
         });
       }
+    }
+
+    // latex
+    if (cap = this.rules.latex.exec(src)) {
+      src = src.substring(cap[0].length);
+      this.tokens.push({
+        type: 'paragraph',
+        text: cap[0]
+      });
+      continue;
     }
 
     // code
