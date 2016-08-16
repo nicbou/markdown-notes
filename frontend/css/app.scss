@@ -395,7 +395,7 @@
                 }
 
                 //Content blocks
-                code, pre, blockquote, .latex.block{
+                code, pre, blockquote {
                     background:$colorBackgroundLight;
                 }
                 p, pre, blockquote, .latex.block{
@@ -447,7 +447,6 @@
                     }
                 }
                 .MathJax_Display{ //Block
-                    text-align: left!important;
                     margin:0;
                     >.MathJax{
                         background:none; margin:0;
