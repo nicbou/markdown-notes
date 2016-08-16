@@ -6,7 +6,7 @@ This note is editable, so feel free play with it.
 
 ##1. A quick markdown primer
 
-Markdown is a simple formatting language used by Stack Overflow, Github and many other sites. Markdown Notes uses [Github-flavored markdown](https://help.github.com/articles/github-flavored-markdown). 
+Markdown is a simple formatting language used by Stack Overflow, Github and many other sites. Markdown Notes uses [Github-flavored markdown](https://help.github.com/articles/github-flavored-markdown).
 
 Since markdown is a standard, the notes you create here will work just fine in other markdown editors.
 
@@ -39,20 +39,20 @@ Numbered lists are pretty easy to create too:
 1. Item one
 	1. Subitem one
     2. Subitem two
-    
+
 You can also mix lists if you feel like it:
 
 1. List item 1
 	* Subitem 1
 2. List item 2
 	1. Subitem 1
-    
+
 You can also create nested to-do lists:
 
 * [x] This one is done
 * [ ] This one is not
     * [ ] This is a subtask
-    * [ ] Another subtask 
+    * [ ] Another subtask
     	* [ ] Do this first
     	* [x] Do this next
 * [ ] Neither is this one
@@ -86,7 +86,41 @@ $$$
 3n+\sum_2^n{\pi}
 $$$
 
-###1.5. Images
+###1.5. Graphviz
+
+Wrap your [Graphviz](http://www.graphviz.org/) graph description around `%%`.
+
+%%
+digraph G {
+
+	subgraph cluster_0 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		a0 -> a1 -> a2 -> a3;
+		label = "process #1";
+	}
+
+	subgraph cluster_1 {
+		node [style=filled];
+		b0 -> b1 -> b2 -> b3;
+		label = "process #2";
+		color=blue
+	}
+	start -> a0;
+	start -> b0;
+	a1 -> b3;
+	b2 -> a3;
+	a3 -> a0;
+	a3 -> end;
+	b3 -> end;
+
+	start [shape=Mdiamond];
+	end [shape=Msquare];
+}
+%%
+
+###1.6. Images
 
 Images can be dragged and dropped over the editor. Alternatively, you can use the standard markdown syntax to insert images.
 
@@ -110,7 +144,7 @@ All your notes are printable. Print them like any other webpage, and the output 
 
 ###2.3. Automatic save
 
-Your notes are saved automatically when you stop typing. 
+Your notes are saved automatically when you stop typing.
 
 ###2.4. Exporting notes
 
