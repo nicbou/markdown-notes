@@ -13,6 +13,7 @@
 var block = {
   newline: /^\n+/,
   code: /^( {4}[^\n]+\n*)+/,
+  graphviz: /^(%{2})(\w*)\s*([\s\S]*?[^%])\s*(\1)(?!\1)/,
   fences: noop,
   hr: /^( *[-*_]){3,} *(?:\n+|$)/,
   heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,
@@ -167,6 +168,17 @@ Lexer.prototype.token = function(src, top, bq) {
           type: 'space'
         });
       }
+    }
+
+    // graphviz
+    if (cap = this.rules.graphviz.exec(src)) {
+      src = src.substring(cap[0].length);
+      this.tokens.push({
+        type: 'graphviz',
+        text: cap[3],
+        engine: cap[2]
+      });
+      continue;
     }
 
     // code
@@ -973,6 +985,9 @@ Parser.prototype.tok = function() {
   switch (this.token.type) {
     case 'space': {
       return '';
+    }
+    case 'graphviz': {
+      return this.renderer.graphviz(this.token.text, this.token.engine);
     }
     case 'hr': {
       return this.renderer.hr();

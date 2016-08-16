@@ -28,6 +28,16 @@ customRenderer.latex = function(text){
     return el.prop('outerHTML');
 };
 
+customRenderer.graphviz = function(text, engine) {
+  var supported_engines = ["circo", "dot", "fdp", "neato", "osage", "twopi"];
+  var index = supported_engines.indexOf(engine.toLowerCase());
+  if (index === -1) {
+    index = 1; // force "dot" engine
+  }
+  engine = supported_engines[index];
+  return '<div class="graphviz">' + Viz(text, {engine: engine}) + '</div>';
+};
+
 //Override the link renderer to have target="_blank"
 customRenderer.link = function(href, title, text) {
     var out = '',
