@@ -429,6 +429,7 @@
                     font-size: inherit;
                 }
                 table{
+                    margin: 0 0 20px;
                     border-collapse:collapse;
                     th, td{border:1px solid $colorBorderLight;padding:3px 5px;}
                     th:empty, td:empty{border:none;padding:0;}
