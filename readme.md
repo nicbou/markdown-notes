@@ -29,6 +29,15 @@ A crude tool for automatic deployments is available. Install `forever` (`npm ins
 
 `deploy.sh` will pull code from the git repository, sync the database, collect static files and minimize them before restarting the server. It is used by `webhooks.js`, but can also be called manually.
 
+## Docker
+
+You can also build your own docker image:
+
+1. Rename `markdown_notes/local_settings.py.template` and update it with your own settings. Some values in `settings.py` need to be set in environment variables.
+2. Run `docker build -t markdown-notes .`
+3. Run `docker -p 8000:80 -d markdown-notes`
+4. Open your browser at [localhost:8000](http://localhost:8000)
+
 ##Get involved
 
 You can contribute to Markdown Notes by looking at the submitted issues and sending pull requests with your fixes.
