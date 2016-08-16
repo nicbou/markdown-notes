@@ -49,7 +49,7 @@ angular.module('notes.ui').directive("preview", function ($rootScope) {
                             }
                             return hljs.highlightAuto(code).value;
                         }, //Code highlighting
-                        sanitize: true,
+                        sanitize: false,
                         renderer: customRenderer,
                     }
                 ));
