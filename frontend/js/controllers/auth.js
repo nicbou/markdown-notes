@@ -20,12 +20,20 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
     };
 
     $scope.signup = function () {
+        if($scope.formData.password != $scope.formData.passwordAgain) {
+            $scope.errorMsg = 'Passwords doesn\'t match!';
+            $scope.errorFields = ['password', 'passwordAgain'];
+            return;
+        }
+
         $authService.signUp($scope.formData.username, $scope.formData.email, $scope.formData.password)
             .then(function (apiKey) {
                 close(apiKey);
             })
             .catch(function (response) {
-                console.log(response);
+                var error = response.data.error;
+                $scope.errorMsg = error.message;
+                $scope.errorFields = [error.field];
             });
     }
 }]);

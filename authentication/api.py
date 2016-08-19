@@ -44,8 +44,9 @@ class CreateUserResource(ModelResource):
             if field not in bundle.data:
                 raise CustomBadRequest(
                     code="missing_key",
-                    message="Must provide {missing_key} when creating a user."
-                        .format(missing_key=field))
+                    message="Must provide {missing_key} when creating a user.".format(missing_key=field),
+                    field=field
+                )
 
         try:
             email = bundle.data["email"]
@@ -54,12 +55,14 @@ class CreateUserResource(ModelResource):
             if User.objects.filter(email=email):
                 raise CustomBadRequest(
                     code="duplicate_exception",
-                    message="That email is already used.")
+                    message="That email is already used.",
+                    field="email")
 
             if User.objects.filter(username=username):
                 raise CustomBadRequest(
                     code="duplicate_exception",
-                    message="That username is already used.")
+                    message="That username is already used.",
+                    field="username")
 
         except KeyError as missing_key:
             raise CustomBadRequest(

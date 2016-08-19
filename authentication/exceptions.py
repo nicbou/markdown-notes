@@ -10,10 +10,11 @@ class CustomBadRequest(TastypieError):
     return a custom HttpResponse.
     """
 
-    def __init__(self, code="", message=""):
+    def __init__(self, code="", message="", field=""):
         self._response = {
             "error": {"code": code or "not_provided",
-                      "message": message or "No error message was provided."}}
+                      "message": message or "No error message was provided.",
+                      "field": field or "not_provided"}}
 
     @property
     def response(self):

@@ -599,6 +599,11 @@
         &:focus{
             outline: none;
         }
+
+        &.errorField{
+            border-bottom-color: $colorErrorBackground;
+            color: $colorErrorBackground;
+        }
     }
 
     input[type="submit"] {
