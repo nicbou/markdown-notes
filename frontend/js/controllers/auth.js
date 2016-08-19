@@ -10,6 +10,12 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
             })
             .catch(function (response) {
                 console.log(response);
+
+                if (response.status == 403) {
+                    $scope.errorMsg = 'Username or password doesn\'t match!';
+                }else{
+                    $scope.errorMsg = 'There was unknown error!';
+                }
             });
     };
 

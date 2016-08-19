@@ -327,7 +327,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     };
 
     $scope.handleNetworkError = function(err){
-        if(err.status === 401){
+        if(err.status === 401 || err.status === 403){
             $authService.modal();
         }
         else{

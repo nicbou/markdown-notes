@@ -3,13 +3,25 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
 from tastypie.authentication import (
-    Authentication, ApiKeyAuthentication, BasicAuthentication,
+    Authentication, ApiKeyAuthentication,
     MultiAuthentication)
+from tastypie.authentication import BasicAuthentication as _BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
 from .exceptions import CustomBadRequest
+
+
+class BasicAuthentication(_BasicAuthentication):
+    """
+    Customized Tastypie BasicAuthentication which returns HTTP 403 code for unauthorized requests.
+    For more: https://github.com/django-tastypie/django-tastypie/issues/117
+    """
+    def _unauthorized(self):
+        response = super(BasicAuthentication, self)._unauthorized()
+        response.status_code = 403
+        return response
 
 
 class CreateUserResource(ModelResource):

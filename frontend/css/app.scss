@@ -563,9 +563,9 @@
     top: 50%;
     background-color: #ffffff;
     width: 400px;
-    height: 500px;
+    height: 550px;
     margin-left: -200px;
-    margin-top: -250px;
+    margin-top: -275px;
     z-index: 120;
 
     .dark{
@@ -603,6 +603,19 @@
 
     input[type="submit"] {
         margin-top: 20px;
+    }
+
+    .error input:not([type="submit"]){
+        border-bottom-color: $colorErrorBackground;
+        color: $colorErrorBackground;
+    }
+
+    .errorMsg{
+        padding: 4px;
+        font-size: $fontSizeNormal + 4;
+        font-weight: bold;
+        background-color: $colorErrorBackground;
+        color: white;
     }
 }
 #fade {

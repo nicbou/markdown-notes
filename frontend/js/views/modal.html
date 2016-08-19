@@ -4,10 +4,11 @@
             <form ng-submit="login()">
                 <div class="section light header login">
                     <h1>Log in</h1>
+                    <div class="errorMsg" ng-show="errorMsg">{{ errorMsg }}</div>
                 </div>
-                <div class="section dark login">
-                    <input type="text" placeholder="Username" ng-model="formData.username"/>
-                    <input type="password" placeholder="Password" ng-model="formData.password"/>
+                <div class="section dark login" ng-class="{'error' : errorMsg}">
+                    <input type="text" placeholder="Username" required ng-model="formData.username"/>
+                    <input type="password" placeholder="Password" required ng-model="formData.password"/>
                     <input type="submit" class="btn btn-primary btn-large" value="Log in"/>
                 </div>
                 <div class="links">
@@ -22,10 +23,10 @@
                     <h1>Sign Up</h1>
                 </div>
                 <div class="section dark login">
-                    <input type="text" placeholder="Username" ng-model="formData.username"/>
-                    <input type="email" placeholder="Email" ng-model="formData.email"/>
-                    <input type="password" placeholder="Password" ng-model="formData.password"/>
-                    <input type="password" placeholder="Password again" ng-model="formData.passwordAgain"/>
+                    <input type="text" placeholder="Username" required ng-model="formData.username"/>
+                    <input type="email" placeholder="Email" required ng-model="formData.email"/>
+                    <input type="password" placeholder="Password" required ng-model="formData.password"/>
+                    <input type="password" placeholder="Password again" required ng-model="formData.passwordAgain"/>
                     <input type="submit" class="btn btn-primary btn-large" value="Sign Up"/>
                 </div>
             </form>

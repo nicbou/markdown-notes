@@ -95,6 +95,9 @@ servicesModule.factory('httpRequestInterceptor', function ($injector) {
             if ($authService.isLoggedIn()) {
                 config.headers['Authorization'] = 'ApiKey ' + $authService.getApiKey();
             }
+
+            config.headers['X-Requested-With'] = 'XMLHttpRequest';
+
             return config;
         }
     };
