@@ -4,6 +4,9 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
     $scope.formData = {};
 
     $scope.login = function () {
+        $scope.errorMsg = undefined;
+        $scope.errorFields = undefined;
+
         $authService.login($scope.formData.username, $scope.formData.password)
             .then(function (apiKey) {
                 close(apiKey);
@@ -20,6 +23,9 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
     };
 
     $scope.signup = function () {
+        $scope.errorMsg = undefined;
+        $scope.errorFields = undefined;
+
         if($scope.formData.password != $scope.formData.passwordAgain) {
             $scope.errorMsg = 'Passwords doesn\'t match!';
             $scope.errorFields = ['password', 'passwordAgain'];
@@ -35,5 +41,11 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
                 $scope.errorMsg = error.message;
                 $scope.errorFields = [error.field];
             });
-    }
+    };
+
+    // Resetting error message when changing form type
+    $scope.$watch('formType', function () {
+        $scope.errorMsg = undefined;
+        $scope.errorFields = undefined;
+    });
 }]);

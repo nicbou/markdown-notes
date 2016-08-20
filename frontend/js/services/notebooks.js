@@ -54,6 +54,11 @@ angular.module('notes.service').factory('$notebooksService', ['$rootScope', '$ht
                 },
                 angular.noop //If this is ommited, the following .then() error callbacks are ignored
             );
+        },
+        clearLocalMemory: function () {
+            var notebooksService = this;
+
+            notebooksService.notebooks = [];
         }
     };
 

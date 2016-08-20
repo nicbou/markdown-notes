@@ -326,6 +326,23 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         }
     };
 
+    $scope.logOut = function () {
+        $authService.logout();
+
+        $scope.sideMenuOpen = false;
+        $scope.currentNoteIndex = -1;
+        $scope.notesService.clearLocalMemory();
+        $scope.notebooksService.clearLocalMemory();
+        $rootScope.$broadcast('noteChanged', {content: ''});
+
+
+        $authService.modal()
+            .then(function () {
+                loadData();
+            });
+
+    };
+
     $scope.handleNetworkError = function(err){
         if(err.status === 401 || err.status === 403){
             $authService.modal();

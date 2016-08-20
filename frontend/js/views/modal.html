@@ -30,6 +30,9 @@
                     <input type="password" placeholder="Password again" ng-class="{'errorField' : errorFields.indexOf('passwordAgain') > -1}" required ng-model="formData.passwordAgain"/>
                     <input type="submit" class="btn btn-primary btn-large" value="Sign Up"/>
                 </div>
+                <div class="links">
+                    <a class="btn btn-small btn-inverted" ng-click="formType = 'login'">Back to login</a>
+                </div>
             </form>
         </div>
         <div ng-show="formType == 'passwordRecovery'">
