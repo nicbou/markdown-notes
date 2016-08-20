@@ -5,11 +5,17 @@ var servicesModule = angular.module('notes.service');
 
 // TODO: LocalStorage for "Remember me" feature
 
-servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64, $window) {
+servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64, $window, DEMO_MODE) {
     var LOGIN_ROUTE = '/api/v1/user/',
         SIGNUP_ROUTE = '/api/v1/create_user/';
 
     var apiKey = undefined;
+
+    function fakePromise() {
+        var deferred = $q.defer();
+        deferred.resolve();
+        return deferred.promise;
+    }
 
     var $authService = {
         /**
@@ -82,6 +88,10 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
          * @returns {angular.IPromise<TResult>}
          */
         modal: function () {
+            if(DEMO_MODE) {
+                return fakePromise();
+            }
+
             return ModalService.showModal({
                 templateUrl: "/static/js/views/modal.html",
                 controller: "AuthCtrl"
