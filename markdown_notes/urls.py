@@ -17,6 +17,7 @@ v1_api.register(DummyNoteResource())
 v1_api.register(SharedNoteResource())
 v1_api.register(CreateUserResource())
 v1_api.register(UserResource())
+v1_api.register(PasswordRecoveryResource())
 
 urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
@@ -28,4 +29,11 @@ urlpatterns = patterns('',
 
     url(r'^app/$', NotesView.as_view(), name='index'),
     url(r'^\+(?P<public_id>[a-z0-9]+)/$', SharedNoteRedirectView.as_view(), name='shared_note'),
+
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        'django.contrib.auth.views.password_reset_confirm', name='password_reset_confirm',
+        kwargs={'template_name': 'auth/password_reset_confirm.html'}),
+    url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete',
+        name='password_reset_complete',
+        kwargs={'template_name': 'auth/password_reset_complete.html'}),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,7 +4,8 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
     $scope.formData = {};
 
     $scope.login = function () {
-        $scope.errorMsg = undefined;
+        $scope.msg = undefined;
+        $scope.msgType = undefined;
         $scope.errorFields = undefined;
 
         $authService.login($scope.formData.username, $scope.formData.password)
@@ -14,8 +15,9 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
             .catch(function (response) {
                 console.log(response);
 
+                $scope.msgType = 'error';
                 if (response.status == 403) {
-                    $scope.errorMsg = 'Username or password doesn\'t match!';
+                    $scope.msg = 'Username or password doesn\'t match!';
                 }else{
                     $scope.errorMsg = 'There was unknown error!';
                 }
@@ -23,11 +25,13 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
     };
 
     $scope.signup = function () {
-        $scope.errorMsg = undefined;
+        $scope.msg = undefined;
+        $scope.msgType = undefined;
         $scope.errorFields = undefined;
 
         if($scope.formData.password != $scope.formData.passwordAgain) {
             $scope.errorMsg = 'Passwords doesn\'t match!';
+            $scope.msgType = 'error';
             $scope.errorFields = ['password', 'passwordAgain'];
             return;
         }
@@ -38,14 +42,32 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
             })
             .catch(function (response) {
                 var error = response.data.error;
+                $scope.msgType = 'error';
                 $scope.errorMsg = error.message;
                 $scope.errorFields = [error.field];
             });
     };
 
+    $scope.passwordRecovery = function () {
+        $scope.msg = undefined;
+        $scope.msgType = undefined;
+        $scope.errorFields = undefined;
+
+        $authService.passwordRecovery($scope.formData.email)
+            .then(function () {
+                $scope.msg = 'Email was send to your email address with recovery link.';
+                $scope.msgType = 'success';
+            })
+            .catch(function () {
+                $scope.msg = 'There was unknown error!';
+                $scope.msgType = 'error';
+            });
+    };
+
     // Resetting error message when changing form type
     $scope.$watch('formType', function () {
-        $scope.errorMsg = undefined;
+        $scope.msg = undefined;
+        $scope.msgType = undefined;
         $scope.errorFields = undefined;
     });
 }]);

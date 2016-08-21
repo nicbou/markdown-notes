@@ -7,7 +7,8 @@ var servicesModule = angular.module('notes.service');
 
 servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64, $window, DEMO_MODE) {
     var LOGIN_ROUTE = '/api/v1/user/',
-        SIGNUP_ROUTE = '/api/v1/create_user/';
+        SIGNUP_ROUTE = '/api/v1/create_user/',
+        PASSWORD_RECOVERY_ROUTE = '/api/v1/password_recovery/';
 
     var apiKey = undefined;
 
@@ -56,6 +57,14 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
                     $window.sessionStorage.apiKey = apiKey;
                     return apiKey;
                 });
+        },
+
+        passwordRecovery: function (email) {
+            var payload = {
+                'email': email
+            };
+
+            return $http.post(PASSWORD_RECOVERY_ROUTE, payload);
         },
 
         /**

@@ -4,7 +4,7 @@
             <form ng-submit="login()">
                 <div class="section light header login">
                     <h1>Log in</h1>
-                    <div class="errorMsg" ng-show="errorMsg">{{ errorMsg }}</div>
+                    <div class="msg {{ msgType }}" ng-show="msg">{{ msg }}</div>
                 </div>
                 <div class="section dark login" ng-class="{'error' : errorMsg}">
                     <input type="text" placeholder="Username" required ng-model="formData.username"/>
@@ -21,7 +21,7 @@
             <form ng-submit="signup()">
                 <div class="section light header login">
                     <h1>Sign Up</h1>
-                    <div class="errorMsg" ng-show="errorMsg">{{ errorMsg }}</div>
+                    <div class="msg {{ msgType }}" ng-show="msg">{{ msg }}</div>
                 </div>
                 <div class="section dark login">
                     <input type="text" placeholder="Username" required ng-class="{'errorField' : errorFields.indexOf('username') > -1}" ng-model="formData.username"/>
@@ -36,7 +36,19 @@
             </form>
         </div>
         <div ng-show="formType == 'passwordRecovery'">
-
+            <form ng-submit="passwordRecovery()">
+                <div class="section light header login">
+                    <h1>Lost password</h1>
+                    <div class="msg {{ msgType }}" ng-show="msg">{{ msg }}</div>
+                </div>
+                <div class="section dark login">
+                    <input type="email" placeholder="Email" required ng-class="{'errorField' : errorFields.indexOf('email') > -1}" ng-model="formData.email"/>
+                    <input type="submit" class="btn btn-primary btn-large" value="Recover password"/>
+                </div>
+                <div class="links">
+                    <a class="btn btn-small btn-inverted" ng-click="formType = 'login'">Back to login</a>
+                </div>
+            </form>
         </div>
     </div>
     <div id="fade"></div>

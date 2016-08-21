@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
@@ -7,8 +8,9 @@ from tastypie.authentication import (
     MultiAuthentication)
 from tastypie.authentication import BasicAuthentication as _BasicAuthentication
 from tastypie.authorization import Authorization
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource, Resource
 from tastypie.utils import trailing_slash
+from tastypie import fields
 
 from .exceptions import CustomBadRequest
 
@@ -18,6 +20,7 @@ class BasicAuthentication(_BasicAuthentication):
     Customized Tastypie BasicAuthentication which returns HTTP 403 code for unauthorized requests.
     For more: https://github.com/django-tastypie/django-tastypie/issues/117
     """
+
     def _unauthorized(self):
         response = super(BasicAuthentication, self)._unauthorized()
         response.status_code = 403
@@ -174,3 +177,17 @@ class UserResource(ModelResource):
             bundle.data['api_key'] = bundle.obj.api_key.key
 
         return bundle
+
+
+class PasswordRecoveryResource(Resource):
+    email = fields.CharField(attribute='email')
+
+    class Meta:
+        resource_name = 'password_recovery'
+        list_allowed_methods = ['post']
+        detail_allowed_methods = []
+
+    def obj_create(self, bundle, **kwargs):
+        password_form = PasswordResetForm(data=bundle.data)
+        password_form.full_clean()
+        password_form.save()

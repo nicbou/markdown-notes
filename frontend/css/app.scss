@@ -615,12 +615,20 @@
         color: $colorErrorBackground;
     }
 
-    .errorMsg{
+    .msg{
         padding: 4px;
         font-size: $fontSizeNormal + 4;
         font-weight: bold;
-        background-color: $colorErrorBackground;
-        color: white;
+
+        &.error{
+            background-color: $colorErrorBackground;
+            color: white;
+        }
+
+        &.success{
+            background-color: $colorSuccess;
+            color: white;
+        }
     }
 }
 #fade {
