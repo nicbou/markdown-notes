@@ -585,6 +585,16 @@
         }
     }
 
+    .close{
+        position: absolute;
+        right: 10px;
+        top: 2px;
+
+        i{
+            cursor: pointer;
+        }
+    }
+
     input:not([type="submit"]){
         display: block;
         width: 100%;

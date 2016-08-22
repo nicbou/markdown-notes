@@ -343,6 +343,11 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
     };
 
+    $scope.accountSettings = function () {
+        $authService.modal('accountSettings');
+        $scope.sideMenuOpen = false;
+    };
+
     $scope.handleNetworkError = function(err){
         if(err.status === 401 || err.status === 403){
             $authService.modal();

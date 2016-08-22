@@ -4,7 +4,7 @@
 var servicesModule = angular.module('notes.service');
 
 servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64, $window, DEMO_MODE) {
-    var LOGIN_ROUTE = '/api/v1/user/',
+    var USER_ROUTE = '/api/v1/user/',
         SIGNUP_ROUTE = '/api/v1/create_user/',
         PASSWORD_RECOVERY_ROUTE = '/api/v1/password_recovery/';
 
@@ -30,7 +30,7 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
             var auth = $base64.encode(username + ":" + password),
                 headers = {"Authorization": "Basic " + auth};
 
-            return $http.get(LOGIN_ROUTE, {headers: headers})
+            return $http.get(USER_ROUTE, {headers: headers})
                 .then(function (response) {
                     apiKey = username + ":" + response.data.api_key;
                     $window.sessionStorage.apiKey = apiKey;
@@ -72,6 +72,10 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
             return $http.post(PASSWORD_RECOVERY_ROUTE, payload);
         },
 
+        updateAccountSettings: function (payload) {
+            return $http.patch(USER_ROUTE, payload);
+        },
+
         /**
          * Return ApiKey or undefined if no ApiKey is found
          *
@@ -101,14 +105,17 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
          *
          * @returns {angular.IPromise<TResult>}
          */
-        modal: function () {
+        modal: function (formType) {
             if(DEMO_MODE) {
                 return fakePromise();
             }
 
             return ModalService.showModal({
                 templateUrl: "/static/js/views/modal.html",
-                controller: "ModalCtrl"
+                controller: "ModalCtrl",
+                inputs : {
+                    'formType' : formType
+                }
             }).then(function (modal) {
                 return modal.close;
             });

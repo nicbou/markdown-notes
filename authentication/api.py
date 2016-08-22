@@ -116,7 +116,7 @@ class UserResource(ModelResource):
     def current_user_redirect(self, request, **kwargs):
         """
         Special view which enables to override the root route "/" for accessing the
-        data of currently authenticated user.
+        data of currently authenticated user and not the listing of all users.
         :param request:
         :param kwargs:
         :return:
@@ -141,7 +141,8 @@ class UserResource(ModelResource):
             if User.objects.filter(email=email):
                 raise CustomBadRequest(
                     code="duplicate_exception",
-                    message="That email is already used.")
+                    message="That email is already used.",
+                    field="email")
         except KeyError:
             pass
         except User.DoesNotExist:
@@ -152,7 +153,8 @@ class UserResource(ModelResource):
             if User.objects.filter(username=username):
                 raise CustomBadRequest(
                     code="duplicate_exception",
-                    message="That username is already used.")
+                    message="That username is already used.",
+                    field="username")
         except KeyError:
             pass
         except User.DoesNotExist:
@@ -166,6 +168,14 @@ class UserResource(ModelResource):
     def hydrate(self, bundle):
         try:
             raw_password = bundle.data.pop('password')
+            old_password = bundle.data.pop('old_password')
+
+            if not bundle.obj.check_password(old_password):
+                raise CustomBadRequest(
+                    code="verification_exception",
+                    message="The old password you entered doesn't match your actual old password!",
+                    field="oldPassword")
+
             bundle.obj.set_password(raw_password)
         except KeyError:
             pass

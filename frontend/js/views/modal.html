@@ -51,6 +51,22 @@
                 </div>
             </form>
         </div>
+        <div ng-show="formType == 'accountSettings'">
+            <form ng-submit="accountSettings()">
+                <a class="close" ng-click="close()"><i class="ion-close-round"></i></a>
+                <div class="section light header login">
+                    <h1>Settings</h1>
+                    <div class="msg {{ msgType }}" ng-show="msg">{{ msg }}</div>
+                </div>
+                <div class="section dark login">
+                    <input type="email" placeholder="Email" ng-class="{'errorField' : errorFields.indexOf('email') > -1}" ng-model="formData.email"/>
+                    <input type="password" placeholder="Old password" ng-class="{'errorField' : errorFields.indexOf('oldPassword') > -1}" ng-model="formData.oldPassword"/>
+                    <input type="password" placeholder="New password" ng-class="{'errorField' : errorFields.indexOf('password') > -1}" ng-model="formData.password"/>
+                    <input type="password" placeholder="New password again" ng-class="{'errorField' : errorFields.indexOf('passwordAgain') > -1}" ng-model="formData.passwordAgain"/>
+                    <input type="submit" class="btn btn-primary btn-large" value="Save"/>
+                </div>
+            </form>
+        </div>
     </div>
     <div id="fade"></div>
 </div>
