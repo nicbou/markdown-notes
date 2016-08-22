@@ -108,7 +108,7 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
 
             return ModalService.showModal({
                 templateUrl: "/static/js/views/modal.html",
-                controller: "AuthCtrl"
+                controller: "ModalCtrl"
             }).then(function (modal) {
                 return modal.close;
             });

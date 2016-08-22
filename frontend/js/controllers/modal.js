@@ -1,4 +1,4 @@
-angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService', function ($scope, close, $authService) {
+angular.module('notes').controller('ModalCtrl', ['$scope', 'close', '$authService', function ($scope, close, $authService) {
 
     $scope.formType = 'login';
     $scope.formData = {};
