@@ -610,6 +610,11 @@
         margin-top: 20px;
     }
 
+    input[type="checkbox"] {
+        display: inline;
+        width: 20px;
+    }
+
     .error input:not([type="submit"]){
         border-bottom-color: $colorErrorBackground;
         color: $colorErrorBackground;

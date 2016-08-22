@@ -9,6 +9,7 @@
                 <div class="section dark login" ng-class="{'error' : errorMsg}">
                     <input type="text" placeholder="Username" required ng-model="formData.username"/>
                     <input type="password" placeholder="Password" required ng-model="formData.password"/>
+                    <label><input type="checkbox" ng-model="formData.rememberMe"/> Remember me</label>
                     <input type="submit" class="btn btn-primary btn-large" value="Log in"/>
                 </div>
                 <div class="links">

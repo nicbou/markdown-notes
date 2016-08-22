@@ -8,7 +8,7 @@ angular.module('notes').controller('AuthCtrl', ['$scope', 'close', '$authService
         $scope.msgType = undefined;
         $scope.errorFields = undefined;
 
-        $authService.login($scope.formData.username, $scope.formData.password)
+        $authService.login($scope.formData.username, $scope.formData.password, $scope.formData.rememberMe)
             .then(function (apiKey) {
                 close(apiKey);
             })

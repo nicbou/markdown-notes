@@ -3,8 +3,6 @@
  */
 var servicesModule = angular.module('notes.service');
 
-// TODO: LocalStorage for "Remember me" feature
-
 servicesModule.factory('$authService', function (ModalService, $timeout, $q, $http, $base64, $window, DEMO_MODE) {
     var LOGIN_ROUTE = '/api/v1/user/',
         SIGNUP_ROUTE = '/api/v1/create_user/',
@@ -25,9 +23,10 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
          *
          * @param username
          * @param password
+         * @param rememberMe - if defined and true, will store ApiKey into LocalStorage
          * @returns {angular.IPromise<TResult>}
          */
-        login: function (username, password) {
+        login: function (username, password, rememberMe) {
             var auth = $base64.encode(username + ":" + password),
                 headers = {"Authorization": "Basic " + auth};
 
@@ -35,12 +34,18 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
                 .then(function (response) {
                     apiKey = username + ":" + response.data.api_key;
                     $window.sessionStorage.apiKey = apiKey;
+
+                    if(rememberMe) {
+                        $window.localStorage.apiKey = apiKey;
+                    }
+
                     return apiKey;
                 });
         },
 
         logout: function () {
             $window.sessionStorage.removeItem('apiKey');
+            $window.localStorage.removeItem('apiKey');
             apiKey = undefined;
         },
 
