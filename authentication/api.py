@@ -28,6 +28,10 @@ class BasicAuthentication(_BasicAuthentication):
 
 
 class CreateUserResource(ModelResource):
+    """
+    Resource for creating a new user. This resource is not protected with any
+    Authentication or Authorization.
+    """
     class Meta:
         allowed_methods = ['post']
         detail_allowed_methods = []
@@ -42,6 +46,13 @@ class CreateUserResource(ModelResource):
         fields = ['email', 'username', 'api_key']
 
     def obj_create(self, bundle, **kwargs):
+        """
+        Validation of incoming data and checks for email&username uniqueness
+
+        :param bundle:
+        :param kwargs:
+        :return:
+        """
         REQUIRED_USER_FIELDS = ("username", "email", "password")
         for field in REQUIRED_USER_FIELDS:
             if field not in bundle.data:
@@ -89,6 +100,8 @@ class CreateUserResource(ModelResource):
 class UserResource(ModelResource):
     """
     Get and update user profile, also serves as login route for retrieving the ApiKey.
+    This resource doesn't have any listing route, the root route /user/ is redirected
+    to retrieving the authenticated user's data.
     """
 
     class Meta:
@@ -115,8 +128,9 @@ class UserResource(ModelResource):
 
     def current_user_redirect(self, request, **kwargs):
         """
-        Special view which enables to override the root route "/" for accessing the
+        Special view which enables to override the root route /user/ for accessing the
         data of currently authenticated user and not the listing of all users.
+
         :param request:
         :param kwargs:
         :return:
@@ -131,6 +145,7 @@ class UserResource(ModelResource):
     def update_in_place(self, request, original_bundle, new_data):
         """
         Validation for duplicates of username and email through PATCH requests.
+
         :param request:
         :param original_bundle:
         :param new_data:
@@ -166,7 +181,20 @@ class UserResource(ModelResource):
         return object_list.filter(id=bundle.request.user.id).select_related()
 
     def hydrate(self, bundle):
-        try:
+        """
+        When updating user's password, check if the old password is valid.
+        :param bundle:
+        :return:
+        """
+
+        if bundle.data['password'] or bundle.data['old_password']:
+
+            if not bundle.data['password'] or not bundle.data['old_password']:
+                raise CustomBadRequest(
+                    code="missing_key",
+                    message="If you want to change password you have to submit both old and new password!",
+                    field="password")
+
             raw_password = bundle.data.pop('password')
             old_password = bundle.data.pop('old_password')
 
@@ -177,8 +205,7 @@ class UserResource(ModelResource):
                     field="oldPassword")
 
             bundle.obj.set_password(raw_password)
-        except KeyError:
-            pass
+
 
         return bundle
 
@@ -190,6 +217,9 @@ class UserResource(ModelResource):
 
 
 class PasswordRecoveryResource(Resource):
+    """
+    Non-ORM Resource which serves for recovering lost password.
+    """
     email = fields.CharField(attribute='email')
 
     class Meta:

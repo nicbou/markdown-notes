@@ -6,7 +6,9 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     $scope.notebooksService = $notebooksService;
     $scope.notesService = $notesService;
 
-
+    /**
+     * Function for loading user's data
+     */
     var loadData = function () {
         $scope.notebooksService.fetchFromServer().then(
             function () {
@@ -25,6 +27,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         );
     };
 
+    // Bootstrapping
     if ($authService.isLoggedIn()) {
         loadData();
     } else {
@@ -326,6 +329,11 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         }
     };
 
+    /**
+     * Log out user, remove all locally stored data (notes, notebooks),
+     * restore the editor into initial setup and open modal window for
+     * new login.
+     */
     $scope.logOut = function () {
         $authService.logout();
 
@@ -343,6 +351,9 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
     };
 
+    /**
+     * Open modal window for modifiying the account settings.
+     */
     $scope.accountSettings = function () {
         $authService.modal('accountSettings');
         $scope.sideMenuOpen = false;

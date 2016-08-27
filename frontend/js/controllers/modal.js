@@ -3,6 +3,9 @@ angular.module('notes').controller('ModalCtrl', function ($scope, close, $authSe
     $scope.formType = (formType != undefined ? formType : 'login');
     $scope.formData = {};
 
+    /**
+     * Form function for login and retrieving ApiKey of the user.
+     */
     $scope.login = function () {
         $scope.msg = undefined;
         $scope.msgType = undefined;
@@ -22,6 +25,9 @@ angular.module('notes').controller('ModalCtrl', function ($scope, close, $authSe
             });
     };
 
+    /**
+     * Form function for creating new user.
+     */
     $scope.signup = function () {
         $scope.msg = undefined;
         $scope.msgType = undefined;
@@ -46,6 +52,9 @@ angular.module('notes').controller('ModalCtrl', function ($scope, close, $authSe
             });
     };
 
+    /**
+     * Form function for recovering lost password.
+     */
     $scope.passwordRecovery = function () {
         $scope.msg = undefined;
         $scope.msgType = undefined;
@@ -62,6 +71,9 @@ angular.module('notes').controller('ModalCtrl', function ($scope, close, $authSe
             });
     };
 
+    /**
+     * Form function for editing user's account settings.
+     */
     $scope.accountSettings = function () {
         $scope.msg = undefined;
         $scope.msgType = undefined;
@@ -116,12 +128,16 @@ angular.module('notes').controller('ModalCtrl', function ($scope, close, $authSe
 
     };
 
+    /**
+     * Function for closing modal window.
+     */
     $scope.close = function () {
         close();
     };
 
-    // Resetting error message when changing form type
+    // Resetting data when changing form type
     $scope.$watch('formType', function () {
+        $scope.formData = {};
         $scope.msg = undefined;
         $scope.msgType = undefined;
         $scope.errorFields = undefined;

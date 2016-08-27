@@ -43,12 +43,23 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
                 });
         },
 
+        /**
+         * Function for logout of the user. Remove the locally stored ApiKey of the user.
+         */
         logout: function () {
             $window.sessionStorage.removeItem('apiKey');
             $window.localStorage.removeItem('apiKey');
             apiKey = undefined;
         },
 
+        /**
+         * Function for creating new user.
+         *
+         * @param username
+         * @param email
+         * @param password
+         * @returns {*|IPromise<TResult>}
+         */
         signUp: function (username, email, password) {
             var payload = {
                 'username': username,
@@ -64,6 +75,12 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
                 });
         },
 
+        /**
+         * Function for recovering lost password defined by email
+         *
+         * @param email
+         * @returns {HttpPromise}
+         */
         passwordRecovery: function (email) {
             var payload = {
                 'email': email
@@ -72,6 +89,12 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
             return $http.post(PASSWORD_RECOVERY_ROUTE, payload);
         },
 
+        /**
+         * Function for updating user's account settings.
+         *
+         * @param payload
+         * @returns {HttpPromise}
+         */
         updateAccountSettings: function (payload) {
             return $http.patch(USER_ROUTE, payload);
         },
@@ -125,6 +148,10 @@ servicesModule.factory('$authService', function (ModalService, $timeout, $q, $ht
     return $authService;
 });
 
+/**
+ * HTTPRequestInterceptor which includes the ApiKey into all API requests
+ * when the user is logged in.
+ */
 servicesModule.factory('httpRequestInterceptor', function ($injector) {
     return {
         request: function (config) {
