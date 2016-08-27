@@ -617,12 +617,30 @@
     }
 
     input[type="submit"] {
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     input[type="checkbox"] {
-        display: inline;
-        width: 20px;
+        display: none;
+    }
+
+    label{
+        cursor: pointer;
+    }
+
+    input[type="checkbox"] + label::before {
+        content: ' ';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 1px solid $colorBackground;
+        border-radius: 50%;
+        margin-right: 10px;
+        background-color: lighten($colorBackGroundInvertedLight, 10%);
+    }
+
+    input[type="checkbox"]:checked + label::before {
+        background-color: $colorBackground;
     }
 
     .error input:not([type="submit"]){
