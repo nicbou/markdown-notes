@@ -32,6 +32,7 @@ class CreateUserResource(ModelResource):
     Resource for creating a new user. This resource is not protected with any
     Authentication or Authorization.
     """
+
     class Meta:
         allowed_methods = ['post']
         detail_allowed_methods = []
@@ -187,9 +188,9 @@ class UserResource(ModelResource):
         :return:
         """
 
-        if bundle.data['password'] or bundle.data['old_password']:
+        if 'password' in bundle.data or 'old_password' in bundle.data:
 
-            if not bundle.data['password'] or not bundle.data['old_password']:
+            if 'password' not in bundle.data or 'old_password' not in bundle.data:
                 raise CustomBadRequest(
                     code="missing_key",
                     message="If you want to change password you have to submit both old and new password!",
@@ -205,7 +206,6 @@ class UserResource(ModelResource):
                     field="oldPassword")
 
             bundle.obj.set_password(raw_password)
-
 
         return bundle
 

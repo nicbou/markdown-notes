@@ -31,7 +31,15 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     if ($authService.isLoggedIn()) {
         loadData();
     } else {
-        $authService.modal().then(function () {
+        var modalForm = 'login';
+
+        // Show Sign Up form when signup is in URL
+        if($location.search().hasOwnProperty('signup')){
+            modalForm = 'signup';
+        }
+
+        $authService.modal(modalForm).then(function () {
+            $location.search('signup', null);
             loadData();
         });
     }

@@ -76,7 +76,7 @@
                     <span class="separator"></span>
                 {% endblock %}
                 {% if not user.is_authenticated %}
-                    <a class="btn primary" onclick="ga('send', 'event', 'Account', 'Sign up', 'Top bar')" href="{% url 'index' %}">Sign up</a>
+                    <a class="btn primary" onclick="ga('send', 'event', 'Account', 'Sign up', 'Top bar')" href="{% url 'index' %}#/?signup">Sign up</a>
                     <span class="separator"></span>
                     <a class="btn" onclick="ga('send', 'event', 'Account', 'Log in', 'Top bar')" href="{% url 'index' %}">Log in</a>
                 {% else %}

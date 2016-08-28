@@ -1,5 +1,6 @@
 angular.module('notes').controller('ModalCtrl', function ($scope, close, $authService, formType) {
 
+    // Form types: login, signup, passwordRecovery, accountSettings
     $scope.formType = (formType != undefined ? formType : 'login');
     $scope.formData = {};
 
@@ -118,6 +119,7 @@ angular.module('notes').controller('ModalCtrl', function ($scope, close, $authSe
             .then(function () {
                 $scope.msg = 'Settings were successfully changed!';
                 $scope.msgType = 'success';
+                $scope.formData = {};
             })
             .catch(function (response) {
                 var error = response.data.error;
