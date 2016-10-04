@@ -192,7 +192,7 @@ function Paster(elem, imageCallback, stringCallback) {
     pasteCatcher = document.createElement("div");
     pasteCatcher.setAttribute("id", "paste-catcher");
     pasteCatcher.setAttribute("contenteditable", "");
-    pasteCatcher.style.cssText = 'opacity:0;position:fixed;top:0px;left:0px;width:10px;margin-left:-20px;';
+    pasteCatcher.style.cssText = 'opacity:0;position:fixed;top:0px;left:0px;width:10px;margin-left:-20px;z-index:1;';
     document.body.appendChild(pasteCatcher);
 
     elem.addEventListener('keydown', _self.onKeyboardAction, false);
