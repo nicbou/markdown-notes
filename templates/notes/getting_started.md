@@ -88,7 +88,7 @@ $$$
 
 ###1.5. Images
 
-Images can be dragged and dropped over the editor. Alternatively, you can use the standard markdown syntax to insert images.
+Images can be dragged and dropped over the editor. Alternatively, you can copy&paste image data (not files) directly to editor (supported only by Chrome, Firefox and Internet Explorer 11). Lastly, you can use the standard markdown syntax to insert images.
 
 ![](http://i.markdownnotes.com/montreal_xMvtnHZ.jpg)
 
