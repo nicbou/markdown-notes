@@ -1,8 +1,6 @@
 angular.module('notes.ui').directive("imagedrop", function ($parse, $document) {
     var isImageDrag = function (e) {
         return e.dataTransfer.types.indexOf('Files') >= 0 || e.dataTransfer.types.indexOf('application/x-moz-file') >= 0;
-
-        //e.dataTransfer.types[0] === 'Files' || e.dataTransfer.types[0] === 'application/x-moz-file';
     };
 
     //When an item is dragged over the document
