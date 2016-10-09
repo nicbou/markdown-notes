@@ -1,4 +1,3 @@
-//Syncs notes with the API
 angular.module('notes.service')
     .factory('$messageService', function($timeout, $rootScope, $sce){
         var $messageService = {
@@ -38,4 +37,22 @@ angular.module('notes.service')
         };
 
         return $messageService;
+    })
+    .factory('$newsService', function ($http) {
+        var NEWS_URL = '/api/v1/news/';
+
+        var $newsService = {
+            loadNews: function () {
+                return $http.get(NEWS_URL)
+                    .then(function (response) {
+                        return response.data.objects;
+                    });
+            },
+
+            markNewsAsRead: function (id) {
+
+            }
+        };
+
+        return $newsService;
     });

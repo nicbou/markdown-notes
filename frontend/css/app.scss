@@ -750,6 +750,19 @@
     z-index: 110;
 }
 
+#news_container{
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 300px;
+    z-index: 100;
+
+    .news{
+        background-color: $colorInfoBackground;
+        margin-bottom: 20px;
+    }
+}
+
 /* Drag and drop upload overlay */
 body.drag-over{
     #markdownnotes-wrapper{
