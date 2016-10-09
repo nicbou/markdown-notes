@@ -82,6 +82,7 @@ INSTALLED_APPS = (
     'tastypie',
     'notes',
     'uploads',
+    'news',
     'compressor',
     'authentication',
     'django_libsass',

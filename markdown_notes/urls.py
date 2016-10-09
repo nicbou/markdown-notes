@@ -3,6 +3,8 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
+
+from news.api import NewsResource
 from notes.api import NoteResource, DummyNoteResource, SharedNoteResource, NotebookResource
 from authentication.api import *
 from notes.views import NotesView, SharedNoteRedirectView
@@ -15,6 +17,7 @@ v1_api.register(NoteResource())
 v1_api.register(NotebookResource())
 v1_api.register(DummyNoteResource())
 v1_api.register(SharedNoteResource())
+v1_api.register(NewsResource())
 v1_api.register(CreateUserResource())
 v1_api.register(UserResource())
 v1_api.register(PasswordRecoveryResource())
