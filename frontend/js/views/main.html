@@ -9,9 +9,7 @@
         </div>
     </div>
     <div id="news_container">
-        <news ng-repeat="news in newsCollection" news-id="news.id" news-title="news.title" data-created="news.dataCreated">
-            {{ news.content }}
-        </news>
+        <news ng-repeat="news in newsCollection track by $index" news-title="news.title" data-created="news.dataCreated" on-close="markNewsAsRead($index)">{{ news.content }}</news>
     </div>
     <div ng-show="shareWindowOpen" class="modal share">
         <h2>Share this note</h2>

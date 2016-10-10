@@ -373,17 +373,11 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         $scope.sideMenuOpen = false;
     };
 
-    $scope.markNewsAsRead = function (id) {
-        $newsService.markNewsAsRead(id);
+    $scope.markNewsAsRead = function (index) {
+        var newsId = $scope.newsCollection[index].id;
+        $newsService.markNewsAsRead(newsId);
 
-        var news = $scope.newsCollection;
-        for(var i = 0; i < news.length; i++){
-            if(news.id == id){
-                $scope.newsCollection.splice(i, 1);
-                return;
-            }
-        }
-
+        $scope.newsCollection.splice(index, 1);
     };
 
     $scope.handleNetworkError = function(err){

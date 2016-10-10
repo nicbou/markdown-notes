@@ -1,6 +1,6 @@
 <div class="news">
     <div class="title">{{ title }}</div>
     <div class="date">{{ dateCreated }}</div>
-    <a href class="mark-read icon ion-android-close" ng-click="markAsRead(id)"></a>
-    <div ng-transclude></div>
+    <a href class="close icon ion-android-close" ng-click="onClose()"></a>
+    <div class="content" ng-transclude></div>
 </div>

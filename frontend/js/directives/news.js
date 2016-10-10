@@ -3,9 +3,9 @@ angular.module('notes.ui')
         return {
             restrict: 'E',
             scope: {
-                id: '=newsId',
                 title: '=newsTitle',
-                dateCreated: '='
+                dateCreated: '=',
+                onClose: '&'
             },
             templateUrl: '/static/js/views/news.html',
             transclude: true
