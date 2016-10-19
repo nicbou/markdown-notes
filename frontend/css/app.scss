@@ -557,20 +557,66 @@
     }
 }
 
-#overlay {
+.overlay {
     position: fixed;
     left: 50%;
     top: 50%;
-    background-color: #ffffff;
     width: 400px;
     height: 550px;
     margin-left: -200px;
     margin-top: -275px;
     z-index: 120;
 
+    background-color: #ffffff;
+    box-shadow: 5px 5px 10px -3px rgba(0, 0, 0, 0.1);
+
+    font-size: $fontSizeNormal;
+    font-weight: $fontWeightNormal;
+    line-height: $lineHeightNormal;
+
+    &.login, &.passwordRecovery{
+        height: 390px;
+        margin-top: -195px;
+
+        &.with-message{
+            height: 430px;
+            margin-top: -215px;
+        }
+    }
+
+    &.signup{
+        height: 450px;
+        margin-top: -225px;
+
+        &.with-message{
+            height: 490px;
+            margin-top: -245px;
+        }
+    }
+
+    &.accountSettings{
+        height: 440px;
+        margin-top: -220px;
+
+        &.with-message{
+            height: 480px;
+            margin-top: -240px;
+        }
+    }
+
+    h1{
+        padding-top: 30px;
+        padding-bottom: 20px;
+    }
+
     .dark{
+        position: relative;
         padding-left:20px;
         padding-right:20px;
+        text-align: left;
+
+        padding-bottom: 50px;
+        margin-bottom: 45px;
     }
 
     .links{
@@ -578,47 +624,69 @@
         text-align: center;
         padding: 0 56px;
 
-        .btn{
-            display: block;
-            margin-bottom: 8px;
+        a{
+            text-decoration: none;
+            color: $colorText;
+            margin-left: 5px;
+            margin-right: 5px;
 
+            &:hover{
+                text-decoration: underline;
+            }
         }
     }
 
     .close{
         position: absolute;
         right: 10px;
-        top: 2px;
+        top: 7px;
 
         i{
             cursor: pointer;
+            font-size: 25px;
         }
     }
 
     input:not([type="submit"]){
         display: block;
-        width: 100%;
-        margin-bottom: 20px;
-        border: none;
-        border-bottom: 2px solid white;
+        width: calc(100% - 10px);
+        padding: $marginExtraSmall;
+        margin-bottom: 10px;
+
+        border: 1px solid rgba(255, 255, 255, 0.2);
         background-color: transparent;
-        font-size: $fontSizeLarge;
-        font-family: $fontFamilyNormal;
         color: white;
-        text-align: center;
+
+        font-size: $fontSizeNormal;
+        font-weight: $fontWeightNormal;
+        line-height: $lineHeightNormal;
+
+        &::-moz-placeholder, &::-webkit-input-placeholder, &:-ms-input-placeholder {
+            color: $colorTextMutedInverted;
+        }
 
         &:focus{
             outline: none;
         }
 
         &.errorField{
-            border-bottom-color: $colorErrorBackground;
+            border-color: $colorErrorBackground;
             color: $colorErrorBackground;
         }
     }
 
-    input[type="submit"] {
+    .submit-wrapper {
+        width: 100%;
+        height: 62px;
+        position: absolute;
+        left: 0;
+        bottom: -31px;
         margin-top: 10px;
+        text-align: center;
+
+        .btn{
+            padding: 0 60px;
+        }
     }
 
     input[type="checkbox"] {
@@ -634,25 +702,29 @@
         display: inline-block;
         width: 16px;
         height: 16px;
-        border: 1px solid $colorBackground;
-        border-radius: 50%;
         margin-right: 10px;
-        background-color: lighten($colorBackGroundInvertedLight, 10%);
+
+        position: relative;
+        top: 4px;
+
+        border: 1px solid $colorTextMutedInverted;
+        border-radius: 50%;
+        background-color: $colorBackgroundInverted;
     }
 
     input[type="checkbox"]:checked + label::before {
-        background-color: $colorBackground;
+        background-color: $colorTextMutedInverted;
     }
 
     .error input:not([type="submit"]){
-        border-bottom-color: $colorErrorBackground;
+        border-color: $colorErrorBackground;
         color: $colorErrorBackground;
     }
 
     .msg{
-        padding: 4px;
-        font-size: $fontSizeNormal + 4;
-        font-weight: bold;
+        padding: 10px;
+        font-size: $fontSizeNormal;
+        font-weight: $fontWeightNormal;
 
         &.error{
             background-color: $colorErrorBackground;
@@ -670,9 +742,9 @@
     left: 0;
     top: 0;
     background-color: black;
-    -moz-opacity: 0.7;
-    opacity: .70;
-    filter: alpha(opacity=70);
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
     width: 100%;
     height: 100%;
     z-index: 110;

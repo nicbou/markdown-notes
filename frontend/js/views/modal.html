@@ -1,5 +1,5 @@
 <div id="auth-modal">
-    <div id="overlay">
+    <div class="overlay {{ formType }}" ng-class="msg ? 'with-message' : ''" >
         <div ng-show="formType == 'login'">
             <form ng-submit="login()">
                 <div class="section light header login">
@@ -13,11 +13,12 @@
                         <input type="checkbox" id="remember-me" ng-model="formData.rememberMe"/>
                         <label for="remember-me">Remember me</label>
                     </div>
-                    <input type="submit" class="btn btn-primary btn-large" value="Log in"/>
+                    <div class="submit-wrapper">
+                        <input type="submit" class="btn btn-primary btn-large" value="Log in"/>
+                    </div>
                 </div>
                 <div class="links">
-                    <a class="btn btn-small btn-inverted" ng-click="formType = 'signup'">Sign up</a>
-                    <a class="btn btn-small btn-inverted" ng-click="formType = 'passwordRecovery'">Lost password</a>
+                    <a href ng-click="formType = 'signup'">Create an account</a> | <a href ng-click="formType = 'passwordRecovery'">Forgot your password?</a>
                 </div>
             </form>
         </div>
@@ -32,10 +33,12 @@
                     <input type="email" placeholder="Email" required ng-class="{'errorField' : errorFields.indexOf('email') > -1}" ng-model="formData.email"/>
                     <input type="password" placeholder="Password" ng-class="{'errorField' : errorFields.indexOf('password') > -1}" required ng-model="formData.password"/>
                     <input type="password" placeholder="Password again" ng-class="{'errorField' : errorFields.indexOf('passwordAgain') > -1}" required ng-model="formData.passwordAgain"/>
-                    <input type="submit" class="btn btn-primary btn-large" value="Sign Up"/>
+                    <div class="submit-wrapper">
+                        <input type="submit" class="btn btn-primary btn-large" value="Sign Up"/>
+                    </div>
                 </div>
                 <div class="links">
-                    <a class="btn btn-small btn-inverted" ng-click="formType = 'login'">Back to login</a>
+                    <a href ng-click="formType = 'login'">Back to login</a>
                 </div>
             </form>
         </div>
@@ -47,16 +50,18 @@
                 </div>
                 <div class="section dark login">
                     <input type="email" placeholder="Email" required ng-class="{'errorField' : errorFields.indexOf('email') > -1}" ng-model="formData.email"/>
-                    <input type="submit" class="btn btn-primary btn-large" value="Recover password"/>
+                    <div class="submit-wrapper">
+                        <input type="submit" class="btn btn-primary btn-large" value="Recover password"/>
+                    </div>
                 </div>
                 <div class="links">
-                    <a class="btn btn-small btn-inverted" ng-click="formType = 'login'">Back to login</a>
+                    <a href ng-click="formType = 'login'">Back to login</a>
                 </div>
             </form>
         </div>
         <div ng-show="formType == 'accountSettings'">
             <form ng-submit="accountSettings()">
-                <a class="close" ng-click="close()"><i class="ion-close-round"></i></a>
+                <a class="close" ng-click="close()"><i class="icon ion-ios-close-outline"></i></a>
                 <div class="section light header login">
                     <h1>Settings</h1>
                     <div class="msg {{ msgType }}" ng-show="msg">{{ msg }}</div>
@@ -66,7 +71,9 @@
                     <input type="password" placeholder="Old password" ng-class="{'errorField' : errorFields.indexOf('oldPassword') > -1}" ng-model="formData.oldPassword"/>
                     <input type="password" placeholder="New password" ng-class="{'errorField' : errorFields.indexOf('password') > -1}" ng-model="formData.password"/>
                     <input type="password" placeholder="New password again" ng-class="{'errorField' : errorFields.indexOf('passwordAgain') > -1}" ng-model="formData.passwordAgain"/>
-                    <input type="submit" class="btn btn-primary btn-large" value="Save"/>
+                    <div class="submit-wrapper">
+                        <input type="submit" class="btn btn-primary btn-large" value="Save"/>
+                    </div>
                 </div>
             </form>
         </div>
