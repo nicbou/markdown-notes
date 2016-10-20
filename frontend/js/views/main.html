@@ -8,6 +8,9 @@
             <i ng-hide="message.timeout" class="icon dismiss ion-ios-close-empty" ng-click="messageService.remove(message)"></i>
         </div>
     </div>
+    <div id="news_container">
+        <news ng-repeat="news in newsCollection track by $index" news-title="news.title" data-created="news.dataCreated" on-close="markNewsAsRead($index)">{{ news.content }}</news>
+    </div>
     <div ng-show="shareWindowOpen" class="modal share">
         <h2>Share this note</h2>
         <i class="close icon ion-ios-close-outline" ng-click="shareWindowOpen = null"></i>

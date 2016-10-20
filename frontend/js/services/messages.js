@@ -1,4 +1,3 @@
-//Syncs notes with the API
 angular.module('notes.service')
     .factory('$messageService', function($timeout, $rootScope, $sce){
         var $messageService = {
@@ -38,4 +37,28 @@ angular.module('notes.service')
         };
 
         return $messageService;
+    })
+    .factory('$newsService', function ($http, $messageService) {
+        var NEWS_URL = '/api/v1/news/';
+
+        var $newsService = {
+            loadNews: function () {
+                return $http.get(NEWS_URL)
+                    .then(function (response) {
+                        return response.data.objects;
+                    });
+            },
+
+            markNewsAsRead: function (id) {
+                return $http.patch(NEWS_URL + id + '/read/')
+                    .catch(function () {
+                        $messageService.add({
+                            'class': $messageService.classes.ERROR,
+                            message: 'There was error when News was supposed to be marked as read.'
+                        });
+                    })
+            }
+        };
+
+        return $newsService;
     });

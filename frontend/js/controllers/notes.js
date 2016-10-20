@@ -1,4 +1,4 @@
-angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, $notebooksService, $authService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, DEMO_MODE){
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, $notebooksService, $authService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $newsService, $rootScope, debounce, DEMO_MODE){
 
     $scope.currentNoteIndex = -1;
     $scope.messages = [];
@@ -25,6 +25,12 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
             },
             $scope.handleNetworkError
         );
+
+        $newsService.loadNews()
+            .then(function (news) {
+                $scope.newsCollection = news;
+            });
+
     };
 
     // Bootstrapping
@@ -365,6 +371,13 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
     $scope.accountSettings = function () {
         $authService.modal('accountSettings');
         $scope.sideMenuOpen = false;
+    };
+
+    $scope.markNewsAsRead = function (index) {
+        var newsId = $scope.newsCollection[index].id;
+        $newsService.markNewsAsRead(newsId);
+
+        $scope.newsCollection.splice(index, 1);
     };
 
     $scope.handleNetworkError = function(err){

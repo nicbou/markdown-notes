@@ -750,6 +750,40 @@
     z-index: 110;
 }
 
+#news_container{
+    position: fixed;
+    top: 45px;
+    right: 20px;
+    width: 400px;
+    z-index: 100;
+
+    .news{
+        position: relative;
+        background-color: $colorInfoBackground;
+        margin-bottom: 10px;
+        color: #fff;
+        padding: 10px;
+        overflow-y: auto;
+
+        .title{
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .close{
+            position: absolute;
+            right: 8px;
+            top: 5px;
+            font-size: 23px;
+            color: #fff;
+        }
+
+        .content{
+            white-space: pre;
+        }
+    }
+}
+
 /* Drag and drop upload overlay */
 body.drag-over{
     #markdownnotes-wrapper{
