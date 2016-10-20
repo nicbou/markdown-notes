@@ -38,7 +38,7 @@ MEDIA_URL = 'http://i.markdownnotes.com/'
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'staticfiles')
 STATIC_URL = '/static/'
 ROOT_URLCONF = 'markdown_notes.urls'
-LOGIN_URL = '/auth/login/'
+LOGIN_URL = '/app/'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 

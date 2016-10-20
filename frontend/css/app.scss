@@ -557,6 +557,199 @@
     }
 }
 
+.overlay {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 400px;
+    height: 550px;
+    margin-left: -200px;
+    margin-top: -275px;
+    z-index: 120;
+
+    background-color: #ffffff;
+    box-shadow: 5px 5px 10px -3px rgba(0, 0, 0, 0.1);
+
+    font-size: $fontSizeNormal;
+    font-weight: $fontWeightNormal;
+    line-height: $lineHeightNormal;
+
+    &.login, &.passwordRecovery{
+        height: 390px;
+        margin-top: -195px;
+
+        &.with-message{
+            height: 430px;
+            margin-top: -215px;
+        }
+    }
+
+    &.signup{
+        height: 450px;
+        margin-top: -225px;
+
+        &.with-message{
+            height: 490px;
+            margin-top: -245px;
+        }
+    }
+
+    &.accountSettings{
+        height: 440px;
+        margin-top: -220px;
+
+        &.with-message{
+            height: 480px;
+            margin-top: -240px;
+        }
+    }
+
+    h1{
+        padding-top: 30px;
+        padding-bottom: 20px;
+    }
+
+    .dark{
+        position: relative;
+        padding-left:20px;
+        padding-right:20px;
+        text-align: left;
+
+        padding-bottom: 50px;
+        margin-bottom: 45px;
+    }
+
+    .links{
+        margin-top: 20px;
+        text-align: center;
+        padding: 0 56px;
+
+        a{
+            text-decoration: none;
+            color: $colorText;
+            margin-left: 5px;
+            margin-right: 5px;
+
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .close{
+        position: absolute;
+        right: 10px;
+        top: 7px;
+
+        i{
+            cursor: pointer;
+            font-size: 25px;
+        }
+    }
+
+    input:not([type="submit"]){
+        display: block;
+        width: calc(100% - 10px);
+        padding: $marginExtraSmall;
+        margin-bottom: 10px;
+
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: transparent;
+        color: white;
+
+        font-size: $fontSizeNormal;
+        font-weight: $fontWeightNormal;
+        line-height: $lineHeightNormal;
+
+        &::-moz-placeholder, &::-webkit-input-placeholder, &:-ms-input-placeholder {
+            color: $colorTextMutedInverted;
+        }
+
+        &:focus{
+            outline: none;
+        }
+
+        &.errorField{
+            border-color: $colorErrorBackground;
+            color: $colorErrorBackground;
+        }
+    }
+
+    .submit-wrapper {
+        width: 100%;
+        height: 62px;
+        position: absolute;
+        left: 0;
+        bottom: -31px;
+        margin-top: 10px;
+        text-align: center;
+
+        .btn{
+            padding: 0 60px;
+        }
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    label{
+        cursor: pointer;
+    }
+
+    input[type="checkbox"] + label::before {
+        content: ' ';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+
+        position: relative;
+        top: 4px;
+
+        border: 1px solid $colorTextMutedInverted;
+        border-radius: 50%;
+        background-color: $colorBackgroundInverted;
+    }
+
+    input[type="checkbox"]:checked + label::before {
+        background-color: $colorTextMutedInverted;
+    }
+
+    .error input:not([type="submit"]){
+        border-color: $colorErrorBackground;
+        color: $colorErrorBackground;
+    }
+
+    .msg{
+        padding: 10px;
+        font-size: $fontSizeNormal;
+        font-weight: $fontWeightNormal;
+
+        &.error{
+            background-color: $colorErrorBackground;
+            color: white;
+        }
+
+        &.success{
+            background-color: $colorSuccess;
+            color: white;
+        }
+    }
+}
+#fade {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: black;
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+    width: 100%;
+    height: 100%;
+    z-index: 110;
+}
+
 /* Drag and drop upload overlay */
 body.drag-over{
     #markdownnotes-wrapper{

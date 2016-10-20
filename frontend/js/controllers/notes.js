@@ -1,21 +1,48 @@
-angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, $notebooksService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, DEMO_MODE){
+angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $window, $notesService, $notebooksService, $authService, Uploader, $routeParams, $timeout, $interval, $location, $q, $document, $messageService, $rootScope, debounce, DEMO_MODE){
 
     $scope.currentNoteIndex = -1;
     $scope.messages = [];
     $scope.messageService = $messageService;
     $scope.notebooksService = $notebooksService;
-    $scope.notebooksService.fetchFromServer().then(function(){
-        $scope.notebooksService.notebooks.forEach(function(notebook){
-            notebook.expanded = false;
-        });
-    });
     $scope.notesService = $notesService;
-    $scope.notesService.fetchFromServer().then(
-        function(){
-            init();
-        },
-        $scope.handleNetworkError
-    );
+
+    /**
+     * Function for loading user's data
+     */
+    var loadData = function () {
+        $scope.notebooksService.fetchFromServer().then(
+            function () {
+                $scope.notebooksService.notebooks.forEach(function (notebook) {
+                    notebook.expanded = false;
+                });
+            },
+            $scope.handleNetworkError
+        );
+
+        $scope.notesService.fetchFromServer().then(
+            function () {
+                init();
+            },
+            $scope.handleNetworkError
+        );
+    };
+
+    // Bootstrapping
+    if ($authService.isLoggedIn()) {
+        loadData();
+    } else {
+        var modalForm = 'login';
+
+        // Show Sign Up form when signup is in URL
+        if($location.search().hasOwnProperty('signup')){
+            modalForm = 'signup';
+        }
+
+        $authService.modal(modalForm).then(function () {
+            $location.search('signup', null);
+            loadData();
+        });
+    }
 
     $scope.sideMenuOpen = false;
 
@@ -42,12 +69,12 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
         // Monitor note changes
         $scope.$watchGroup(
-            [     
+            [
                 function(){
                     if($scope.currentNoteIndex >= 0 && $scope.notesService.count() > 0){
                         return $scope.notesService.notes.active[$scope.currentNoteIndex].title;
                     }
-                },   
+                },
                 function(){
                     if($scope.currentNoteIndex >= 0 && $scope.notesService.count() > 0){
                         return $scope.notesService.notes.active[$scope.currentNoteIndex].content;
@@ -138,7 +165,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         if(hideMenu){
             $scope.sideMenuOpen = false;
         }
-        
+
         return noteFound;
     };
     //Preserves ctrl+clicking to open notes in a new tab
@@ -245,7 +272,7 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
 
                 //Insert at cursor in the editor
                 document.getElementsByClassName('CodeMirror')[0].CodeMirror.replaceSelection(markdownImage);
-                
+
                 //Delete the "uploading" message
                 $scope.messageService.remove(message);
 
@@ -310,9 +337,39 @@ angular.module('notes').controller('NotesCtrl', function NotesCtrl($scope, $wind
         }
     };
 
+    /**
+     * Log out user, remove all locally stored data (notes, notebooks),
+     * restore the editor into initial setup and open modal window for
+     * new login.
+     */
+    $scope.logOut = function () {
+        $authService.logout();
+
+        $scope.sideMenuOpen = false;
+        $scope.currentNoteIndex = -1;
+        $scope.notesService.clearLocalMemory();
+        $scope.notebooksService.clearLocalMemory();
+        $rootScope.$broadcast('noteChanged', {content: ''});
+
+
+        $authService.modal()
+            .then(function () {
+                loadData();
+            });
+
+    };
+
+    /**
+     * Open modal window for modifiying the account settings.
+     */
+    $scope.accountSettings = function () {
+        $authService.modal('accountSettings');
+        $scope.sideMenuOpen = false;
+    };
+
     $scope.handleNetworkError = function(err){
-        if(err.status === 401){
-            $window.location.href = '/auth/login/';
+        if(err.status === 401 || err.status === 403){
+            $authService.modal();
         }
         else{
             $scope.messageService.add({
