@@ -574,33 +574,43 @@
     font-weight: $fontWeightNormal;
     line-height: $lineHeightNormal;
 
-    &.login, &.passwordRecovery{
-        height: 390px;
-        margin-top: -195px;
+    &.login{
+        height: 375px;
+        margin-top: -188px;
 
         &.with-message{
-            height: 430px;
-            margin-top: -215px;
+            height: 415px;
+            margin-top: -207px;
+        }
+    }
+
+    &.passwordRecovery{
+        height: 305px;
+        margin-top: -152px;
+
+        &.with-message{
+            height: 345px;
+            margin-top: -172px;
         }
     }
 
     &.signup{
-        height: 450px;
-        margin-top: -225px;
+        height: 435px;
+        margin-top: -218px;
 
         &.with-message{
-            height: 490px;
-            margin-top: -245px;
+            height: 475px;
+            margin-top: -238px;
         }
     }
 
     &.accountSettings{
-        height: 440px;
-        margin-top: -220px;
+        height: 425px;
+        margin-top: -213px;
 
         &.with-message{
-            height: 480px;
-            margin-top: -240px;
+            height: 465px;
+            margin-top: -233px;
         }
     }
 
@@ -609,14 +619,18 @@
         padding-bottom: 20px;
     }
 
+    &.passwordRecovery h1{
+        font-size: 55px;
+    }
+
     .dark{
         position: relative;
         padding-left:20px;
         padding-right:20px;
         text-align: left;
 
-        padding-bottom: 50px;
-        margin-bottom: 45px;
+        padding-bottom: 42px;
+        margin-bottom: 38px;
     }
 
     .links{
@@ -677,15 +691,17 @@
 
     .submit-wrapper {
         width: 100%;
-        height: 62px;
+        height: 47px;
         position: absolute;
         left: 0;
-        bottom: -31px;
+        bottom: -23.5px;
         margin-top: 10px;
         text-align: center;
 
         .btn{
-            padding: 0 60px;
+            padding: 0 50px;
+            font-size: 21px;
+            line-height:45px;
         }
     }
 
@@ -763,7 +779,6 @@
         margin-bottom: 10px;
         color: #fff;
         padding: 10px;
-        overflow-y: auto;
 
         .title{
             font-size: 18px;
@@ -779,7 +794,7 @@
         }
 
         .content{
-            white-space: pre;
+            white-space: pre-wrap;
         }
     }
 }
