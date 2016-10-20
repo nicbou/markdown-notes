@@ -50,8 +50,6 @@ class NewsResource(ModelResource):
         self.method_check(request, allowed=['patch'])
         self.is_authenticated(request)
 
-        print kwargs
-
         user = getattr(request, 'user', None)
         if not user or user.is_anonymous():
             return HttpForbidden()

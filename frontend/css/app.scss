@@ -779,7 +779,6 @@
         margin-bottom: 10px;
         color: #fff;
         padding: 10px;
-        overflow-y: auto;
 
         .title{
             font-size: 18px;
@@ -795,7 +794,7 @@
         }
 
         .content{
-            white-space: pre;
+            white-space: pre-wrap;
         }
     }
 }
