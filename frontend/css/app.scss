@@ -773,24 +773,24 @@
     width: 400px;
     z-index: 100;
 
-    .news{
+    article{
         position: relative;
         background-color: $colorInfoBackground;
-        margin-bottom: 10px;
+        margin-bottom: $marginSmall;
         color: #fff;
-        padding: 10px;
+        padding: $marginNormal;
 
-        .title{
-            font-size: 18px;
-            margin-bottom: 5px;
+        h2{
+            margin: $marginExtraSmall 0 $marginSmall;
+            font-weight: 300;
         }
-        
+    
         .close{
             position: absolute;
-            right: 8px;
-            top: 5px;
+            right: $marginNormal;
+            top: $marginNormal;
             font-size: 23px;
-            color: #fff;
+            color: $colorTextInverted;
         }
 
         .content{

@@ -9,14 +9,19 @@ from django.utils import timezone
 def create_news(apps, schema_editor):
     News = apps.get_model("news", "News")
 
-    login_news = News(title='New login system!',
-                      content="""To enable future development of Markdown Notes, we implemented new Authentication system for Log In, Sign Up and several other functionalities. If you will encounter some strange behavior please let us know through Feedback page!""")
+    login_news = News(
+        title='New login system',
+        content="""We implemented a new, improved authentication system. These changes pave the way for native Markdown Notes apps."""
+    )
     login_news.news_date = timezone.now()
     login_news.save()
 
-    image_paste_news = News(title='Image pasting from clipboard!', content="""New feature! Now you can paste an image directly from your clipboard! Currently supported is only pasting an image data, not an image file! This feature can be handy for example with screenshots.
+    image_paste_news = News(
+        title='Paste images in your notes',
+        content="""New feature! You can now paste screenshots and images directly into the editor just as you would in Paint or Photoshop.
 
-Browser support for this feature is currently limited to Chrome, Firefox and Internet Explorer 11.""")
+This feature is available on Chrome, Firefox and Internet Explorer 11."""
+    )
     image_paste_news.news_date = timezone.now()
     image_paste_news.save()
 
