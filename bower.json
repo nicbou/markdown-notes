@@ -1,5 +1,5 @@
 {
-  "name": "MarkdownNotes",
+  "name": "markdown-notes",
   "version": "0.1.0",
   "dependencies": {
     "FileSaver": "https://github.com/Teleborder/FileSaver.js.git",
