@@ -23,6 +23,10 @@ Markdown Notes is a Django application with an AngularJS front-end.
 5. Create the database with `python manage.py migrate`.
 6. Run the server with `python manage.py runserver`.
 
+###ApiKey Backfill
+
+If you have forked this project in past and you have pulled new update (especially the changes from #42), you have to run command `python manage.py backfill_api_keys` to generate ApiKeys for already existing users. This issue will be solved with automatic migration in future, this note is ment as a temporary solution.
+
 ###Deployment tools
 
 A crude tool for automatic deployments is available. Install `forever` (`npm install -g forever`) and run `forever start webhooks.js` to have the server redeploy every time there is activity on the GitHub repo.
